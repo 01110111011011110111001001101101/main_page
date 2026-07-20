@@ -1,0 +1,47 @@
+<div id="activationProviderChoiceModal" class="activation-provider-choice-modal hidden fixed inset-0 z-[9999] modal-backdrop flex items-center justify-center p-4">
+      <section class="activation-provider-choice" role="dialog" aria-modal="true" aria-labelledby="activationProviderChoiceTitle" aria-describedby="activationProviderChoiceText">
+        <header class="activation-provider-choice__header">
+          <div>
+            <span>Οδηγός ενεργοποίησης</span>
+            <h3 id="activationProviderChoiceTitle">Επίλεξε πάροχο</h3>
+            <p id="activationProviderChoiceText">Διάλεξε Vodafone CU ή NOVA Q για να ανοίξει ο σωστός οδηγός.</p>
+          </div>
+
+          <button type="button" class="activation-provider-choice__close" data-modal-close="activationProviderChoiceModal" aria-label="Κλείσιμο επιλογής παρόχου">
+            <svg class="icon" data-icon="xmark" aria-hidden="true"><use href="assets/icons/icons.svg?v=15010baf#icon-xmark"></use></svg>
+          </button>
+        </header>
+
+        <div class="activation-provider-choice__grid">
+          <button
+            type="button"
+            class="activation-provider-option activation-provider-option--vodafone"
+            data-activation-guide-open
+            data-activation-close-modal="activationProviderChoiceModal"
+            data-activation-provider="vodafone"
+            data-activation-offer="Vodafone CU"
+            data-activation-source="provider_choice"
+            data-track="activation_provider_choice_click"
+            data-offer="Vodafone CU"
+            data-category="mobile">
+            <span>Vodafone CU</span>
+            <small>Οδηγός για νέο αριθμό ή φορητότητα Vodafone CU</small>
+          </button>
+
+          <button
+            type="button"
+            class="activation-provider-option activation-provider-option--nova"
+            data-activation-guide-open
+            data-activation-close-modal="activationProviderChoiceModal"
+            data-activation-provider="nova"
+            data-activation-offer="NOVA Q"
+            data-activation-source="provider_choice"
+            data-track="activation_provider_choice_click"
+            data-offer="NOVA Q"
+            data-category="mobile">
+            <span>NOVA Q</span>
+            <small>Οδηγός για νέο αριθμό ή φορητότητα NOVA Q</small>
+          </button>
+        </div>
+      </section>
+    </div>

@@ -1,0 +1,156 @@
+<div id="activationGuideModal" class="activation-guide-modal modal-backdrop hidden" data-activation-guide-modal>
+      <section
+        class="activation-guide"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="activationGuideTitle"
+        aria-describedby="activationGuideSubtitle"
+        tabindex="-1"
+      >
+        <header class="activation-guide__header">
+          <div class="activation-guide__title-block">
+            <span class="activation-guide__eyebrow" data-activation-offer>Vodafone CU</span>
+            <h3 id="activationGuideTitle">Οδηγός ενεργοποίησης</h3>
+            <p id="activationGuideSubtitle">
+              Βήμα-βήμα διαδικασία για δικαιολογητικά, πληρωμή, αποστολή και ενεργοποίηση SIM.
+            </p>
+          </div>
+
+          <button type="button" class="activation-guide__close" data-activation-guide-close aria-label="Κλείσιμο οδηγού ενεργοποίησης">
+            <svg class="icon" data-icon="xmark" aria-hidden="true"><use href="assets/icons/icons.svg?v=15010baf#icon-xmark"></use></svg>
+          </button>
+        </header>
+
+        <div class="activation-guide__progress" aria-live="polite">
+          <span data-activation-progress>Βήμα 1 από 4</span>
+          <strong data-activation-step-title>Τύπος σύνδεσης</strong>
+          <div class="activation-guide__progress-track" aria-hidden="true">
+            <span data-activation-progress-bar></span>
+          </div>
+        </div>
+
+        <div class="activation-guide__body">
+          <section class="activation-step" data-activation-step="1" aria-labelledby="activationStepOneTitle">
+            <h4 id="activationStepOneTitle">Τύπος σύνδεσης</h4>
+            <p>Επίλεξε αν ξεκινάς με νέο αριθμό ή αν μεταφέρεις τον υπάρχοντα αριθμό σου.</p>
+
+            <div class="activation-type-selector" role="group" aria-label="Επιλογή τύπου σύνδεσης">
+              <button type="button" data-activation-type="new">
+                <span>Νέος αριθμός</span>
+                <small>Ξεκινάς νέα σύνδεση με νέο νούμερο.</small>
+              </button>
+
+              <button type="button" data-activation-type="portability">
+                <span>Φορητότητα</span>
+                <small>Κρατάς το υπάρχον νούμερό σου και το μεταφέρεις.</small>
+              </button>
+            </div>
+
+            <div class="activation-guide-note" data-activation-type-note>
+              Για νέο αριθμό χρειάζονται λιγότερα έντυπα από τη φορητότητα.
+            </div>
+          </section>
+
+          <section class="activation-step hidden" data-activation-step="2" aria-labelledby="activationStepTwoTitle">
+            <h4 id="activationStepTwoTitle">Δικαιολογητικά</h4>
+            <p>Δες τα απαραίτητα έντυπα και κατέβασε όσα χρειάζονται. Μπορείς να συνεχίσεις χωρίς υποχρεωτική επιλογή.</p>
+
+            <div class="activation-checklist" data-activation-checklist></div>
+
+            <div class="activation-guide-note" data-activation-checklist-hint>
+              Τα δικαιολογητικά είναι ενημερωτική λίστα. Μπορείς να συνεχίσεις χωρίς τσεκάρισμα.
+            </div>
+          </section>
+
+          <section class="activation-step hidden" data-activation-step="3" aria-labelledby="activationStepThreeTitle">
+            <h4 id="activationStepThreeTitle">Πληρωμή / αποστολή</h4>
+            <p>Κάνε την κατάθεση, κράτησε το αποδεικτικό και στείλε όλα τα δικαιολογητικά στο email.</p>
+
+            <div class="activation-payment-list">
+              <article class="activation-payment-card">
+                <span>ΠΕΙΡΑΙΩΣ</span>
+                <strong>GR5801720500005050099524664</strong>
+                <small>Δικαιούχος: SOUTH ATTICA TELECOMMUNICATIONS</small>
+                <button type="button" data-activation-copy="GR5801720500005050099524664" data-activation-copy-label="Αντιγραφή IBAN Πειραιώς">
+                  <svg class="icon" data-icon="copy" aria-hidden="true"><use href="assets/icons/icons.svg?v=15010baf#icon-copy"></use></svg>
+                  <span>Αντιγραφή IBAN</span>
+                </button>
+                <button type="button" data-activation-copy="SOUTH ATTICA TELECOMMUNICATIONS" data-activation-copy-label="Αντιγραφή δικαιούχου Πειραιώς">
+                  <svg class="icon" data-icon="copy" aria-hidden="true"><use href="assets/icons/icons.svg?v=15010baf#icon-copy"></use></svg>
+                  <span>Αντιγραφή δικαιούχου</span>
+                </button>
+              </article>
+
+              <article class="activation-payment-card">
+                <span>EUROBANK</span>
+                <strong>GR5302600310000310201070966</strong>
+                <small>Δικαιούχος: SOUTH ATTICA TELECOMMUNICATIONS</small>
+                <button type="button" data-activation-copy="GR5302600310000310201070966" data-activation-copy-label="Αντιγραφή IBAN Eurobank">
+                  <svg class="icon" data-icon="copy" aria-hidden="true"><use href="assets/icons/icons.svg?v=15010baf#icon-copy"></use></svg>
+                  <span>Αντιγραφή IBAN</span>
+                </button>
+                <button type="button" data-activation-copy="SOUTH ATTICA TELECOMMUNICATIONS" data-activation-copy-label="Αντιγραφή δικαιούχου Eurobank">
+                  <svg class="icon" data-icon="copy" aria-hidden="true"><use href="assets/icons/icons.svg?v=15010baf#icon-copy"></use></svg>
+                  <span>Αντιγραφή δικαιούχου</span>
+                </button>
+              </article>
+            </div>
+
+            <div class="activation-guide-note activation-guide-note--payment-proof">
+              <strong>Αποδεικτικό κατάθεσης</strong>
+              <span>Μετά την κατάθεση, κράτησε το αποδεικτικό και επισύναψέ το μαζί με τα δικαιολογητικά στο email.</span>
+            </div>
+
+            <article class="activation-email-card">
+              <div>
+                <span>Email αποστολής</span>
+                <strong>synetelas2011@gmail.com</strong>
+              </div>
+
+              <div class="activation-email-card__actions">
+                <button type="button" data-activation-copy="synetelas2011@gmail.com" data-activation-copy-label="Αντιγραφή email">
+                  <svg class="icon" data-icon="copy" aria-hidden="true"><use href="assets/icons/icons.svg?v=15010baf#icon-copy"></use></svg>
+                  <span>Αντιγραφή</span>
+                </button>
+
+                <a href="mailto:synetelas2011@gmail.com" data-activation-email-link>
+                  <svg class="icon" data-icon="envelope" aria-hidden="true"><use href="assets/icons/icons.svg?v=15010baf#icon-envelope"></use></svg>
+                  <span>Άνοιγμα email</span>
+                </a>
+              </div>
+            </article>
+          </section>
+
+          <section class="activation-step hidden" data-activation-step="4" aria-labelledby="activationStepFourTitle">
+            <h4 id="activationStepFourTitle">Ενεργοποίηση SIM</h4>
+            <p>Όταν παραλάβεις τη SIM, ολοκλήρωσε την ενεργοποίηση από το κινητό σου.</p>
+
+            <ol class="activation-sim-steps">
+              <li>Τοποθέτησε τη νέα SIM στη συσκευή.</li>
+              <li>Κάλεσε στο <strong data-activation-sim-number>1252</strong>.</li>
+              <li>Μετά την κλήση, κάνε επανεκκίνηση της συσκευής.</li>
+            </ol>
+
+            <div class="activation-help-box">
+              <strong>Αν κάτι δεν λειτουργεί σωστά</strong>
+              <p>Κάλεσέ μας για βοήθεια ή στείλε email με το πρόβλημα που εμφανίζεται.</p>
+              <div class="activation-help-box__actions">
+                <a href="tel:2105245210" data-track="phone_click" data-label="activation_guide_help_2105245210">
+                  <svg class="icon" data-icon="phone" aria-hidden="true"><use href="assets/icons/icons.svg?v=15010baf#icon-phone"></use></svg>
+                  <span>Κλήση&nbsp;για&nbsp;βοήθεια</span>
+                </a>
+                <a href="mailto:synetelas2011@gmail.com?subject=Πρόβλημα%20ενεργοποίησης%20SIM" data-activation-problem-email>
+                  <svg class="icon" data-icon="envelope-open-text" aria-hidden="true"><use href="assets/icons/icons.svg?v=15010baf#icon-envelope-open-text"></use></svg>
+                  <span>Αποστολή προβλήματος</span>
+                </a>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <footer class="activation-actions" aria-label="Πλοήγηση οδηγού ενεργοποίησης">
+          <button type="button" class="activation-actions__secondary" data-activation-prev>Πίσω</button>
+          <button type="button" class="activation-actions__primary" data-activation-next>Επόμενο</button>
+        </footer>
+      </section>
+    </div>

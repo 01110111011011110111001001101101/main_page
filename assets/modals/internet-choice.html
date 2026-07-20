@@ -1,0 +1,102 @@
+<div id="internetChoiceModal" class="hidden fixed inset-0 z-[110] modal-backdrop flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <div class="internet-choice-modal w-full sm:max-w-3xl bg-white rounded-t-[2rem] sm:rounded-[2rem] shadow-2xl overflow-hidden flex flex-col max-h-[92vh] sm:max-h-[90vh] animate-[fadeIn_0.25s_ease-out]">
+
+        <div class="internet-choice-sticky-header">
+          <div class="internet-choice-sticky-title">
+            <svg class="icon" data-icon="wifi" aria-hidden="true"><use href="assets/icons/icons.svg?v=15010baf#icon-wifi"></use></svg>
+            <span>Επιλογή Internet</span>
+          </div>
+
+          <button
+            type="button"
+            data-modal-close="internetChoiceModal"
+            class="liquid-close internet-choice-close"
+            aria-label="Κλείσιμο επιλογής Internet">
+            ✕
+          </button>
+        </div>
+
+        <div class="internet-choice-hero">
+          <div class="internet-choice-hero-glow internet-choice-hero-glow-one"></div>
+          <div class="internet-choice-hero-glow internet-choice-hero-glow-two"></div>
+
+          <div class="relative z-10">
+            <div class="internet-choice-kicker">
+              <svg class="icon" data-icon="wifi" aria-hidden="true"><use href="assets/icons/icons.svg?v=15010baf#icon-wifi"></use></svg>
+	              Σταθερή &amp; Internet
+            </div>
+
+            <h3 class="internet-choice-title">
+              Διάλεξε πάροχο
+            </h3>
+
+            <p class="internet-choice-subtitle">
+              Επίλεξε Vodafone ή Nova για να δεις αναλυτικά την αντίστοιχη προσφορά.
+            </p>
+          </div>
+        </div>
+
+        <div class="internet-choice-body custom-scroll">
+          <div class="internet-choice-grid">
+
+            <button
+              type="button"
+              data-modal-close="internetChoiceModal"
+              data-modal-target="vodafoneFixedModal"
+              class="internet-provider-card internet-provider-card-vodafone">
+              <span class="internet-provider-top">
+                <span class="internet-provider-icon">
+                  <svg class="icon" data-icon="wifi" aria-hidden="true"><use href="assets/icons/icons.svg?v=15010baf#icon-wifi"></use></svg>
+                </span>
+
+                <span class="internet-provider-price">
+                  από 16,00€
+                </span>
+              </span>
+
+              <span class="internet-provider-name">Vodafone</span>
+              <strong>Σταθερή &amp; Internet</strong>
+
+              <span class="internet-provider-copy">
+                ADSL/FTTC και FTTH, δηλαδή οπτική ίνα μέχρι το σπίτι, με 2 μήνες δωρεάν στα FTTH πακέτα.
+              </span>
+
+              <span class="internet-provider-action">
+                Προβολή προσφοράς
+                <svg class="icon" data-icon="arrow-right" aria-hidden="true"><use href="assets/icons/icons.svg?v=15010baf#icon-arrow-right"></use></svg>
+              </span>
+            </button>
+
+            <button
+              type="button"
+              data-modal-close="internetChoiceModal"
+              data-modal-target="novaLinePhone"
+              class="internet-provider-card internet-provider-card-nova">
+              <span class="internet-provider-top">
+                <span class="internet-provider-icon">
+                  <svg class="icon" data-icon="tower-broadcast" aria-hidden="true"><use href="assets/icons/icons.svg?v=15010baf#icon-tower-broadcast"></use></svg>
+                </span>
+
+                <span class="internet-provider-price">
+                  17,90€
+                </span>
+              </span>
+
+              <span class="internet-provider-name">Nova</span>
+              <strong>Σταθερό &amp; Internet</strong>
+
+              <span class="internet-provider-copy">
+                Σταθερό και internet με δωρεάν τέλη και ταχύτητες έως 100 Mbps.
+              </span>
+
+              <span class="internet-provider-action">
+                Προβολή προσφοράς
+                <svg class="icon" data-icon="arrow-right" aria-hidden="true"><use href="assets/icons/icons.svg?v=15010baf#icon-arrow-right"></use></svg>
+              </span>
+            </button>
+
+          </div>
+        </div>
+
+      </div>
+    </div>

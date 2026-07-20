@@ -1,0 +1,69 @@
+@font-face{font-family:Inter;src:url("assets/fonts/inter-greek.woff2") format("woff2");font-style:normal;font-weight:100 900;font-display:swap;unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF}
+@font-face{font-family:Inter;src:url("assets/fonts/inter-latin.woff2") format("woff2");font-style:normal;font-weight:100 900;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Space Grotesk";src:url("assets/fonts/space-grotesk-latin.woff2") format("woff2");font-style:normal;font-weight:300 700;font-display:swap}
+*,::before,::after{box-sizing:border-box}:root{--border:#d8e1ec;--primary:#071a33;--text-muted:#5f6f86}html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}body{margin:0;min-height:100vh;overflow-x:hidden;background:#effbfc;color:#172033;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,a{font:inherit;color:inherit}.hidden{display:none!important}.icon{display:inline-block;width:1em;height:1em;fill:currentColor;flex-shrink:0}.site-top-nav{position:fixed;inset:0 0 auto;z-index:50;width:100%;background:#0e7490;color:#fff;box-shadow:0 10px 24px #071a2f14}.site-top-nav-inner{width:min(100%,80rem);min-height:76px;margin:auto;padding:.65rem 1rem;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:1rem}.top-brand{display:flex;justify-content:center;align-items:center;min-width:0}.top-brand img{display:block;width:auto;height:52px;max-width:min(48vw,220px);object-fit:contain}.premium-menu-toggle{display:inline-flex;align-items:center;gap:.45rem;min-height:44px;padding:.65rem .75rem;border:1px solid #ffffff29;border-radius:14px;background:#ffffff1f;color:#fff}.top-menu-lines{display:grid;gap:4px}.top-menu-lines span{display:block;width:18px;height:2px;background:#fff}.top-desktop-nav{display:flex;align-items:center;gap:.35rem}.top-desktop-nav a,.top-desktop-nav button{border:0;background:transparent;color:#fff;padding:.65rem;font-weight:800}.site-main{width:min(100% - 2rem,1180px);margin:0 auto;padding-top:88px}.landing-hero{margin:0}.police-hero{color:#fff}.police-hero__shell{position:relative;overflow:hidden;padding:clamp(.85rem,2.4vw,1.65rem);border:1px solid #afc3d857;border-radius:24px;background:linear-gradient(#afc3d81a 1px,transparent 1px),linear-gradient(90deg,#afc3d81a 1px,transparent 1px),radial-gradient(circle at 12% 14%,#5ab8ff33,transparent 30%),linear-gradient(135deg,#071a2f,#0b2f5b 62%,#061326);background-size:46px 46px,46px 46px,auto,auto;box-shadow:0 24px 70px #071a2f42}.police-hero__inner{position:relative;display:grid;align-items:center;width:min(100%,900px);margin:auto}.police-hero__copy{padding:clamp(.9rem,2.6vw,1.45rem);border:1px solid #afc3d840;border-radius:20px;background:linear-gradient(145deg,#ffffff1f,#ffffff0b)}.police-hero__badge{display:inline-flex;margin-bottom:.72rem;padding:.42rem .7rem;border:1px solid #d6a23a7a;border-radius:999px;background:#d6a23a1f;color:#fff7d6;font-size:.76rem;font-weight:900}.police-hero__title{margin:0;color:#fff;font-family:"Space Grotesk",Inter,sans-serif;font-size:clamp(1.55rem,6vw,2.65rem);font-weight:700;line-height:1.06}.police-hero__text{margin:.78rem 0 0;color:#c9d8e8;font-size:clamp(.9rem,2.8vw,1.04rem);font-weight:700;line-height:1.45}.police-hero__actions{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.05rem}.police-hero__actions a{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:48px;padding:.78rem 1rem;border-radius:14px;font-weight:900;text-decoration:none}.police-hero__primary{border:1px solid #5ab8ff94;background:linear-gradient(135deg,#1e5aa8,#2e7bd2);color:#fff}.police-hero__secondary{border:1px solid #afc3d885;background:#ffffff1a;color:#fff}#cookieConsentBanner{display:none}html[data-cookie-consent=pending] #cookieConsentBanner,html:not([data-cookie-consent]) #cookieConsentBanner{display:block!important}#cookieConsentBanner{position:fixed;z-index:200;right:1rem;bottom:1rem;width:min(28rem,calc(100% - 2rem));padding:1rem;border:1px solid #d8e1ec;border-radius:20px;background:#fff;box-shadow:0 20px 50px #071a2f38}#cookieConsentBanner h4{margin:0;font-size:1.05rem}#cookieConsentBanner p{margin:.35rem 0 .8rem;line-height:1.45}#cookieConsentBanner button{min-height:44px;border-radius:12px}
+.police-hero__shell{padding:clamp(.85rem,2.4vw,1.65rem) clamp(.85rem,2.4vw,1.65rem) calc(clamp(.85rem,2.4vw,1.65rem) + 3.4rem)!important}.police-hero__inner{justify-items:center}.police-hero__copy{display:grid;place-items:center;width:fit-content;padding:clamp(1rem,3vw,1.8rem)}.police-hero__title{position:absolute!important;width:1px!important;height:1px!important;margin:0!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;clip-path:inset(50%)!important;white-space:nowrap!important;border:0!important}.police-hero__logo{display:block;width:clamp(150px,24vw,260px);height:auto}.police-hero__badge,.police-hero__text,.police-hero__actions{display:none!important}.announcement-ticker{position:absolute;right:0;bottom:0;left:0;z-index:2;overflow:hidden;border-top:1px solid #afc3d85c;background:#030a189e}.announcement-ticker__track{display:flex;align-items:center;width:max-content;min-height:3rem;color:#fff;font-size:clamp(.88rem,1.4vw,1rem);font-weight:850;line-height:1.2;white-space:nowrap;animation:announcementTicker 28s linear infinite}@keyframes announcementTicker{from{transform:translateX(100vw)}to{transform:translateX(-100%)}}
+@media(max-width:767px){.site-top-nav-inner{width:min(100% - .5rem,1180px);min-height:68px;padding:0 .25rem;grid-template-columns:3.9rem minmax(0,1fr) 3.9rem;gap:.5rem}.top-brand img{height:46px;max-width:45vw}.top-desktop-nav{display:none}.premium-menu-toggle-label{display:none}.site-main{width:min(100% - .85rem,1180px);padding-top:4.6rem}.landing-hero{padding:1.35rem}.police-hero__shell{padding:.56rem;border-radius:18px}.police-hero__copy{padding:.72rem;border-radius:16px}.police-hero__badge{margin-bottom:.55rem;font-size:.62rem}.police-hero__title{font-size:clamp(1.18rem,5.3vw,1.48rem);line-height:1.08}.police-hero__text{margin-top:.5rem;font-size:.8rem;line-height:1.34}.police-hero__actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem;margin-top:.68rem}.police-hero__actions a{min-width:0;min-height:44px;padding:.65rem .58rem;font-size:.8rem}.quick-actions{margin-top:.85rem;padding:.95rem;border:1px solid var(--border);border-radius:18px;background:#fff}.choice-hub-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.62rem}.choice-card{display:grid;align-content:center;justify-items:start;gap:.32rem;min-height:112px;padding:.82rem;border:1px solid var(--border);border-radius:16px;background:#fff;text-align:left}.choice-card .icon{width:2.25rem;height:2.25rem}.choice-card span{font-size:.96rem;font-weight:900;line-height:1.12}.choice-card small{color:var(--text-muted);font-size:.73rem;font-weight:800;line-height:1.28}#offers{min-height:2200px}#cookieConsentBanner{right:.75rem;bottom:calc(4.85rem + env(safe-area-inset-bottom));width:calc(100% - 1.5rem)}#cookieConsentBanner>div:first-child{display:flex;align-items:flex-start;gap:.75rem;margin-bottom:.85rem}#cookieConsentBanner>div:last-child{display:flex;flex-direction:column;gap:.75rem}#cookieConsentBanner .bg-blue-100{padding:.8rem;border-radius:999px}#cookieConsentBanner h4{font-size:1.1rem;line-height:1.15}#cookieConsentBanner p{margin:.35rem 0 .8rem;font-size:.84rem;line-height:1.45}#cookieConsentBanner [data-cookie-consent=accept]{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;padding:.9rem 0}#cookieConsentBanner [data-cookie-consent=reject]{display:block;width:100%;padding:.35rem 0;font-size:.74rem}}
+@media(max-width:767px){#processOverview,#activationGuideHome,.viber-community-section,#contact,#siteLegalBar{content-visibility:auto;contain-intrinsic-size:auto 700px}#contact,#siteLegalBar{contain-intrinsic-size:auto 420px}}
+@media(prefers-reduced-motion:reduce){*,::before,::after{scroll-behavior:auto!important;animation:none!important;transition-duration:.01ms!important}}
+@media(max-width:767px){#offers{min-height:auto}}
+@media(max-width:767px){.police-hero__shell{padding:.56rem .56rem 3.35rem!important}.police-hero__logo{width:clamp(128px,48vw,190px)}}
+@media(max-width:767px){.offers-section-catalog:not(.is-offers-open){display:none!important}}
+
+
+/* ==========================================
+       TOP BAR MINI NAV INTEGRATION (MOBILE)
+    ========================================== */
+    /* Αρχικά κρυφό για μεγάλες οθόνες */
+    .top-bar-mini-nav {
+      display: none !important;
+    }
+
+    @media (width <= 767px) {
+      /* Κρύβουμε το λογότυπο από το top bar στα κινητά για να πάρει τη θέση του η τετράδα */
+      .site-top-nav-inner .top-brand {
+        display: none !important;
+      }
+      
+      /* Διαμόρφωση του Grid/Flex Container στο κέντρο της μπάρας */
+      .top-bar-mini-nav {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 6px !important;
+        width: 100% !important;
+        height: 100% !important;
+        padding: 2px 4px !important;
+      }
+
+      /* Μοντέρνα, app-like κουμπιά προσαρμοσμένα στο πετρόλ φόντο του Nav */
+      .top-bar-mini-nav button {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex: 1 !important;
+        min-height: 46px !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        border-radius: 12px !important;
+        color: #ffffff !important;
+        padding: 4px 2px !important;
+        font-size: 10px !important;
+        font-weight: 800 !important;
+        transition: background 0.2s ease, transform 0.1s ease !important;
+      }
+
+      /* Feedback κατά το πάτημα (Active State) */
+      .top-bar-mini-nav button:active {
+        background: rgba(255, 255, 255, 0.2) !important;
+        transform: scale(0.96) !important;
+      }
+
+      /* Ευθυγράμμιση και μέγεθος των SVG εικονιδίων */
+      .top-bar-mini-nav button .icon {
+        width: 1.15rem !important;
+        height: 1.15rem !important;
+        margin-bottom: 2px !important;
+      }
+    }

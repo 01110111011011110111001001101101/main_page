@@ -1,0 +1,638 @@
+{
+  "schemaVersion": 1,
+  "source": "index.html hardcoded offer cards, activation guide and offer modals",
+  "offers": [
+    
+    {
+      "id": "vodafone-cu",
+      "provider": "Vodafone",
+      "title": "Vodafone CU",
+      "cardOfferName": "Vodafone CU",
+      "category": "mobile",
+      "badge": "300GB κάθε μήνα",
+      "recommendationBadge": "Προτεινόμενη για πολλά GB",
+      "price": "100€",
+      "period": "12 μήνες",
+      "monthly": "≈ 8,3€ / μήνα",
+      "shortDescription": "Ετήσιο πλάνο κινητής μόνο με 8,3€ το μήνα.",
+      "benefits": [
+        "Απεριόριστη ομιλία προς όλους σταθερά και κινητά",
+        "Μεταφορά υπολοίπου δεδομένων στον επόμενο μήνα",
+        "προσθήκη 300 GB κάθε μήνα"
+      ],
+      "style": {
+        "cardClasses": [
+          "offer-card-mobile",
+          "offer-card-mobile-vodafone",
+          "offer-card--glass",
+          "offer-card--police-blue",
+          "offer-card--recommended",
+          "offer-card--vodafone-mobile"
+        ],
+        "priceClasses": [
+          "offer-price",
+          "offer-card__price-panel"
+        ]
+      },
+      "brandSkin": "vodafone-mobile",
+      "isRecommended": true,
+      "ctaPrimaryText": "Οδηγός ενεργοποίησης",
+      "ctaSecondaryText": "Περισσότερα",
+      "ctaType": "activation-guide",
+      "modalId": null,
+      "actionTarget": {
+        "activationProvider": "vodafone",
+        "activationOffer": "Vodafone CU",
+        "activationSource": "offer_interest",
+        "track": "offer_interest_click",
+        "offer": "Vodafone CU",
+        "category": "mobile"
+      },
+      "details": [
+        {
+          "label": "Περιλαμβάνει",
+          "value": "300 GB κάθε μήνα και απεριόριστη ομιλία."
+        },
+        {
+          "label": "Roaming",
+          "value": "11 GB & 200 λεπτά ομιλιίας για το εξωτερικό"
+        }
+      ],
+      "includes": [
+        "300 GB κάθε μήνα",
+        "Απεριόριστη ομιλία προς όλους σε σταθερά και κινητά",
+        "100 sms"
+      ],
+      "appliesTo": "Μέλη που τα θέλουν όλα μόνο με 8,3€ το μήνα",
+      "activationGuide": {
+        "providerKey": "vodafone",
+        "offer": "Vodafone CU",
+        "simNumber": "1252",
+        "connectionTypes": [
+          {
+            "id": "new",
+            "label": "Νέος αριθμός"
+          },
+          {
+            "id": "portability",
+            "label": "Φορητότητα"
+          }
+        ],
+        "documents": {
+          "common": [
+            {
+              "title": "Υπεύθυνη Δήλωση",
+              "detail": "Συμπλήρωση και επικύρωση υπογραφής μέσω gov.gr ή ΚΕΠ.",
+              "href": "assets/docs/ypefthini_dilosi_Vodafone.pdf"
+            },
+            {
+              "title": "Χρήση προσωπικών δεδομένων",
+              "detail": "Έντυπο δεδομένων συνδρομητή συμβολαίου καρτοκινητής.",
+              "href": "assets/docs/xrisi_prosopikon_dedomenon_sindromiti_Vodafone.pdf"
+            },
+            {
+              "title": "Φωτοτυπία ταυτότητας μπρος-πίσω",
+              "detail": "Καθαρή φωτογραφία ή σάρωση και των δύο όψεων."
+            }
+          ],
+          "portability": [
+            {
+              "title": "Αίτημα ενεργοποίησης / φορητότητας",
+              "detail": "Απαιτείται μόνο όταν μεταφέρεις υπάρχον αριθμό.",
+              "href": "assets/docs/aitima_foritotitas_Vodafone.pdf"
+            }
+          ]
+        },
+        "paymentAccounts": [
+          {
+            "bank": "Πειραιώς",
+            "iban": "GR5801720500005050099524664",
+            "beneficiary": "SOUTH ATTICA TELECOMMUNICATIONS"
+          },
+          {
+            "bank": "Eurobank",
+            "iban": "GR5302600310000310201070966",
+            "beneficiary": "SOUTH ATTICA TELECOMMUNICATIONS"
+          }
+        ],
+        "email": "synetelas2011@gmail.com",
+        "helpPhone": "2105245210",
+        "steps": [
+          "Τύπος σύνδεσης",
+          "Δικαιολογητικά",
+          "Πληρωμή / αποστολή",
+          "Ενεργοποίηση SIM"
+        ]
+      },
+      "documents": [
+        {
+          "title": "Υπεύθυνη Δήλωση",
+          "href": "assets/docs/ypefthini_dilosi_Vodafone.pdf",
+          "appliesTo": "common"
+        },
+        {
+          "title": "Χρήση προσωπικών δεδομένων",
+          "href": "assets/docs/xrisi_prosopikon_dedomenon_sindromiti_Vodafone.pdf",
+          "appliesTo": "common"
+        },
+        {
+          "title": "Αίτημα ενεργοποίησης / φορητότητας",
+          "href": "assets/docs/aitima_foritotitas_Vodafone.pdf",
+          "appliesTo": "portability"
+        }
+      ],
+      "notes": [
+        "Διάλεξε τύπο διαδικασίας στο επόμενο βήμα."
+      ],
+      "sortOrder": 10,
+      "active": true
+    },
+
+    {
+      "id": "nova-q",
+      "provider": "NOVA",
+      "title": "NOVA Q",
+      "cardOfferName": "NOVA Q",
+      "category": "mobile",
+      "badge": "Απεριόριστη χρήση",
+      "recommendationBadge": "Προτεινόμενη για απεριόριστη χρήση",
+      "price": "100€",
+      "period": "12 μήνες",
+      "monthly": "≈ 8,3€ / μήνα",
+      "shortDescription": "Ετήσιο πλάνο κινητής για μέλη που τα θέλουν όλα μόνο με 8,3€ το μήνα.",
+      "benefits": [
+        "Απεριόριστα GB",
+        "Απεριόριστη ομιλία προς όλους σταθερά και κινητά",
+        "300 sms"
+      ],
+      "style": {
+        "cardClasses": [
+          "offer-card-mobile",
+          "offer-card-mobile-nova",
+          "offer-card--glass",
+          "offer-card--police-blue",
+          "offer-card--recommended",
+          "offer-card--q-mobile"
+        ],
+        "priceClasses": [
+          "offer-price",
+          "nova-q-price",
+          "offer-card__price-panel"
+        ]
+      },
+      "brandSkin": "q-mobile",
+      "isRecommended": true,
+      "ctaPrimaryText": "Οδηγός ενεργοποίησης",
+      "ctaSecondaryText": "Περισσότερα",
+      "ctaType": "activation-guide",
+      "modalId": null,
+      "actionTarget": {
+        "activationProvider": "nova",
+        "activationOffer": "NOVA Q",
+        "activationSource": "offer_interest",
+        "track": "offer_interest_click",
+        "offer": "NOVA Q",
+        "category": "mobile"
+      },
+      "details": [
+        {
+          "label": "Περιλαμβάνει",
+          "value": "Απεριόριστα GB και απεριόριστη ομιλία."
+        },
+        {
+          "label": "Ισχύει για",
+          "value": "Μέλη που τα θέλουν όλα μόνο με 8,3€ το μήνα"
+        }
+      ],
+      "includes": [
+        "Απεριόριστα GB",
+        "Απεριόριστη ομιλία",
+        "Ετήσια διάρκεια"
+      ],
+      "appliesTo": "Μέλη που τα θέλουν όλα μόνο με 8,3€ το μήνα",
+      "activationGuide": {
+        "providerKey": "nova",
+        "offer": "NOVA Q",
+        "simNumber": "12200",
+        "connectionTypes": [
+          {
+            "id": "new",
+            "label": "Νέος αριθμός"
+          },
+          {
+            "id": "portability",
+            "label": "Φορητότητα"
+          }
+        ],
+        "documents": {
+          "common": [
+            {
+              "title": "Υπεύθυνη Δήλωση",
+              "detail": "Συμπλήρωση και επικύρωση υπογραφής μέσω gov.gr ή ΚΕΠ.",
+              "href": "assets/docs/ypefthini_dilosi_Q.pdf"
+            },
+            {
+              "title": "Φωτοτυπία ταυτότητας μπρος-πίσω",
+              "detail": "Καθαρή φωτογραφία ή σάρωση και των δύο όψεων."
+            }
+          ],
+          "portability": [
+            {
+              "title": "Αίτηση φορητότητας",
+              "detail": "Απαιτείται μόνο όταν μεταφέρεις υπάρχον αριθμό.",
+              "href": "assets/docs/aitisi_apodixi_foritotitas_kinitis_Q.pdf"
+            },
+            {
+              "title": "Χρήση προσωπικών δεδομένων",
+              "detail": "Συμπλήρωσέ το όπου ζητείται για τη φορητότητα."
+            }
+          ]
+        },
+        "paymentAccounts": [
+          {
+            "bank": "Πειραιώς",
+            "iban": "GR5801720500005050099524664",
+            "beneficiary": "SOUTH ATTICA TELECOMMUNICATIONS"
+          },
+          {
+            "bank": "Eurobank",
+            "iban": "GR5302600310000310201070966",
+            "beneficiary": "SOUTH ATTICA TELECOMMUNICATIONS"
+          }
+        ],
+        "email": "synetelas2011@gmail.com",
+        "helpPhone": "2105245210",
+        "steps": [
+          "Τύπος σύνδεσης",
+          "Δικαιολογητικά",
+          "Πληρωμή / αποστολή",
+          "Ενεργοποίηση SIM"
+        ]
+      },
+      "documents": [
+        {
+          "title": "Υπεύθυνη Δήλωση",
+          "href": "assets/docs/ypefthini_dilosi_Q.pdf",
+          "appliesTo": "common"
+        },
+        {
+          "title": "Αίτηση φορητότητας",
+          "href": "assets/docs/aitisi_apodixi_foritotitas_kinitis_Q.pdf",
+          "appliesTo": "portability"
+        }
+      ],
+      "notes": [
+        "Διάλεξε τύπο διαδικασίας στο επόμενο βήμα."
+      ],
+      "sortOrder": 20,
+      "active": true
+    },
+
+    {
+      "id": "vodafone-fixed-internet",
+      "provider": "Vodafone",
+      "title": "Vodafone Internet",
+      "cardOfferName": "Vodafone Σταθερή και Internet",
+      "category": "internet",
+      "badge": "FTTH έως 300Mbps",
+      "recommendationBadge": "Internet / Οπτική ίνα",
+      "price": "από 16,00€",
+      "period": "μήνα",
+      "monthly": null,
+      "shortDescription": "Πακέτα ADSL/FTTC και FTTH, δηλαδή οπτική ίνα μέχρι το σπίτι, με δωρεάν router, εγκατάσταση και ενεργοποίηση.",
+      "benefits": [
+        "FTTH 100 Mbps και 300 Mbps",
+        "2 μήνες δωρεάν σε FTTH",
+        "Δωρεάν router Wi-Fi"
+      ],
+      "style": {
+        "cardClasses": [
+          "offer-card-internet",
+          "offer-card--glass",
+          "offer-card--police-blue",
+          "offer-card--vodafone-fixed"
+        ],
+        "priceClasses": [
+          "offer-price",
+          "offer-card__price-panel",
+          "offer-card__price-panel--monthly"
+        ]
+      },
+      "brandSkin": "vodafone-fixed",
+      "isRecommended": false,
+      "ctaPrimaryText": "Με ενδιαφέρει",
+      "ctaSecondaryText": "Περισσότερα",
+      "ctaType": "modal",
+      "modalId": "vodafoneFixedModal",
+      "actionTarget": {
+        "track": "offer_interest_click",
+        "offer": "Vodafone Σταθερή & Internet",
+        "category": "internet"
+      },
+      "details": [
+        {
+          "label": "Περιλαμβάνει",
+          "value": "Απεριόριστα σταθερά + 300' προς κινητά."
+        },
+        {
+          "label": "Ισχύει για",
+          "value": "Μέλη που θέλουν νέα ή υφιστάμενη σύνδεση σταθερής."
+        }
+      ],
+      "includes": [
+        "Απεριόριστες κλήσεις σε σταθερά & 300 λεπτά προς κινητά.",
+        "Δωρεάν εγκατάσταση και ενεργοποίηση.",
+        "Δωρεάν router Wi-Fi για τη σύνδεσή σας."
+      ],
+      "appliesTo": "Μέλη που θέλουν νέα ή υφιστάμενη σύνδεση σταθερής.",
+      "plans": [
+        {
+          "name": "ADSL / FTTC",
+          "title": "Σταθερή + Internet",
+          "speed": "έως 24 Mbps",
+          "price": "16,00€",
+          "period": "με ΦΠΑ / μήνα"
+        },
+        {
+          "name": "FTTH 100 Mbps",
+          "title": "Σταθερή + Internet",
+          "speed": "έως 100 Mbps",
+          "price": "16,00€",
+          "period": "με ΦΠΑ / μήνα",
+          "ribbon": "2 μήνες δωρεάν"
+        },
+        {
+          "name": "FTTH 300 Mbps",
+          "title": "Σταθερή + Internet",
+          "speed": "έως 300 Mbps",
+          "price": "18,00€",
+          "period": "με ΦΠΑ / μήνα",
+          "ribbon": "2 μήνες δωρεάν"
+        }
+      ],
+      "modal": {
+        "heading": "Σταθερή Τηλεφωνία & Internet",
+        "badge": "Αποκλειστική Προσφορά Vodafone",
+        "description": "Προγράμματα ADSL/FTTC και FTTH (οπτική ίνα μέχρι το σπίτι) για τα μέλη του Συνεταιρισμού, με δωρεάν router, εγκατάσταση και ενεργοποίηση.",
+        "priceBox": {
+          "prefix": "από",
+          "price": "16,00€",
+          "period": "με ΦΠΑ / μήνα",
+          "badge": "2 μήνες δωρεάν στα FTTH πακέτα"
+        },
+        "requiredDocuments": [
+          "Πρόσφατος λογαριασμός σταθερής από τον τρέχοντα πάροχο, τελευταίων 3 μηνών, όλες οι σελίδες.",
+          "Φωτογραφία αστυνομικής ταυτότητας, μπρος και πίσω, καθαρή και ευανάγνωστη.",
+          "Υπεύθυνη Δήλωση εξουσιοδότησης. Στο πεδίο «Προς» γράφεις South Attica."
+        ],
+        "declarationText": "Εξουσιοδοτώ την South Attica όπως προβεί σε όλες τις απαραίτητες ενέργειες αντί εμού για την ενεργοποίηση της σταθερής μου γραμμής με αριθμό τηλεφώνου ................................ στη Vodafone, στην προσφορά ................................",
+        "contactLinks": [
+          {
+            "type": "phone",
+            "href": "tel:2105245210",
+            "label": "210 524 5210"
+          },
+          {
+            "type": "mobile",
+            "href": "tel:6985177202",
+            "label": "6985177202"
+          },
+          {
+            "type": "email",
+            "href": "mailto:synetelas2011@gmail.com",
+            "label": "Αποστολή email"
+          }
+        ]
+      },
+      "documents": [
+        {
+          "title": "Υπεύθυνη Δήλωση Vodafone Σταθερή",
+          "href": "assets/docs/ypefthini-dilosi-vodafone-statheri.pdf"
+        }
+      ],
+      "notes": [
+        "Απαιτείται σωστή συμπλήρωση δικαιολογητικών και επιβεβαίωση στοιχείων.",
+        "Η Υπεύθυνη Δήλωση μπορεί να γίνει ηλεκτρονικά μέσω gov.gr ή με γνήσιο υπογραφής μέσω ΚΕΠ."
+      ],
+      "sortOrder": 30,
+      "active": true
+    },
+    
+    
+    {
+      "id": "nova-5g-internet",
+      "provider": "Nova",
+      "title": "Nova 5G Internet",
+      "cardOfferName": "Nova Σταθερό και Internet",
+      "category": "internet",
+      "badge": "5G Home Internet",
+      "recommendationBadge": "Σταθερή / Internet",
+      "price": "17,90€",
+      "period": "μήνα",
+      "monthly": null,
+      "shortDescription": "Σταθερό και internet με δωρεάν τέλη και γρήγορη διαδικασία αίτησης.",
+      "benefits": [
+        "Μηδενικό κόστος έναρξης",
+        "Βήματα για αίτηση και αποστολή",
+        "Υποστήριξη από τον Συνεταιρισμό"
+      ],
+      "style": {
+        "cardClasses": [
+          "offer-card-internet",
+          "offer-card--glass",
+          "offer-card--police-blue",
+          "offer-card--nova-5g"
+        ],
+        "priceClasses": [
+          "offer-price",
+          "offer-card__price-panel",
+          "offer-card__price-panel--monthly"
+        ]
+      },
+      "brandSkin": "nova-5g",
+      "isRecommended": false,
+      "ctaPrimaryText": "Με ενδιαφέρει",
+      "ctaSecondaryText": "Περισσότερα",
+      "ctaType": "modal",
+      "modalId": "novaLinePhone",
+      "actionTarget": {
+        "track": "offer_interest_click",
+        "offer": "Nova Σταθερό & Internet",
+        "category": "internet"
+      },
+      "details": [
+        {
+          "label": "Περιλαμβάνει",
+          "value": "Ταχύτητες έως 100 Mbps και απεριόριστα προς όλους."
+        },
+        {
+          "label": "Ισχύει για",
+          "value": "Μέλη που θέλουν λύση σταθερού internet."
+        }
+      ],
+      "includes": [
+        "Ταχύτητες έως 100 Mbps",
+        "Απεριόριστα προς όλους",
+        "Δωρεάν τέλη"
+      ],
+      "appliesTo": "Μέλη που θέλουν λύση σταθερού internet.",
+      "modal": {
+        "heading": "Προσφορά Nova Σταθερό & Internet",
+        "steps": [
+          {
+            "title": "Συμπλήρωση Αίτησης",
+            "label": "ΣΥΜΒΟΛΑΙΟ ΤΗΛΕΦΩΝΙΑΣ & ΙΝΤΕΡΝΕΤ (ΣΥΝΟΠΤΙΚΗ ΣΥΜΒΑΣΗ)",
+            "items": [
+              "Πλήρης συμπλήρωση βάσει του επίσημου προτύπου.",
+              "Υπογράφεται υποχρεωτικά μέσω GOV (ψηφιακή υπογραφή)."
+            ]
+          },
+          {
+            "title": "Απαραίτητα Δικαιολογητικά",
+            "items": [
+              "Ταυτότητα (Μπρος – πίσω, ευκρινής)",
+              "Απόδειξη διεύθυνσης εγκατάστασης"
+            ],
+            "addressProofCases": [
+              {
+                "label": "ΠΕΡΙΠΤΩΣΗ Α",
+                "title": "Υπάρχει σταθερή τηλεφωνία",
+                "description": "Όλες οι σελίδες τελευταίου λογαριασμού με ονοματεπώνυμο & διεύθυνση."
+              },
+              {
+                "label": "ΠΕΡΙΠΤΩΣΗ Β",
+                "title": "Δεν υπάρχει σταθερή",
+                "description": "Λογαριασμός ΔΕΚΟ (ΔΕΗ, ΕΥΔΑΠ κ.λπ.) με πλήρη στοιχεία."
+              },
+              {
+                "label": "ΠΕΡΙΠΤΩΣΗ Γ (ΕΚΤΟΣ ΣΧΕΔΙΟΥ)",
+                "title": "Εκτός σχεδίου",
+                "description": "Συντεταγμένες GPS και screenshot Google Maps με pin location.",
+                "warning": "Χωρίς σαφή ταυτοποίηση τοποθεσίας η αίτηση ΔΕΝ προχωρά."
+              }
+            ]
+          },
+          {
+            "title": "Τελική Αποστολή",
+            "description": "Στείλτε όλα τα απαραίτητα έγγραφα στο παρακάτω email:",
+            "email": "synetelas2011@gmail.com"
+          }
+        ]
+      },
+      "documents": [
+        {
+          "title": "ΠΑΡΑΔΕΙΓΜΑ ΑΙΤΗΣΗΣ EON",
+          "href": "assets/docs/Sta8ParadAitisi.pdf"
+        },
+        {
+          "title": "ΑΙΤΗΣΗ EON",
+          "href": "assets/docs/StatheroAitisi.pdf"
+        }
+      ],
+      "notes": [
+        "Για περιοχές χωρίς σαφή διεύθυνση ζητούνται επιπλέον στοιχεία τοποθεσίας."
+      ],
+      "sortOrder": 40,
+      "active": true
+    },
+    
+    {
+      "id": "eon-cosmote-tv",
+      "provider": "EON / Cosmote TV",
+      "title": "EON + Cosmote TV",
+      "cardOfferName": "EON και Cosmote TV",
+      "category": "tv",
+      "badge": "EON + Cosmote TV",
+      "recommendationBadge": "TV πακέτο",
+      "price": "20,90€",
+      "period": "μήνα",
+      "monthly": null,
+      "shortDescription": "Premium τηλεοπτικό πακέτο για αθλητικά, ταινίες και on demand περιεχόμενο.",
+      "benefits": [
+        "2 πάγια δώρο",
+        "Euroleague, Super League και premium περιεχόμενο",
+        "Οδηγίες για υπογραφή μέσω GOV.gr"
+      ],
+      "style": {
+        "cardClasses": [
+          "offer-card-tv",
+          "offer-card--glass",
+          "offer-card--police-blue",
+          "offer-card--tv-combo"
+        ],
+        "priceClasses": [
+          "offer-price",
+          "offer-card__price-panel",
+          "offer-card__price-panel--monthly"
+        ]
+      },
+      "brandSkin": "tv-combo",
+      "isRecommended": false,
+      "ctaPrimaryText": "Με ενδιαφέρει",
+      "ctaSecondaryText": "Περισσότερα",
+      "ctaType": "modal",
+      "modalId": "novaEonModal",
+      "actionTarget": {
+        "track": "offer_interest_click",
+        "offer": "EON + Cosmote TV",
+        "category": "tv"
+      },
+      "details": [
+        {
+          "label": "Περιλαμβάνει",
+          "value": "Αθλητικό θέαμα και 6.000+ ταινίες / σειρές."
+        },
+        {
+          "label": "Ισχύει για",
+          "value": "Μέλη που επιλέγουν τηλεοπτική υπηρεσία μέσω διαδικασίας Συνεταιρισμού."
+        }
+      ],
+      "includes": [
+        "Αθλητικό θέαμα",
+        "6.000+ ταινίες / σειρές",
+        "2 πάγια δώρο"
+      ],
+      "appliesTo": "Μέλη που επιλέγουν τηλεοπτική υπηρεσία μέσω διαδικασίας Συνεταιρισμού.",
+      "modal": {
+        "heading": "Διαδικασία Ενεργοποίησης EON TV",
+        "steps": [
+          {
+            "title": "Συμπλήρωση Αίτησης",
+            "description": "Η αίτηση πρέπει να συμπληρωθεί πλήρως.",
+            "note": "Η αίτηση υπογράφεται υποχρεωτικά μέσω GOV.gr."
+          },
+          {
+            "title": "Απαραίτητα Έγγραφα",
+            "items": [
+              "Ταυτότητα: Μπρος-πίσω, ευκρινής.",
+              "Απόδειξη Διεύθυνσης: Τελευταίος λογαριασμός σταθερής ή ΔΕΚΟ."
+            ],
+            "extraAddressInfo": [
+              "Συντεταγμένες GPS σημείου εγκατάστασης.",
+              "Screenshot από Google Maps με Pin Location."
+            ]
+          },
+          {
+            "title": "Αποστολή",
+            "email": "synetelas2011@gmail.com"
+          }
+        ]
+      },
+      "documents": [
+        {
+          "title": "ΠΑΡΑΔΕΙΓΜΑ ΑΙΤΗΣΗΣ EON",
+          "href": "assets/docs/TVaitisiExampl.pdf"
+        },
+        {
+          "title": "ΑΙΤΗΣΗ EON",
+          "href": "assets/docs/AitisiTV.pdf"
+        }
+      ],
+      "notes": [
+        "Η αίτηση πρέπει να συμπληρωθεί πλήρως πριν από την αποστολή."
+      ],
+      "sortOrder": 50,
+      "active": true
+    }
+  ]
+}

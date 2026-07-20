@@ -1,0 +1,35 @@
+{
+  "name": "synetairismos-astynomikon-offers",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static GitHub Pages site for Synetelas offers.",
+  "scripts": {
+    "build": "npm run build:images && tailwindcss -i ./assets/css/tailwind.input.css -o ./assets/css/tailwind.css --minify && npm run build:icons && npm run build:css && npm run build:stamp-assets",
+    "build:images": "node ./scripts/optimize-images.mjs",
+    "build:css": "node ./scripts/build-css-bundle.mjs",
+    "build:icons": "node ./scripts/build-icon-sprite.mjs",
+    "build:stamp-assets": "node ./scripts/stamp-static-assets.mjs",
+    "dev": "tailwindcss -i ./assets/css/tailwind.input.css -o ./assets/css/tailwind.css --watch",
+    "validate:offers": "node ./scripts/validate-offers.mjs",
+    "lint": "eslint assets/js scripts tools eslint.config.mjs",
+    "audit:coverage": "node ./tools/dead-code-audit.mjs --coverage-only",
+    "audit:dead-code": "node ./tools/dead-code-audit.mjs",
+    "check": "node ./scripts/check-tailwind-build.mjs && html-validate index.html && node ./scripts/check-javascript.mjs && node ./scripts/check-repo-clean.mjs && node ./scripts/check-static-assets.mjs && node ./scripts/check-performance-assets.mjs",
+    "prebuild": "node ./scripts/write-site-version.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@fontsource-variable/inter": "^5.2.8",
+    "@fontsource-variable/space-grotesk": "^5.2.10",
+    "@fortawesome/free-brands-svg-icons": "^7.3.0",
+    "@fortawesome/free-regular-svg-icons": "^7.3.0",
+    "@fortawesome/free-solid-svg-icons": "^7.3.0",
+    "@tailwindcss/cli": "^4.2.4",
+    "eslint": "^10.6.0",
+    "html-validate": "^10.15.0",
+    "lightningcss": "^1.32.0",
+    "playwright": "^1.61.1",
+    "sharp": "^0.35.3",
+    "tailwindcss": "^4.2.4"
+  }
+}
