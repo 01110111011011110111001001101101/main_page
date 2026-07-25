@@ -16,6 +16,24 @@
     other: 'Άλλο',
   });
 
+  // Χρώμα του πάνω badge ανά πάροχο / brand skin (νέα accordion κάρτα).
+  const PROVIDER_COLORS = Object.freeze({
+    vodafone: '#e60000',
+    nova: '#0a2896',
+    cosmote: '#7ac143',
+    wind: '#0067b1',
+    'eon / cosmote tv': '#5c2d91',
+    eon: '#5c2d91',
+    q: '#0a2896',
+  });
+  const DEFAULT_PROVIDER_COLOR = '#16243d';
+
+  // Ζητούμενες αντικαταστάσεις κειμένου στα CTA της νέας κάρτας.
+  const CTA_TEXT_OVERRIDES = Object.freeze({
+    'Οδηγός ενεργοποίησης': 'Ενεργοποίηση',
+    Περισσότερα: 'Λεπτομέρειες',
+  });
+
   let rendererPromise = null;
   let offersById = new Map();
 
@@ -51,21 +69,31 @@
     return CATEGORY_LABELS[category] || category || CATEGORY_LABELS.other;
   }
 
-  function getStyleClasses(offer, key) {
-    return Array.isArray(offer.style?.[key]) ? offer.style[key].filter(Boolean) : [];
+  function getProviderColor(offer) {
+    const key = String(offer.provider || '').trim().toLowerCase();
+    if (PROVIDER_COLORS[key]) return PROVIDER_COLORS[key];
+
+    const match = Object.keys(PROVIDER_COLORS).find((name) => key.includes(name));
+    return match ? PROVIDER_COLORS[match] : DEFAULT_PROVIDER_COLOR;
   }
 
-  function buildCardClasses(offer) {
-    return Array.from(new Set([
-      'offer-card',
-      ...getStyleClasses(offer, 'cardClasses'),
-      offer.brandSkin ? `offer-card--${offer.brandSkin}` : '',
-    ].filter(Boolean)));
+  function mapCtaText(text) {
+    const value = String(text || '').trim();
+    return CTA_TEXT_OVERRIDES[value] || value;
   }
 
-  function buildPriceClasses(offer) {
-    const classes = getStyleClasses(offer, 'priceClasses');
-    return classes.length ? classes : ['offer-price', 'offer-card__price-panel'];
+  // "από 16,00€" -> { prefix: 'από', amount: '16,00€' } ώστε ο αριθμός να πάρει
+  // το tabular-nums styling και το υπόλοιπο να μείνει κανονικό κείμενο.
+  function splitPrice(price) {
+    const value = String(price || '').trim();
+    const match = value.match(/^(.*?)([\d][\d.,]*\s*[€%]?)(.*)$/);
+    if (!match) return { prefix: '', amount: value, suffix: '' };
+    return { prefix: match[1].trim(), amount: match[2].trim(), suffix: match[3].trim() };
+  }
+
+  function buildPriceUnit(offer) {
+    const { suffix } = splitPrice(offer.price);
+    return [suffix, offer.period ? `/ ${offer.period}` : ''].filter(Boolean).join(' ');
   }
 
   function setTrackingDataset(element, offer) {
@@ -107,7 +135,7 @@
   function createPrimaryCtaLink(offer) {
     const actionTarget = offer.actionTarget || {};
     const href = actionTarget.href;
-    const link = createElement('a', 'offer-primary-cta', offer.ctaPrimaryText || 'Κάνε αίτηση');
+    const link = createElement('a', 'offer-primary-cta new-premium-btn', mapCtaText(offer.ctaPrimaryText || 'Κάνε αίτηση'));
 
     link.href = href;
 
@@ -127,23 +155,24 @@
   function createPrimaryCta(offer) {
     if (usesLinkCta(offer)) return createPrimaryCtaLink(offer);
 
-    const button = createElement('button', 'offer-primary-cta', offer.ctaPrimaryText || 'Κάνε αίτηση');
+    const button = createElement('button', 'offer-primary-cta new-premium-btn', mapCtaText(offer.ctaPrimaryText || 'Κάνε αίτηση'));
     button.type = 'button';
     configurePrimaryCta(button, offer);
     return button;
   }
 
   function createBenefitItem(text) {
-    const item = createElement('li');
-    const icon = window.createIcon('check');
-    item.appendChild(icon);
+    const item = createElement('li', 'new-premium-perk');
+    const bullet = createElement('span', 'new-premium-perk-dot', '·');
+    bullet.setAttribute('aria-hidden', 'true');
+    item.appendChild(bullet);
     appendTextElement(item, 'span', '', text);
     return item;
   }
 
   function renderBenefits(offer) {
-    const list = createElement('ul', 'offer-benefits offer-card__benefits');
-    const benefits = Array.isArray(offer.benefits) ? offer.benefits.slice(0, 3) : [];
+    const list = createElement('ul', 'offer-benefits new-premium-perks');
+    const benefits = Array.isArray(offer.benefits) ? offer.benefits : [];
 
     benefits.forEach((benefit) => {
       list.appendChild(createBenefitItem(benefit));
@@ -152,47 +181,75 @@
     return list;
   }
 
-  function renderPricePanel(offer) {
-    const pricePanel = createElement('div', buildPriceClasses(offer).join(' '));
-    appendTextElement(pricePanel, 'strong', '', offer.price || '');
-
-    if (offer.period) {
-      appendTextElement(pricePanel, 'span', '', `/ ${offer.period}`);
-    }
-
-    appendTextElement(pricePanel, 'small', '', offer.monthly);
-    return pricePanel;
+  // "EON / Cosmote TV" και "EON + Cosmote TV" θεωρούνται ίδια -> ένα μόνο badge.
+  function normalizeBadgeText(text) {
+    return String(text || '')
+      .toLowerCase()
+      .replace(/[/+&·-]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
   }
 
-  function renderOfferCard(offer) {
-    const card = createElement('article', buildCardClasses(offer).join(' '));
-    card.dataset.offerCard = '';
-    card.dataset.offerId = offer.id || '';
-    card.dataset.offer = getCardOfferName(offer);
-    card.dataset.category = offer.category || 'other';
-    card.dataset.provider = offer.provider || '';
-    if (offer.brandSkin) card.dataset.brandSkin = offer.brandSkin;
+  function createBadge(text, background) {
+    const badge = createElement('span', 'new-premium-badge', text);
+    if (background) badge.style.background = background;
+    return badge;
+  }
 
-    const top = createElement('div', 'offer-card-top offer-card__glass-top');
-    appendTextElement(top, 'span', 'offer-card__spec-pill', offer.badge);
-    card.appendChild(top);
+  // Το header της κάρτας είναι το ίδιο το toggle: badges, τίτλος, τιμή, βελάκι.
+  function renderCardToggle(offer, contentId) {
+    const toggle = createElement('button', 'new-premium-toggle');
+    toggle.type = 'button';
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-controls', contentId);
 
-    const titleRow = createElement('div', 'offer-card__title-row');
-    appendTextElement(titleRow, 'h3', '', offer.title || offer.id || 'Προσφορά');
-    appendTextElement(titleRow, 'span', 'offer-card__type', getCategoryLabel(offer.category));
-    card.appendChild(titleRow);
+    const providerLabel = offer.provider || getCategoryLabel(offer.category);
+    const badges = createElement('div', 'new-premium-badges');
+    badges.appendChild(createBadge(providerLabel, getProviderColor(offer)));
 
-    card.appendChild(renderPricePanel(offer));
-    card.appendChild(renderBenefits(offer));
+    const secondaryBadge = offer.badge || offer.recommendationBadge;
+    const isDuplicateBadge = normalizeBadgeText(secondaryBadge) === normalizeBadgeText(providerLabel);
+    if (secondaryBadge && !isDuplicateBadge) {
+      badges.appendChild(createBadge(secondaryBadge, ''));
+      badges.lastElementChild.classList.add('new-premium-badge--soft');
+    }
+    toggle.appendChild(badges);
 
-    const actions = createElement('div', 'offer-actions');
+    appendTextElement(toggle, 'h3', 'new-premium-title', offer.title || offer.id || 'Προσφορά');
+
+    const priceRow = createElement('div', 'new-premium-price-row');
+    const priceGroup = createElement('div', 'new-premium-price-group');
+    const { prefix, amount } = splitPrice(offer.price);
+
+    appendTextElement(priceGroup, 'span', 'new-premium-price-prefix', prefix);
+    appendTextElement(priceGroup, 'span', 'new-premium-price-num', amount);
+    appendTextElement(priceGroup, 'span', 'new-premium-price-unit', buildPriceUnit(offer));
+    appendTextElement(priceGroup, 'small', 'new-premium-price-note', offer.monthly);
+    priceRow.appendChild(priceGroup);
+
+    const arrow = createElement('span', 'new-premium-arrow', '⌄');
+    arrow.setAttribute('aria-hidden', 'true');
+    priceRow.appendChild(arrow);
+
+    toggle.appendChild(priceRow);
+    return toggle;
+  }
+
+  function renderCardActions(offer) {
+    // Η κλάση offer-actions διατηρείται γιατί πάνω της στηρίζονται τα
+    // enhanceOfferCard / whole-card-action του assets/js/offers.js.
+    const actions = createElement('div', 'offer-actions new-premium-actions');
 
     if (offer.showPrimaryCta !== false) {
       actions.appendChild(createPrimaryCta(offer));
     }
 
     if (offer.showSecondaryCta !== false) {
-      const secondary = createElement('button', 'offer-secondary-cta', offer.ctaSecondaryText || 'Δες λεπτομέρειες');
+      const secondary = createElement(
+        'button',
+        'offer-secondary-cta new-premium-btn new-premium-btn-secondary',
+        mapCtaText(offer.ctaSecondaryText || 'Δες λεπτομέρειες'),
+      );
       secondary.type = 'button';
       secondary.dataset.offerDetailsOpen = offer.id || '';
       secondary.dataset.track = 'offer_details_click';
@@ -201,9 +258,46 @@
       actions.appendChild(secondary);
     }
 
-    if (actions.childElementCount > 0) card.appendChild(actions);
+    return actions;
+  }
 
+  function renderOfferCard(offer) {
+    const card = createElement('article', 'new-premium-card');
+    card.dataset.offerCard = '';
+    card.dataset.offerId = offer.id || '';
+    card.dataset.offer = getCardOfferName(offer);
+    card.dataset.category = offer.category || 'other';
+    card.dataset.provider = offer.provider || '';
+    if (offer.brandSkin) card.dataset.brandSkin = offer.brandSkin;
+
+    const contentId = `offerPanel-${offer.id || Math.random().toString(36).slice(2)}`;
+    const toggle = renderCardToggle(offer, contentId);
+
+    const content = createElement('div', 'new-premium-content');
+    content.id = contentId;
+    content.hidden = true;
+
+    appendTextElement(content, 'p', 'new-premium-desc', offer.shortDescription);
+    content.appendChild(renderBenefits(offer));
+
+    const actions = renderCardActions(offer);
+    if (actions.childElementCount > 0) content.appendChild(actions);
+
+    toggle.addEventListener('click', () => toggleNewPremiumCard(toggle));
+
+    card.append(toggle, content);
     return card;
+  }
+
+  function toggleNewPremiumCard(toggle) {
+    if (!toggle) return;
+    const content = toggle.nextElementSibling;
+    if (!content) return;
+
+    const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
+    content.classList.toggle('is-open', !isExpanded);
+    content.hidden = isExpanded;
   }
 
   function renderFallback(container) {
@@ -587,7 +681,11 @@
     syncFromLocation: syncOfferDetailsFromLocation,
     closeDetailsRoute: closeOfferDetailsRoute,
     getOffers: () => Array.from(offersById.values()),
+    toggleCard: toggleNewPremiumCard,
   };
+
+  // Για inline onclick="toggleNewPremiumCard(this)" σε τυχόν στατικές κάρτες.
+  window.toggleNewPremiumCard = toggleNewPremiumCard;
 
   window.addEventListener('hashchange', () => {
     if (rendererPromise) rendererPromise.then(() => syncOfferDetailsFromLocation());

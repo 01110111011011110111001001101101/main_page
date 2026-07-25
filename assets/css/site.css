@@ -11709,3 +11709,229 @@ body.office-closure-lock {
   touch-action: pan-x pan-y;
   overscroll-behavior: none;
 }
+
+/* =========================================================
+   NEW PREMIUM OFFER CARD (accordion) — αυτόνομο namespace.
+   Δεν ακουμπάει τις παλιές .offer-card / Tailwind κλάσεις.
+   ========================================================= */
+.new-premium-card {
+  --nk-ink: #16243d;
+  --nk-ink-soft: #4a5670;
+  --nk-card: #ffffff;
+  --nk-line: #e3e0d9;
+  --nk-action: #1f5fcc;
+  --nk-seal: #b3892f;
+  --nk-seal-soft: #f2e7cb;
+
+  background: var(--nk-card);
+  border: 1px solid var(--nk-line);
+  border-radius: 16px;
+  overflow: hidden;
+  font-family: Inter, system-ui, sans-serif;
+  box-shadow: 0 10px 30px rgba(7, 26, 51, 0.07);
+}
+
+/* Reset των legacy grid κανόνων που στοχεύουν [data-offer-card]. */
+#offersContainer > .new-premium-card,
+.offers-section-catalog #offersContainer > .new-premium-card {
+  display: block;
+  grid-template-columns: none;
+  grid-template-areas: none;
+  gap: 0;
+  padding: 0;
+  border-radius: 16px;
+  background: var(--nk-card);
+  align-self: start;
+}
+
+#offersContainer > .new-premium-card::before,
+.offers-section-catalog #offersContainer > .new-premium-card::before {
+  content: none;
+}
+
+#offersContainer > .new-premium-card.is-visible:hover,
+.offers-section-catalog #offersContainer > .new-premium-card.is-visible:hover {
+  transform: translateY(-3px) translateZ(0);
+  box-shadow: 0 18px 44px rgba(7, 26, 51, 0.12);
+}
+
+.new-premium-card .new-premium-toggle {
+  width: 100%;
+  text-align: left;
+  padding: 1rem;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  display: block;
+  outline: none;
+}
+
+.new-premium-card .new-premium-toggle:focus-visible {
+  outline: 2px solid var(--nk-action);
+  outline-offset: -3px;
+}
+
+.new-premium-badges {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+
+.new-premium-badge {
+  background: var(--nk-ink);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 4px 9px;
+  border-radius: 6px;
+}
+
+.new-premium-badge--soft {
+  background: var(--nk-seal-soft);
+  color: #6b5410;
+  letter-spacing: 0.02em;
+}
+
+.new-premium-card .new-premium-title {
+  font-size: 21px;
+  margin: 0 0 8px;
+  color: var(--nk-ink);
+  font-family: "Space Grotesk", Inter, sans-serif;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.new-premium-price-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.new-premium-price-prefix {
+  color: var(--nk-ink-soft);
+  font-size: 14.5px;
+  margin-right: 6px;
+}
+
+.new-premium-price-num {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--nk-ink);
+}
+
+.new-premium-price-unit {
+  color: var(--nk-ink-soft);
+  font-size: 14.5px;
+  margin-left: 6px;
+}
+
+.new-premium-price-note {
+  display: block;
+  color: var(--nk-ink-soft);
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+.new-premium-arrow {
+  color: var(--nk-action);
+  font-size: 1.2rem;
+  font-weight: 600;
+  transition: transform 0.2s ease;
+  flex: 0 0 auto;
+}
+
+.new-premium-toggle[aria-expanded="true"] .new-premium-arrow {
+  transform: rotate(180deg);
+}
+
+.new-premium-card .new-premium-content {
+  display: none;
+  padding: 14px 1rem 1rem;
+  border-top: 1px solid var(--nk-line);
+}
+
+.new-premium-card .new-premium-content.is-open {
+  display: block;
+  animation: 0.26s cubic-bezier(0.22, 0.8, 0.3, 1) both newCardSlideIn;
+}
+
+@keyframes newCardSlideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.new-premium-card .new-premium-desc {
+  margin: 0 0 12px;
+  color: var(--nk-ink-soft);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.new-premium-card .new-premium-perks {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 14px;
+  display: grid;
+  gap: 8px;
+}
+
+.new-premium-card .new-premium-perk {
+  display: flex;
+  gap: 10px;
+  font-size: 15.5px;
+  line-height: 1.4;
+  color: var(--nk-ink-soft);
+}
+
+.new-premium-perk-dot {
+  color: var(--nk-seal);
+  font-weight: 700;
+}
+
+.new-premium-card .new-premium-actions {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+  flex-wrap: wrap;
+  margin-top: 0;
+}
+
+.new-premium-actions .new-premium-btn {
+  flex: 1 1 140px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 0.9rem;
+  background: var(--nk-action);
+  color: #fff !important;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  transition: transform 0.12s, background 0.15s, border-color 0.15s;
+  border: none;
+  cursor: pointer;
+}
+
+.new-premium-actions .new-premium-btn:active { transform: scale(0.985); }
+.new-premium-actions .new-premium-btn:hover { background: #17489b; }
+
+.new-premium-actions .new-premium-btn.new-premium-btn-secondary {
+  background: #f8fafc;
+  color: var(--nk-ink-soft) !important;
+  border: 1px solid var(--nk-line);
+}
+
+.new-premium-actions .new-premium-btn.new-premium-btn-secondary:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
