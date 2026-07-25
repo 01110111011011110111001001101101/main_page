@@ -8020,7 +8020,7 @@ body.hero-intro-ready .hero-title-svg text {
 #processOverview,
 #activationGuideHome,
 #contact {
-  scroll-margin-top: calc(var(--site-header-height) + var(--choice-mini-nav-height) + 1rem);
+  scroll-margin-top: calc(var(--site-header-height) + 1rem);
 }
 
 .offers-section[data-offers-panel][hidden] {
@@ -8659,7 +8659,8 @@ body.choice-mini-nav-visible:not(.mobile-bottom-nav-suppressed) .choice-mini-nav
 
 @media (max-width: 767px) {
   html {
-    scroll-padding-top: calc(var(--site-header-height) + var(--choice-mini-nav-height) + 0.85rem);
+    scroll-padding-top: calc(var(--site-header-height) + 0.85rem);
+    scroll-padding-bottom: calc(var(--choice-mini-nav-height) + 1rem);
   }
 
   body,
@@ -10251,9 +10252,13 @@ body.hero-intro-ready .site-main {
 
 
 
-body .choice-mini-nav {
-    top: 100px !important; /* Σταθερό νούμερο για δοκιμή */
-    bottom: auto !important;
+/* Χώρος στον πάτο ώστε το bottom mini nav να μην καλύπτει περιεχόμενο */
+@media (max-width: 767px) {
+  body.choice-mini-nav-visible,
+  body.choice-mini-nav-visible.hero-intro-ready,
+  body.choice-mini-nav-visible.hero-intro-ready.hero-nav-visible {
+    padding-bottom: calc(var(--choice-mini-nav-height) + env(safe-area-inset-bottom) + 16px) !important;
+  }
 }
 
 /* ===== Source: activation-guide-mobile.css ===== */
