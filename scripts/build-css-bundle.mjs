@@ -34,7 +34,10 @@ html = html.replace(/\s*<!-- critical-css:start -->[\s\S]*?<!-- critical-css:end
 html = html.replace(/\s*<!-- app-css:start -->[\s\S]*?<!-- app-css:end -->/g, '');
 html = html.replace(/\s*<link\s+rel="stylesheet"\s+href="assets\/css\/bundle\.[a-f0-9]{8}\.min\.css">/g, '');
 html = html.replace(/\s*<link\s+rel="stylesheet"\s+href="assets\/css\/(?:tailwind|site)\.css(?:\?[^"]*)?">/g, '');
-const fontPreload = '<link rel="preload" href="assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>';
+// Το inter-greek αποδίδει ΟΛΟ το ελληνικό κείμενο της σελίδας, οπότε αυτό είναι που
+// αξίζει preload. Το Space Grotesk είναι latin-only (δεν έχει ελληνικούς χαρακτήρες)
+// και φορτώνεται κανονικά μέσω unicode-range μόνο όπου χρειάζεται.
+const fontPreload = '<link rel="preload" href="assets/fonts/inter-greek.woff2" as="font" type="font/woff2" crossorigin>';
 html = html.replace(/\s*<link rel="preload" href="assets\/fonts\/(?:inter-greek|space-grotesk-latin)\.woff2(?:\?v=[a-f0-9]{8})?" as="font" type="font\/woff2" crossorigin>/g, '');
 html = html.replace(/\n\s*<script type="application\/ld\+json">/, `\n  ${fontPreload}\n  ${criticalBlock}\n  ${appCssBlock}\n\n  <script type="application/ld+json">`);
 await fs.writeFile(indexPath, html);

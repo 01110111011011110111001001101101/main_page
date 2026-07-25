@@ -12,6 +12,7 @@ function collectBrowserScriptGlobals() {
 
   for (const entry of readdirSync(JS_DIR, { withFileTypes: true })) {
     if (!entry.isFile() || !entry.name.endsWith('.js')) continue;
+    if (/^app\.[a-f0-9]{8}\.min\.js$/.test(entry.name)) continue;
 
     const source = readFileSync(join(JS_DIR, entry.name), 'utf8');
     for (const match of source.matchAll(declarationPattern)) {
@@ -109,6 +110,7 @@ export default [
       'node_modules/**',
       'tools/reports/**',
       'assets/css/tailwind.css',
+      'assets/js/app.*.min.js',
       'package-lock.json',
     ],
   },

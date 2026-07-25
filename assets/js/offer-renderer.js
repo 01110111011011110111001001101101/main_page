@@ -86,11 +86,51 @@
       if (actionTarget.activationSource) button.dataset.activationSource = actionTarget.activationSource;
     } else if (offer.modalId || actionTarget.modalId) {
       button.dataset.modalTarget = offer.modalId || actionTarget.modalId;
-    } else if (actionTarget.href) {
-      button.dataset.actionHref = actionTarget.href;
     }
 
     setTrackingDataset(button, offer);
+  }
+
+  function usesLinkCta(offer) {
+    const actionTarget = offer.actionTarget || {};
+    const ctaType = offer.ctaType || (offer.modalId ? 'modal' : '');
+
+    return ctaType !== 'activation-guide' &&
+      !offer.modalId &&
+      !actionTarget.modalId &&
+      Boolean(actionTarget.href);
+  }
+
+  // Όταν η προσφορά δείχνει σε URL (PDF, εξωτερική σελίδα, tel:/mailto:) φτιάχνουμε
+  // πραγματικό <a>. Έτσι το κλικ δουλεύει χωρίς extra handler και το trackLinkClick
+  // το πιάνει αυτόματα.
+  function createPrimaryCtaLink(offer) {
+    const actionTarget = offer.actionTarget || {};
+    const href = actionTarget.href;
+    const link = createElement('a', 'offer-primary-cta', offer.ctaPrimaryText || 'Κάνε αίτηση');
+
+    link.href = href;
+
+    if (actionTarget.download === true || /\.pdf(\?|#|$)/i.test(href)) {
+      link.download = '';
+    }
+
+    if (/^https?:\/\//i.test(href)) {
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+    }
+
+    setTrackingDataset(link, offer);
+    return link;
+  }
+
+  function createPrimaryCta(offer) {
+    if (usesLinkCta(offer)) return createPrimaryCtaLink(offer);
+
+    const button = createElement('button', 'offer-primary-cta', offer.ctaPrimaryText || 'Κάνε αίτηση');
+    button.type = 'button';
+    configurePrimaryCta(button, offer);
+    return button;
   }
 
   function createBenefitItem(text) {
@@ -148,10 +188,7 @@
     const actions = createElement('div', 'offer-actions');
 
     if (offer.showPrimaryCta !== false) {
-      const primary = createElement('button', 'offer-primary-cta', offer.ctaPrimaryText || 'Κάνε αίτηση');
-      primary.type = 'button';
-      configurePrimaryCta(primary, offer);
-      actions.appendChild(primary);
+      actions.appendChild(createPrimaryCta(offer));
     }
 
     if (offer.showSecondaryCta !== false) {
@@ -522,7 +559,9 @@
       initializeRetryListener();
 
       try {
-        const response = await fetch(getOffersUrl(), { cache: 'default' });
+        // Το credentials: 'omit' ταιριάζει με το <link rel="preload" as="fetch" crossorigin>
+        // στο <head>, ώστε το αρχείο να μην κατέβει δύο φορές.
+        const response = await fetch(getOffersUrl(), { cache: 'default', credentials: 'omit' });
         if (!response.ok) throw new Error('offers.json not available');
         const data = await response.json();
         renderOffers(container, normalizeOffers(data));

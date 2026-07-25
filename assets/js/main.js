@@ -12,10 +12,19 @@
     ['offers', () => window.App.offers?.init?.()],
     ['offerRenderer', () => window.App.offerRenderer?.init?.()],
     ['tracking', () => window.App.tracking?.init?.()],
-    ['wizard', () => window.App.wizard?.init?.()],
     ['ui', () => window.App.ui?.init?.()],
-    ['officeClosure', () => window.App.officeClosure?.init?.()],
   ];
+
+  // Το office-closure.js είναι ~14 KB που δεν κάνουν τίποτα όσο το mode είναι 'off'.
+  // Το config (1,4 KB) φορτώνεται κανονικά και αποφασίζει αν αξίζει να έρθει το υπόλοιπο.
+  async function initializeOfficeClosure() {
+    const config = window.OFFICE_CLOSURE_CONFIG || window.PKSAA_OFFICE_CLOSURE_CONFIG;
+    const mode = typeof config?.mode === 'string' ? config.mode.trim().toLowerCase() : 'off';
+    if (mode !== 'date' && mode !== 'on') return;
+
+    await window.App.loadLazyScript?.('officeClosure');
+    window.App.officeClosure?.init?.();
+  }
 
   let initialized = false;
 
@@ -29,6 +38,12 @@
       } catch (error) {
         console.error('Module initialization failed: ' + name, error);
       }
+    }
+
+    try {
+      await initializeOfficeClosure();
+    } catch (error) {
+      console.error('Module initialization failed: officeClosure', error);
     }
   }
 

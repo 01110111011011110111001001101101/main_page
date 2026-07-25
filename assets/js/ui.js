@@ -50,19 +50,28 @@
     window.addEventListener('resize', syncMiniNav);
   }
 
-  function initializeChoiceContactLinks() {
-    document.querySelectorAll('.choice-card-contact, .choice-mini-nav a[href="#contact"]').forEach((link) => {
-      link.addEventListener('click', (event) => {
-        const contact = document.getElementById('contact');
-        if (!contact) return;
+  // Καλύπτει κάθε σύνδεσμο προς #contact (πλαϊνό μενού, μπάρα πληροφοριών, κάρτες).
+  function handleContactAnchorClick(event) {
+    const link = event.target.closest('a[href="#contact"], .choice-card-contact');
+    if (!link) return false;
 
-        event.preventDefault();
-        contact.scrollIntoView({
-          behavior: prefersReducedMotion() ? 'auto' : 'smooth',
-          block: 'start',
-        });
+    const contact = document.getElementById('contact');
+    if (!contact) return false;
+
+    event.preventDefault();
+
+    if (link.closest('#sidebarMenu') && typeof closeSidebarInstantly === 'function') {
+      closeSidebarInstantly();
+    }
+
+    requestAnimationFrame(() => {
+      contact.scrollIntoView({
+        behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+        block: 'start',
       });
     });
+
+    return true;
   }
 
 function resetSwipeBackTracking() {
@@ -356,6 +365,8 @@ function handleDocumentClick(event) {
 
     const linkTarget = event.target.closest('a[href]');
     if (linkTarget) trackLinkClick(linkTarget);
+
+    if (handleContactAnchorClick(event)) return;
 
     const actionTarget = event.target.closest('[data-action]');
     if (actionTarget) {
@@ -737,7 +748,6 @@ function initializeUi() {
 
     initializeHeroIntroNavigation();
     initializeChoiceMiniNav();
-    initializeChoiceContactLinks();
     initializeBottomNavOffersState();
     initializePremiumMenuActiveState();
     initializeCookieConsentState();

@@ -24,6 +24,8 @@
   <meta name="description" content="Επίσημη πλατφόρμα προσφορών του Π.Κ.Σ.Α.Α. - Συνεταιρισμός Αστυνομικών Αττικής. Synetairismos Astynomikon Attikis, προσφορές για μέλη σε κινητή, σταθερή, internet, τηλεόραση και υγεία.">
   <link rel="canonical" href="https://synetairismos-astynomikon.gr/">
   <link rel="icon" href="assets/images/favicon-32.png?v=216cb81d" type="image/png">
+  <link rel="preload" href="assets/images/hero-logo.svg" as="image" type="image/svg+xml" fetchpriority="high">
+  <link rel="preload" href="assets/data/offers.json?v=20260711-1" as="fetch" crossorigin>
   <meta name="robots" content="index, follow">
 
   <meta property="og:type" content="website">
@@ -37,7 +39,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Π.Κ.Σ.Α.Α. | Προμηθευτικός και Καταναλωτικός Συνεταιρισμός Αστυνομικών Αττικής">
   <meta name="twitter:description" content="Επίσημη πλατφόρμα προσφορών του Προμηθευτικού και Καταναλωτικού Συνεταιρισμού Αστυνομικών Αττικής.">
-  <meta name="twitter:image" content="https://synetairismos-astynomikon.gr/assets/images/social-share.webp?v=1040a415?v=1040a415">
+  <meta name="twitter:image" content="https://synetairismos-astynomikon.gr/assets/images/social-share.webp?v=1040a415">
 
 
   <script>
@@ -50,13 +52,13 @@
       }
     })();
   </script>
-  <link rel="preload" href="assets/fonts/space-grotesk-latin.woff2?v=06408904" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-greek.woff2?v=1be3448e" as="font" type="font/woff2" crossorigin>
   <!-- critical-css:start -->
-  <style id="critical-css">@font-face{font-family:Inter;src:url(assets/fonts/inter-greek.woff2?v=1be3448e)format("woff2");font-style:normal;font-weight:100 900;font-display:swap;unicode-range:U+370-377,U+37A-37F,U+384-38A,U+38C,U+38E-3A1,U+3A3-3FF}@font-face{font-family:Inter;src:url(assets/fonts/inter-latin.woff2?v=3100e775)format("woff2");font-style:normal;font-weight:100 900;font-display:swap;unicode-range:U+??,U+131,U+152-153,U+2BB-2BC,U+2C6,U+2DA,U+2DC,U+304,U+308,U+329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:Space Grotesk;src:url(assets/fonts/space-grotesk-latin.woff2?v=06408904)format("woff2");font-style:normal;font-weight:300 700;font-display:swap}*,:before,:after{box-sizing:border-box}:root{--border:#d8e1ec;--primary:#071a33;--text-muted:#5f6f86}html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}body{color:#172033;background:#effbfc;min-height:100vh;margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;overflow-x:hidden}button,a{font:inherit;color:inherit}.hidden{display:none!important}.icon{fill:currentColor;flex-shrink:0;width:1em;height:1em;display:inline-block}.site-top-nav{z-index:50;color:#fff;background:#0e7490;width:100%;position:fixed;inset:0 0 auto;box-shadow:0 10px 24px #071a2f14}.site-top-nav-inner{grid-template-columns:auto 1fr auto;align-items:center;gap:1rem;width:min(100%,80rem);min-height:76px;margin:auto;padding:.65rem 1rem;display:grid}.top-brand{justify-content:center;align-items:center;min-width:0;display:flex}.top-brand img{object-fit:contain;width:auto;max-width:min(48vw,220px);height:52px;display:block}.premium-menu-toggle{color:#fff;background:#ffffff1f;border:1px solid #ffffff29;border-radius:14px;align-items:center;gap:.45rem;min-height:44px;padding:.65rem .75rem;display:inline-flex}.top-menu-lines{gap:4px;display:grid}.top-menu-lines span{background:#fff;width:18px;height:2px;display:block}.top-desktop-nav{align-items:center;gap:.35rem;display:flex}.top-desktop-nav a,.top-desktop-nav button{color:#fff;background:0 0;border:0;padding:.65rem;font-weight:800}.site-main{width:min(100% - 2rem,1180px);margin:0 auto;padding-top:88px}.landing-hero{margin:0}.police-hero{color:#fff}.police-hero__shell{background:linear-gradient(#afc3d81a 1px,#0000 1px) 0 0/46px 46px,linear-gradient(90deg,#afc3d81a 1px,#0000 1px) 0 0/46px 46px,radial-gradient(circle at 12% 14%,#5ab8ff33,#0000 30%),linear-gradient(135deg,#071a2f,#0b2f5b 62%,#061326);border:1px solid #afc3d857;border-radius:24px;padding:clamp(.85rem,2.4vw,1.65rem);position:relative;overflow:hidden;box-shadow:0 24px 70px #071a2f42}.police-hero__inner{align-items:center;width:min(100%,900px);margin:auto;display:grid;position:relative}.police-hero__copy{background:linear-gradient(145deg,#ffffff1f,#ffffff0b);border:1px solid #afc3d840;border-radius:20px;padding:clamp(.9rem,2.6vw,1.45rem)}.police-hero__badge{color:#fff7d6;background:#d6a23a1f;border:1px solid #d6a23a7a;border-radius:999px;margin-bottom:.72rem;padding:.42rem .7rem;font-size:.76rem;font-weight:900;display:inline-flex}.police-hero__title{color:#fff;margin:0;font-family:Space Grotesk,Inter,sans-serif;font-size:clamp(1.55rem,6vw,2.65rem);font-weight:700;line-height:1.06}.police-hero__text{color:#c9d8e8;margin:.78rem 0 0;font-size:clamp(.9rem,2.8vw,1.04rem);font-weight:700;line-height:1.45}.police-hero__actions{flex-wrap:wrap;gap:.7rem;margin-top:1.05rem;display:flex}.police-hero__actions a{border-radius:14px;justify-content:center;align-items:center;gap:.5rem;min-height:48px;padding:.78rem 1rem;font-weight:900;text-decoration:none;display:inline-flex}.police-hero__primary{color:#fff;background:linear-gradient(135deg,#1e5aa8,#2e7bd2);border:1px solid #5ab8ff94}.police-hero__secondary{color:#fff;background:#ffffff1a;border:1px solid #afc3d885}#cookieConsentBanner{display:none}html[data-cookie-consent=pending] #cookieConsentBanner,html:not([data-cookie-consent]) #cookieConsentBanner{display:block!important}#cookieConsentBanner{z-index:200;background:#fff;border:1px solid #d8e1ec;border-radius:20px;width:min(28rem,100% - 2rem);padding:1rem;position:fixed;bottom:1rem;right:1rem;box-shadow:0 20px 50px #071a2f38}#cookieConsentBanner h4{margin:0;font-size:1.05rem}#cookieConsentBanner p{margin:.35rem 0 .8rem;line-height:1.45}#cookieConsentBanner button{border-radius:12px;min-height:44px}.police-hero__shell{padding:clamp(.85rem,2.4vw,1.65rem) clamp(.85rem,2.4vw,1.65rem) calc(clamp(.85rem,2.4vw,1.65rem) + 3.4rem)!important}.police-hero__inner{justify-items:center}.police-hero__copy{place-items:center;width:fit-content;padding:clamp(1rem,3vw,1.8rem);display:grid}.police-hero__title{clip:rect(0 0 0 0)!important;clip-path:inset(50%)!important;white-space:nowrap!important;border:0!important;width:1px!important;height:1px!important;margin:0!important;position:absolute!important;overflow:hidden!important}.police-hero__logo{width:clamp(150px,24vw,260px);height:auto;display:block}.police-hero__badge,.police-hero__text,.police-hero__actions{display:none!important}.announcement-ticker{z-index:2;background:#030a189e;border-top:1px solid #afc3d85c;position:absolute;bottom:0;left:0;right:0;overflow:hidden}.announcement-ticker__track{color:#fff;white-space:nowrap;align-items:center;width:max-content;min-height:3rem;font-size:clamp(.88rem,1.4vw,1rem);font-weight:850;line-height:1.2;animation:28s linear infinite announcementTicker;display:flex}@keyframes announcementTicker{0%{transform:translate(100vw)}to{transform:translate(-100%)}}@media (width<=767px){.site-top-nav-inner{grid-template-columns:3.9rem minmax(0,1fr) 3.9rem;gap:.5rem;width:min(100% - .5rem,1180px);min-height:68px;padding:0 .25rem}.top-brand img{max-width:45vw;height:46px}.top-desktop-nav,.premium-menu-toggle-label{display:none}.site-main{width:min(100% - .85rem,1180px);padding-top:4.6rem}.landing-hero{padding:1.35rem}.police-hero__shell{border-radius:18px;padding:.56rem}.police-hero__copy{border-radius:16px;padding:.72rem}.police-hero__badge{margin-bottom:.55rem;font-size:.62rem}.police-hero__title{font-size:clamp(1.18rem,5.3vw,1.48rem);line-height:1.08}.police-hero__text{margin-top:.5rem;font-size:.8rem;line-height:1.34}.police-hero__actions{grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem;margin-top:.68rem;display:grid}.police-hero__actions a{min-width:0;min-height:44px;padding:.65rem .58rem;font-size:.8rem}.quick-actions{border:1px solid var(--border);background:#fff;border-radius:18px;margin-top:.85rem;padding:.95rem}.choice-hub-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.62rem;display:grid}.choice-card{border:1px solid var(--border);text-align:left;background:#fff;border-radius:16px;align-content:center;justify-items:start;gap:.32rem;min-height:112px;padding:.82rem;display:grid}.choice-card .icon{width:2.25rem;height:2.25rem}.choice-card span{font-size:.96rem;font-weight:900;line-height:1.12}.choice-card small{color:var(--text-muted);font-size:.73rem;font-weight:800;line-height:1.28}#offers{min-height:2200px}#cookieConsentBanner{right:.75rem;bottom:calc(4.85rem + env(safe-area-inset-bottom));width:calc(100% - 1.5rem)}#cookieConsentBanner>div:first-child{align-items:flex-start;gap:.75rem;margin-bottom:.85rem;display:flex}#cookieConsentBanner>div:last-child{flex-direction:column;gap:.75rem;display:flex}#cookieConsentBanner .bg-blue-100{border-radius:999px;padding:.8rem}#cookieConsentBanner h4{font-size:1.1rem;line-height:1.15}#cookieConsentBanner p{margin:.35rem 0 .8rem;font-size:.84rem;line-height:1.45}#cookieConsentBanner [data-cookie-consent=accept]{justify-content:center;align-items:center;gap:.5rem;width:100%;padding:.9rem 0;display:flex}#cookieConsentBanner [data-cookie-consent=reject]{width:100%;padding:.35rem 0;font-size:.74rem;display:block}#processOverview,#activationGuideHome,.viber-community-section,#contact,#siteLegalBar{content-visibility:auto;contain-intrinsic-size:auto 700px}#contact,#siteLegalBar{contain-intrinsic-size:auto 420px}}@media (prefers-reduced-motion:reduce){*,:before,:after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation:none!important}}@media (width<=767px){#offers{min-height:auto}.police-hero__shell{padding:.56rem .56rem 3.35rem!important}.police-hero__logo{width:clamp(128px,48vw,190px)}.offers-section-catalog:not(.is-offers-open){display:none!important}}.top-bar-mini-nav{display:none!important}@media (width<=767px){.site-top-nav-inner .top-brand{display:none!important}.top-bar-mini-nav{justify-content:space-between!important;align-items:center!important;gap:6px!important;width:100%!important;height:100%!important;padding:2px 4px!important;display:flex!important}.top-bar-mini-nav button{color:#fff!important;background:#ffffff14!important;border:1px solid #ffffff1f!important;border-radius:12px!important;flex-direction:column!important;flex:1!important;justify-content:center!important;align-items:center!important;min-height:46px!important;padding:4px 2px!important;font-size:10px!important;font-weight:800!important;transition:background .2s,transform .1s!important;display:flex!important}.top-bar-mini-nav button:active{background:#fff3!important;transform:scale(.96)!important}.top-bar-mini-nav button .icon{width:1.15rem!important;height:1.15rem!important;margin-bottom:2px!important}}</style>
+  <style id="critical-css">@font-face{font-family:Inter;src:url(assets/fonts/inter-greek.woff2?v=1be3448e)format("woff2");font-style:normal;font-weight:100 900;font-display:swap;unicode-range:U+370-377,U+37A-37F,U+384-38A,U+38C,U+38E-3A1,U+3A3-3FF}@font-face{font-family:Inter;src:url(assets/fonts/inter-latin.woff2?v=3100e775)format("woff2");font-style:normal;font-weight:100 900;font-display:swap;unicode-range:U+??,U+131,U+152-153,U+2BB-2BC,U+2C6,U+2DA,U+2DC,U+304,U+308,U+329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:Space Grotesk;src:url(assets/fonts/space-grotesk-latin.woff2?v=06408904)format("woff2");font-style:normal;font-weight:300 700;font-display:swap;unicode-range:U+??,U+131,U+152-153,U+2BB-2BC,U+2C6,U+2DA,U+2DC,U+2000-206F,U+2122}*,:before,:after{box-sizing:border-box}:root{--border:#d8e1ec;--primary:#071a33;--text-muted:#5f6f86}html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}body{color:#172033;background:#effbfc;min-height:100vh;margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;overflow-x:hidden}button,a{font:inherit;color:inherit}img,svg,video{max-width:100%;height:auto}.hidden{display:none!important}.icon{fill:currentColor;flex-shrink:0;width:1em;height:1em;display:inline-block}.choice-card .icon{width:2.45rem;height:2.45rem}.site-top-nav{z-index:50;color:#fff;background:#0e7490;width:100%;position:fixed;inset:0 0 auto;box-shadow:0 10px 24px #071a2f14}.site-top-nav-inner{grid-template-columns:auto 1fr auto;align-items:center;gap:1rem;width:min(100%,80rem);min-height:76px;margin:auto;padding:.65rem 1rem;display:grid}.top-brand{justify-content:center;align-items:center;min-width:0;display:flex}.top-brand img{object-fit:contain;width:auto;max-width:min(48vw,220px);height:52px;display:block}.premium-menu-toggle{color:#fff;background:#ffffff1f;border:1px solid #ffffff29;border-radius:14px;align-items:center;gap:.45rem;min-height:44px;padding:.65rem .75rem;display:inline-flex}.top-menu-lines{gap:4px;display:grid}.top-menu-lines span{background:#fff;width:18px;height:2px;display:block}.top-desktop-nav{align-items:center;gap:.35rem;display:flex}.top-desktop-nav a,.top-desktop-nav button{color:#fff;background:0 0;border:0;padding:.65rem;font-weight:800}.site-main{width:min(100% - 2rem,1180px);margin:0 auto;padding-top:88px}.landing-hero{margin:0}.police-hero{color:#fff}.police-hero__shell{background:linear-gradient(#afc3d81a 1px,#0000 1px) 0 0/46px 46px,linear-gradient(90deg,#afc3d81a 1px,#0000 1px) 0 0/46px 46px,radial-gradient(circle at 12% 14%,#5ab8ff33,#0000 30%),linear-gradient(135deg,#071a2f,#0b2f5b 62%,#061326);border:1px solid #afc3d857;border-radius:24px;padding:clamp(.85rem,2.4vw,1.65rem);position:relative;overflow:hidden;box-shadow:0 24px 70px #071a2f42}.police-hero__inner{align-items:center;width:min(100%,900px);margin:auto;display:grid;position:relative}.police-hero__copy{background:linear-gradient(145deg,#ffffff1f,#ffffff0b);border:1px solid #afc3d840;border-radius:20px;padding:clamp(.9rem,2.6vw,1.45rem)}.police-hero__badge{color:#fff7d6;background:#d6a23a1f;border:1px solid #d6a23a7a;border-radius:999px;margin-bottom:.72rem;padding:.42rem .7rem;font-size:.76rem;font-weight:900;display:inline-flex}.police-hero__title{color:#fff;margin:0;font-family:Space Grotesk,Inter,sans-serif;font-size:clamp(1.55rem,6vw,2.65rem);font-weight:700;line-height:1.06}.police-hero__text{color:#c9d8e8;margin:.78rem 0 0;font-size:clamp(.9rem,2.8vw,1.04rem);font-weight:700;line-height:1.45}.police-hero__actions{flex-wrap:wrap;gap:.7rem;margin-top:1.05rem;display:flex}.police-hero__actions a{border-radius:14px;justify-content:center;align-items:center;gap:.5rem;min-height:48px;padding:.78rem 1rem;font-weight:900;text-decoration:none;display:inline-flex}.police-hero__primary{color:#fff;background:linear-gradient(135deg,#1e5aa8,#2e7bd2);border:1px solid #5ab8ff94}.police-hero__secondary{color:#fff;background:#ffffff1a;border:1px solid #afc3d885}#cookieConsentBanner{display:none}html[data-cookie-consent=pending] #cookieConsentBanner,html:not([data-cookie-consent]) #cookieConsentBanner{display:block!important}#cookieConsentBanner{z-index:200;background:#fff;border:1px solid #d8e1ec;border-radius:20px;width:min(28rem,100% - 2rem);padding:1rem;position:fixed;bottom:1rem;right:1rem;box-shadow:0 20px 50px #071a2f38}#cookieConsentBanner h4{margin:0;font-size:1.05rem}#cookieConsentBanner p{margin:.35rem 0 .8rem;line-height:1.45}#cookieConsentBanner button{border-radius:12px;min-height:44px}.police-hero__shell{padding:clamp(.85rem,2.4vw,1.65rem) clamp(.85rem,2.4vw,1.65rem) calc(clamp(.85rem,2.4vw,1.65rem) + 3.4rem)!important}.police-hero__inner{justify-items:center}.police-hero__copy{place-items:center;width:fit-content;padding:clamp(1rem,3vw,1.8rem);display:grid}.police-hero__title{clip:rect(0 0 0 0)!important;clip-path:inset(50%)!important;white-space:nowrap!important;border:0!important;width:1px!important;height:1px!important;margin:0!important;position:absolute!important;overflow:hidden!important}.police-hero__logo{width:clamp(150px,24vw,260px);height:auto;display:block}.police-hero__badge,.police-hero__text,.police-hero__actions{display:none!important}.announcement-ticker{z-index:2;background:#030a189e;border-top:1px solid #afc3d85c;position:absolute;bottom:0;left:0;right:0;overflow:hidden}.announcement-ticker__track{color:#fff;white-space:nowrap;align-items:center;width:max-content;min-height:3rem;font-size:clamp(.88rem,1.4vw,1rem);font-weight:850;line-height:1.2;animation:28s linear infinite announcementTicker;display:flex}@keyframes announcementTicker{0%{transform:translate(100vw)}to{transform:translate(-100%)}}@media (width<=767px){.site-top-nav-inner{grid-template-columns:3.9rem minmax(0,1fr) 3.9rem;gap:.5rem;width:min(100% - .5rem,1180px);min-height:68px;padding:0 .25rem}.top-brand img{max-width:45vw;height:46px}.top-desktop-nav,.premium-menu-toggle-label{display:none}.site-main{width:min(100% - .85rem,1180px);padding-top:4.6rem}.landing-hero{padding:1.35rem}.police-hero__shell{border-radius:18px;padding:.56rem}.police-hero__copy{border-radius:16px;padding:.72rem}.police-hero__badge{margin-bottom:.55rem;font-size:.62rem}.police-hero__title{font-size:clamp(1.18rem,5.3vw,1.48rem);line-height:1.08}.police-hero__text{margin-top:.5rem;font-size:.8rem;line-height:1.34}.police-hero__actions{grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem;margin-top:.68rem;display:grid}.police-hero__actions a{min-width:0;min-height:44px;padding:.65rem .58rem;font-size:.8rem}.quick-actions{border:1px solid var(--border);background:#fff;border-radius:18px;margin-top:.85rem;padding:.95rem}.choice-hub-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.62rem;display:grid}.choice-card{border:1px solid var(--border);text-align:left;background:#fff;border-radius:16px;align-content:center;justify-items:start;gap:.32rem;min-height:112px;padding:.82rem;display:grid}.choice-card .icon{width:2.25rem;height:2.25rem}.choice-card span{font-size:.96rem;font-weight:900;line-height:1.12}.choice-card small{color:var(--text-muted);font-size:.73rem;font-weight:800;line-height:1.28}#offers{min-height:2200px}#cookieConsentBanner{right:.75rem;bottom:calc(4.85rem + env(safe-area-inset-bottom));width:calc(100% - 1.5rem)}#cookieConsentBanner>div:first-child{align-items:flex-start;gap:.75rem;margin-bottom:.85rem;display:flex}#cookieConsentBanner>div:last-child{flex-direction:column;gap:.75rem;display:flex}#cookieConsentBanner .bg-blue-100{border-radius:999px;padding:.8rem}#cookieConsentBanner h4{font-size:1.1rem;line-height:1.15}#cookieConsentBanner p{margin:.35rem 0 .8rem;font-size:.84rem;line-height:1.45}#cookieConsentBanner [data-cookie-consent=accept]{justify-content:center;align-items:center;gap:.5rem;width:100%;padding:.9rem 0;display:flex}#cookieConsentBanner [data-cookie-consent=reject]{width:100%;padding:.7rem 0;font-size:.85rem;display:block}#processOverview,#activationGuideHome,.viber-community-section,#contact,#siteLegalBar{content-visibility:auto;contain-intrinsic-size:auto 700px}#contact,#siteLegalBar{contain-intrinsic-size:auto 420px}}@media (prefers-reduced-motion:reduce){*,:before,:after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation:none!important}}@media (width<=767px){#offers{min-height:auto}.police-hero__shell{padding:.56rem .56rem 3.35rem!important}.police-hero__logo{width:clamp(128px,48vw,190px)}.offers-section-catalog:not(.is-offers-open){display:none!important}}.top-bar-mini-nav{display:none!important}@media (width<=767px){.site-top-nav-inner .top-brand{display:none!important}.top-bar-mini-nav{justify-content:space-between!important;align-items:center!important;gap:6px!important;width:100%!important;height:100%!important;padding:2px 4px!important;display:flex!important}.top-bar-mini-nav button{color:#fff!important;background:#ffffff14!important;border:1px solid #ffffff1f!important;border-radius:12px!important;flex-direction:column!important;flex:1!important;justify-content:center!important;align-items:center!important;min-height:46px!important;padding:4px 2px!important;font-size:10px!important;font-weight:800!important;transition:background .2s,transform .1s!important;display:flex!important}.top-bar-mini-nav button:active{background:#fff3!important;transform:scale(.96)!important}.top-bar-mini-nav button .icon{width:1.15rem!important;height:1.15rem!important;margin-bottom:2px!important}}</style>
   <!-- critical-css:end -->
   <!-- app-css:start -->
-  <link rel="preload" href="assets/css/bundle.9f45ac3a.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="assets/css/bundle.9f45ac3a.min.css"></noscript>
+  <link rel="preload" href="assets/css/bundle.c8b5fe87.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="assets/css/bundle.c8b5fe87.min.css"></noscript>
   <!-- app-css:end -->
 
   <script type="application/ld+json">
@@ -102,7 +104,7 @@
 
     <nav aria-label="Κύρια πλοήγηση" class="site-top-nav top-area-nav fixed top-0 w-full z-50">
       <div class="site-top-nav-inner max-w-7xl mx-auto">
-        
+
         <!-- [1] ΚΟΥΜΠΙ ΜΕΝΟΥ -->
         <button type="button" data-action="toggle-sidebar" aria-label="Άνοιγμα μενού" class="premium-menu-toggle top-menu-button">
             <span class="top-menu-lines" aria-hidden="true">
@@ -114,7 +116,7 @@
         </button>
 
         <!-- [2] COMPACT MINI NAV (Εμφανίζεται ΜΟΝΟ στα κινητά ανάμεσα στα δύο κουμπιά) -->
-        <div class="top-bar-mini-nav" data-choice-mini-nav aria-label="Σύντομη πλοήγηση επιλογών">
+        <div class="top-bar-mini-nav" data-choice-mini-nav role="group" aria-label="Σύντομη πλοήγηση επιλογών">
       <button type="button" data-category-filter="mobile" data-track="choice_mini_nav_click" data-label="Κινητή">
         <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg?v=15010baf#icon-mobile-screen"></use></svg>
         <span>Κινητή</span>
@@ -133,7 +135,7 @@
       </button>
        </div>
 
-       
+
 
         <!-- [4] DESKTOP NAVIGATION LINKS -->
         <div class="top-desktop-nav">
@@ -150,21 +152,21 @@
             <svg class="icon" data-icon="phone" aria-hidden="true"><use href="assets/icons/icons.svg?v=15010baf#icon-phone"></use></svg>
             <span>Κλήση</span>
         </a>
-        
+
       </div>
     </nav>
 
     <main class="site-main">
     <section class="landing-hero police-hero" aria-labelledby="hero-title">
       <div class="hero-single-shell police-hero__shell">
-          
+
 
 
         <div class="hero-content police-hero__inner">
         <div class="police-hero__copy">
             <h1 id="hero-title" class="police-hero__title">Αρχική Π.Κ.Σ.Α.Α.</h1>
-            
-                    <img class="hero-logo-svg" src="assets/images/hero-logo.svg" alt="Λογότυπο Συνεταιρισμού Αστυνομικών Αττικής" width="1920" height="600" decoding="async">
+
+                    <img class="police-hero__logo hero-logo-svg" src="assets/images/hero-logo.svg" alt="Λογότυπο Συνεταιρισμού Αστυνομικών Αττικής" width="1920" height="600" decoding="async" fetchpriority="high">
 
 
 
@@ -222,11 +224,11 @@
           <small>Βήμα-βήμα για έντυπα, πληρωμή και SIM</small>
         </button>
         <!-- ΝΕΟ ΚΟΥΜΠΙ: ΠΛΟΗΓΗΣΗ ΣΤΟ ΧΑΡΤΗ -->
-        <a href="https://www.google.com/maps/search/?api=1&query=Καρύστου+3+Αθήνα+11523" 
-           target="_blank" 
-           rel="noopener noreferrer" 
-           data-track="choice_hub_click" 
-           data-label="Πλοήγηση Χάρτη" 
+        <a href="https://www.google.com/maps/search/?api=1&query=Καρύστου+3+Αθήνα+11523"
+           target="_blank"
+           rel="noopener noreferrer"
+           data-track="choice_hub_click"
+           data-label="Πλοήγηση Χάρτη"
            class="choice-card choice-card-maps group">
           <svg class="icon text-emerald-600 transition-transform group-hover:scale-110" aria-hidden="true">
             <!-- Αν έχεις icon-location-dot ή icon-map στο sprite sheet σου, το δηλώνεις εδώ -->
@@ -239,7 +241,7 @@
       </div>
     </section>
 
-   
+
 
     <section id="offers" class="offers-section offers-section-catalog" data-offers-panel aria-labelledby="offers-title">
       <div class="section-heading section-heading-row">
@@ -378,7 +380,7 @@
            <button type="button" data-cookie-consent="accept" class="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg transition-all transform active:scale-95 flex items-center justify-center gap-2">
           <svg class="icon" data-icon="check" aria-hidden="true"><use href="assets/icons/icons.svg?v=15010baf#icon-check"></use></svg> Αποδοχή Όλων
             </button>
-            <button type="button" data-cookie-consent="reject" style="color: #65514c;" class="w-full py-2.5  bg-slate-900 font-medium text-xs hover:text-slate-800 hover:bg-slate-900 rounded-lg transition-colors border border-transparent hover:border-slate-200">
+            <button type="button" data-cookie-consent="reject" class="w-full py-2.5 bg-slate-900 text-slate-200 font-medium text-sm hover:text-white hover:bg-slate-800 rounded-lg transition-colors border border-transparent hover:border-slate-700">
                 Συνέχεια μόνο με τα απαραίτητα
             </button>
         </div>
@@ -441,7 +443,7 @@
             <svg class="icon" data-icon="chevron-right" aria-hidden="true"><use href="assets/icons/icons.svg?v=15010baf#icon-chevron-right"></use></svg>
         </button>
 
-        <button type="button" data-sidebar-target="contactInfoModal" class="premium-menu-link premium-menu-link-contact">
+        <a href="#contact" data-track="menu_contact_click" data-label="Επικοινωνία" class="premium-menu-link premium-menu-link-contact">
             <span class="premium-menu-link-icon">
                 <svg class="icon" data-icon="headset" aria-hidden="true"><use href="assets/icons/icons.svg?v=15010baf#icon-headset"></use></svg>
             </span>
@@ -450,7 +452,7 @@
                 <small>Τηλέφωνο · Email</small>
             </span>
             <svg class="icon" data-icon="chevron-right" aria-hidden="true"><use href="assets/icons/icons.svg?v=15010baf#icon-chevron-right"></use></svg>
-        </button>
+        </a>
 
         <a href="info.html" class="premium-menu-link premium-menu-link-info">
     <span class="premium-menu-link-icon">
@@ -474,11 +476,11 @@
         </a>
 
         <!-- 2. ΝΕΟ ΚΟΥΜΠΙ: ΧΑΡΤΗΣ GOOGLE -->
-        <a href="https://www.google.com/maps/search/?api=1&query=Π.Κ.Σ.Α.Α.+Καρύστου+3+Αθήνα+11523" 
-           target="_blank" 
-           rel="noopener noreferrer" 
-           class="maps-btn" 
-           data-track="sidebar_click" 
+        <a href="https://www.google.com/maps/search/?api=1&query=Π.Κ.Σ.Α.Α.+Καρύστου+3+Αθήνα+11523"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="maps-btn"
+           data-track="sidebar_click"
            data-label="Χάρτης Πλοήγηση">
             <svg class="icon" data-icon="location-dot" aria-hidden="true"><use href="assets/icons/icons.svg?v=15010baf#icon-location-dot"></use></svg>
             <span>Χάρτης</span>
@@ -542,10 +544,10 @@
             <span>Cookies</span>
           </button>
 
-          <button type="button" data-modal-target="contactInfoModal">
+          <a href="#contact" data-track="site_legal_bar_click" data-label="Επικοινωνία">
             <svg class="icon" data-icon="envelope-open-text" aria-hidden="true"><use href="assets/icons/icons.svg?v=15010baf#icon-envelope-open-text"></use></svg>
             <span>Επικοινωνία</span>
-          </button>
+          </a>
         </div>
       </div>
     </section>
@@ -611,22 +613,18 @@
 
 
 
-<script defer src="assets/js/config.js?v=72520e7d"></script>
-<script defer src="assets/js/clipboard.js?v=a5e10cb8"></script>
-<script defer src="assets/js/image-preview.js?v=3b278c9f"></script>
-<script defer src="assets/js/ui.js?v=9ad2cda9"></script>
-<script defer src="assets/js/modals.js?v=98b62dc5"></script>
-<script defer src="assets/js/offers.js?v=af16d219"></script>
-<script defer src="assets/js/offer-renderer.js?v=7e99b31c"></script>
-<script defer src="assets/js/wizard.js?v=b2839ab5"></script>
-<script defer src="assets/js/tracking.js?v=b228e11e"></script>
-<script defer src="assets/js/office-closure.config.js?v=19c8e6d6"></script>
-<script defer src="assets/js/office-closure.js?v=f012deed"></script>
-<script defer src="assets/js/pdf-preview.js?v=8dcc88db"></script>
-<script defer src="assets/js/main.js?v=4aa08cc6"></script>
+<!-- Φορτώνονται κατ' απαίτηση. Το ?v=<hash> το ανανεώνει το scripts/stamp-static-assets.mjs. -->
+<script type="application/json" id="lazyScripts">
+{
+  "wizard": "assets/js/wizard.js?v=b2839ab5",
+  "pdfPreview": "assets/js/pdf-preview.js?v=8dcc88db",
+  "officeClosure": "assets/js/office-closure.js?v=f012deed"
+}
+</script>
 
-
-<script src="assets/js/nameday-loader.js?v=1abd6403" defer></script>
+<!-- app-js:start -->
+<script defer src="assets/js/app.c8c788f2.min.js?v=c8c788f2"></script>
+<!-- app-js:end -->
 
 </body>
 </html>

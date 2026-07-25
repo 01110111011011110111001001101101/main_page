@@ -144,6 +144,19 @@ const lazyModalFragments = Object.freeze({
 });
 const lazyModalPromises = new Map();
 
+// Ο οδηγός ενεργοποίησης χρειάζεται το wizard.js και τον PDF viewer. Δεν φορτώνονται
+// στο πρώτο paint — έρχονται μαζί με το fragment του modal, παράλληλα.
+const lazyModalScripts = Object.freeze({
+    activationGuideModal: ['wizard', 'pdfPreview'],
+});
+
+function loadModalScripts(modalId) {
+    const names = lazyModalScripts[modalId];
+    if (!names || typeof window.App?.loadLazyScript !== 'function') return Promise.resolve();
+
+    return Promise.all(names.map((name) => window.App.loadLazyScript(name)));
+}
+
 async function ensureModalLoaded(modalId) {
     if (document.getElementById(modalId)) return document.getElementById(modalId);
 
@@ -152,7 +165,10 @@ async function ensureModalLoaded(modalId) {
     if (!fragmentPath || !root) throw new Error(`Unknown lazy modal: ${modalId}`);
     if (lazyModalPromises.has(modalId)) return lazyModalPromises.get(modalId);
 
-    const loadPromise = fetch(fragmentPath).then(async (response) => {
+    const loadPromise = Promise.all([
+        fetch(fragmentPath),
+        loadModalScripts(modalId),
+    ]).then(async ([response]) => {
         if (!response.ok) throw new Error(`Modal request failed (${response.status})`);
         const template = document.createElement('template');
         template.innerHTML = (await response.text()).trim();

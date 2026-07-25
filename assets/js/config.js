@@ -51,11 +51,67 @@ function clamp(value, min, max) {
     return Math.min(Math.max(value, min), max);
 }
 
+/* =========================================
+   LAZY SCRIPT LOADER
+   Τα βαριά features (οδηγός ενεργοποίησης, PDF viewer, θερινή άδεια)
+   δεν χρειάζονται στο πρώτο paint. Τα URLs με το ?v=<hash> ζουν στο
+   <script type="application/json" id="lazyScripts"> του index.html,
+   ώστε να τα σφραγίζει κανονικά το scripts/stamp-static-assets.mjs.
+========================================= */
+const loadedScripts = new Map();
+let lazyScriptUrls = null;
+
+function getLazyScriptUrls() {
+    if (lazyScriptUrls) return lazyScriptUrls;
+
+    lazyScriptUrls = {};
+    try {
+        const node = document.getElementById('lazyScripts');
+        if (node?.textContent?.trim()) {
+            lazyScriptUrls = JSON.parse(node.textContent);
+        }
+    } catch (error) {
+        console.error('Δεν διαβάστηκε το μητρώο lazy scripts', error);
+        lazyScriptUrls = {};
+    }
+
+    return lazyScriptUrls;
+}
+
+function loadScript(src) {
+    if (!src) return Promise.reject(new Error('loadScript: λείπει το src'));
+    if (loadedScripts.has(src)) return loadedScripts.get(src);
+
+    const promise = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = src;
+        script.async = false;
+        script.onload = () => resolve(src);
+        script.onerror = () => {
+            loadedScripts.delete(src);
+            reject(new Error(`Αποτυχία φόρτωσης script: ${src}`));
+        };
+        document.head.appendChild(script);
+    });
+
+    loadedScripts.set(src, promise);
+    return promise;
+}
+
+function loadLazyScript(name) {
+    const src = getLazyScriptUrls()[name];
+    if (!src) return Promise.reject(new Error(`Άγνωστο lazy script: ${name}`));
+    return loadScript(src);
+}
+
 window.App = window.App || {};
 window.App.config = {
     getFileName,
     clamp,
 };
+
+window.App.loadScript = loadScript;
+window.App.loadLazyScript = loadLazyScript;
 
 window.App.state = {
     get pageScrollY() { return pageScrollY; },

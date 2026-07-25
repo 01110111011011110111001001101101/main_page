@@ -56,6 +56,27 @@ for (const match of scriptMatches) {
   const replacement = `${match[1]}${match.groups.src}?v=${hash}${match.groups.suffix || ''}${match[5]}`;
   indexHtml = indexHtml.replace(match[0], replacement);
 }
+// Τα lazy scripts δεν έχουν <script> tag, ζουν στο JSON μητρώο #lazyScripts.
+// Χρειάζονται κι αυτά ?v=<hash>, γιατί το /assets/js/* σερβίρεται ως immutable.
+const lazyBlockPattern = /<script type="application\/json" id="lazyScripts">[\s\S]*?<\/script>/;
+const lazyBlockMatch = indexHtml.match(lazyBlockPattern);
+let lazyCount = 0;
+
+if (lazyBlockMatch) {
+  let block = lazyBlockMatch[0];
+  const references = [...new Set(block.match(/assets\/js\/[a-zA-Z0-9._-]+\.js(?:\?v=[a-f0-9]{8})?/g) || [])]
+    .sort((a, b) => b.length - a.length);
+
+  for (const reference of references) {
+    const assetPath = reference.replace(/\?v=[a-f0-9]{8}$/, '');
+    const hash = await contentHash(assetPath);
+    block = block.split(reference).join(`${assetPath}?v=${hash}`);
+    lazyCount += 1;
+  }
+
+  indexHtml = indexHtml.replace(lazyBlockMatch[0], block);
+}
+
 // Find the generated CSS bundle and update index.html
 const cssDirectory = path.join(root, 'assets/css');
 
@@ -72,4 +93,4 @@ indexHtml = indexHtml.replace(
 );
 await fs.writeFile(indexPath, indexHtml);
 
-console.log(`Stamped ${scriptMatches.length} JavaScript files and critical static assets.`);
+console.log(`Stamped ${scriptMatches.length} JavaScript files, ${lazyCount} lazy scripts and critical static assets.`);

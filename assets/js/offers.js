@@ -43,7 +43,11 @@
   }
 
   function getPrimaryAction(card) {
-    return card?.querySelector?.('.offer-actions [data-activation-guide-open], .offer-actions [data-modal-target]') || null;
+    return card?.querySelector?.([
+      '.offer-actions [data-activation-guide-open]',
+      '.offer-actions [data-modal-target]',
+      '.offer-actions a.offer-primary-cta[href]',
+    ].join(',')) || null;
   }
 
   function isInteractiveCardTarget(target, card) {
@@ -111,7 +115,9 @@
       card.dataset.mobileTitle = MOBILE_TITLES[title];
     }
 
-    actions.querySelectorAll('a[download]').forEach((link) => {
+    // Το primary CTA μπορεί να είναι <a download> (PDF). Δεν πρέπει να πάρει
+    // και το δευτερεύον styling, γιατί το .offer-download-cta το ξεπλένει.
+    actions.querySelectorAll('a[download]:not(.offer-primary-cta)').forEach((link) => {
       link.classList.add('offer-download-cta');
     });
   }
@@ -120,8 +126,18 @@
     document.querySelectorAll('[data-offer-card]').forEach(enhanceOfferCard);
   }
 
+let offerCardRevealObserver = null;
+let offerCardRevealTimer = 0;
+
 function initializeOfferCardReveal() {
     const cards = Array.from(document.querySelectorAll('[data-offer-card]'));
+
+    // Η συνάρτηση καλείται και στο init και σε κάθε re-render. Χωρίς αυτό
+    // συσσωρεύονταν observers πάνω στα ίδια στοιχεία.
+    offerCardRevealObserver?.disconnect();
+    offerCardRevealObserver = null;
+    window.clearTimeout(offerCardRevealTimer);
+
     if (!cards.length || !('IntersectionObserver' in window)) {
         cards.forEach((card) => card.classList.add('is-visible'));
         return;
@@ -138,9 +154,10 @@ function initializeOfferCardReveal() {
         });
     }, { threshold: 0.18 });
 
+    offerCardRevealObserver = observer;
     cards.forEach((card) => observer.observe(card));
 
-    window.setTimeout(() => {
+    offerCardRevealTimer = window.setTimeout(() => {
         if (cards.some((card) => card.classList.contains('is-visible'))) return;
         cards.forEach((card) => card.classList.add('is-visible'));
     }, 2400);
