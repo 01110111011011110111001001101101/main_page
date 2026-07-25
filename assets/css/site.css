@@ -11719,18 +11719,22 @@ body.office-closure-lock {
   --nk-ink: #16243d;
   --nk-ink-soft: #4a5670;
   --nk-card: #ffffff;
-  --nk-line: #e3e0d9;
+  --nk-line: #e6eaf2;
+  --nk-panel: #f7f9fc;
   --nk-action: #1f5fcc;
   --nk-seal: #1d9e75;
+  --nk-brand: #16243d;
 
+  position: relative;
   display: flex;
   flex-direction: column;
   background: var(--nk-card);
   border: 1px solid var(--nk-line);
-  border-radius: 16px;
+  border-radius: 20px;
   overflow: hidden;
   font-family: Inter, system-ui, sans-serif;
-  box-shadow: 0 10px 30px rgba(7, 26, 51, 0.07);
+  box-shadow: 0 1px 2px rgba(7, 26, 51, 0.04), 0 12px 32px rgba(7, 26, 51, 0.07);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
 /* Reset των legacy grid κανόνων που στοχεύουν [data-offer-card]. */
@@ -11742,7 +11746,8 @@ body.office-closure-lock {
   grid-template-areas: none;
   gap: 0;
   padding: 0;
-  border-radius: 16px;
+  border: 1px solid var(--nk-line);
+  border-radius: 20px;
   background: var(--nk-card);
   align-self: stretch;
   height: 100%;
@@ -11755,35 +11760,41 @@ body.office-closure-lock {
 
 #offersContainer > .new-premium-card.is-visible:hover,
 .offers-section-catalog #offersContainer > .new-premium-card.is-visible:hover {
-  transform: translateY(-3px) translateZ(0);
-  box-shadow: 0 18px 44px rgba(7, 26, 51, 0.12);
+  transform: translateY(-4px) translateZ(0);
+  box-shadow: 0 1px 2px rgba(7, 26, 51, 0.04), 0 22px 48px rgba(7, 26, 51, 0.13);
 }
 
-.new-premium-ribbon {
+/* Λεπτή χρωματιστή γραμμή παρόχου αντί για γεμάτη μπάρα. */
+.new-premium-card .new-premium-ribbon {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.6rem;
-  padding: 9px 16px;
-  color: #fff;
-  background: var(--nk-ink);
+  padding: 12px 18px 10px;
+  color: var(--nk-brand);
+  background: var(--nk-panel);
+  border-bottom: 1px solid var(--nk-line);
+  border-top: 3px solid currentColor;
 }
 
-.new-premium-ribbon-name {
-  font-size: 12.5px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+.new-premium-card .new-premium-ribbon-name {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: inherit;
 }
 
-.new-premium-ribbon-flag {
+.new-premium-card .new-premium-ribbon-flag {
   flex: 0 1 auto;
   min-width: 0;
-  font-size: 11.5px;
-  font-weight: 600;
-  padding: 2px 9px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.22);
+  background: #fff;
+  border: 1px solid var(--nk-line);
+  color: var(--nk-ink-soft);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -11793,74 +11804,83 @@ body.office-closure-lock {
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding: 16px;
+  padding: 18px;
 }
 
 /* Κεντραρισμένα: τίτλος, περιγραφή, τιμή. */
-.new-premium-head {
+.new-premium-card .new-premium-head {
   text-align: center;
-  margin-bottom: 14px;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px dashed var(--nk-line);
 }
 
+#offersContainer > .new-premium-card .new-premium-title,
 .new-premium-card .new-premium-title {
-  font-size: 20px;
-  margin: 0 0 4px;
+  grid-area: auto;
+  font-size: 19px;
+  margin: 0 0 6px;
   color: var(--nk-ink);
   font-family: "Space Grotesk", Inter, sans-serif;
   font-weight: 800;
-  line-height: 1.2;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  text-align: center;
 }
 
 .new-premium-card .new-premium-desc {
-  margin: 0 0 12px;
+  margin: 0 0 14px;
   color: var(--nk-ink-soft);
-  font-size: 14px;
+  font-size: 13.5px;
   line-height: 1.45;
 }
 
-.new-premium-price-row {
+.new-premium-card .new-premium-price-row {
   display: flex;
   align-items: baseline;
   justify-content: center;
   gap: 5px;
 }
 
-.new-premium-price-prefix,
-.new-premium-price-unit {
+.new-premium-card .new-premium-price-prefix,
+.new-premium-card .new-premium-price-unit {
   color: var(--nk-ink-soft);
-  font-size: 14.5px;
+  font-size: 14px;
+  font-weight: 600;
 }
 
-.new-premium-price-num {
+.new-premium-card .new-premium-price-num {
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.01em;
-  font-size: 34px;
+  letter-spacing: -0.02em;
+  font-size: 36px;
   font-weight: 800;
   line-height: 1.05;
   color: var(--nk-ink);
 }
 
 .new-premium-card .new-premium-price-note {
-  margin: 4px 0 0;
+  margin: 6px 0 0;
   color: var(--nk-ink-soft);
-  font-size: 12.5px;
+  font-size: 12px;
+  line-height: 1.35;
 }
 
 /* Τα οφέλη μένουν αριστερά — κεντραρισμένες λίστες διαβάζονται δύσκολα. */
 .new-premium-card .new-premium-perks {
   list-style: none;
   padding: 0;
-  margin: 0 0 16px;
+  margin: 0 0 18px;
   display: grid;
-  gap: 8px;
+  grid-template-columns: 1fr;
+  gap: 10px;
   text-align: left;
 }
 
 .new-premium-card .new-premium-perk {
   display: flex;
   align-items: flex-start;
-  gap: 9px;
-  font-size: 14.5px;
+  gap: 10px;
+  font-size: 14px;
   line-height: 1.4;
   color: var(--nk-ink-soft);
 }
@@ -11880,7 +11900,8 @@ body.office-closure-lock {
   text-align: center;
 }
 
-.new-premium-actions .new-premium-btn {
+#offersContainer > .new-premium-card .new-premium-btn,
+.new-premium-card .new-premium-actions .new-premium-btn {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -11889,7 +11910,7 @@ body.office-closure-lock {
   padding: 0 1rem;
   background: var(--nk-action);
   color: #fff !important;
-  border-radius: 12px;
+  border-radius: 14px;
   font-size: 15.5px;
   font-weight: 700;
   text-align: center;
@@ -11899,15 +11920,19 @@ body.office-closure-lock {
   cursor: pointer;
 }
 
-.new-premium-actions .new-premium-btn:active { transform: scale(0.985); }
-.new-premium-actions .new-premium-btn:hover { background: #17489b; }
+.new-premium-card .new-premium-btn:active { transform: scale(0.985); }
+.new-premium-card .new-premium-btn:hover { background: #17489b; }
 
-.new-premium-actions .new-premium-link {
+#offersContainer > .new-premium-card .new-premium-link,
+.new-premium-card .new-premium-actions .new-premium-link {
   display: inline-block;
-  margin-top: 10px;
+  width: auto;
+  min-height: 0;
+  margin-top: 12px;
   padding: 4px 6px;
   background: none;
   border: 0;
+  border-radius: 0;
   color: var(--nk-action);
   font-size: 13.5px;
   font-weight: 600;
@@ -11916,7 +11941,42 @@ body.office-closure-lock {
   cursor: pointer;
 }
 
-.new-premium-actions .new-premium-link:hover { color: #17489b; }
+.new-premium-card .new-premium-link:hover { color: #17489b; }
+
+/* --- Κινητά: πιο συμπαγές κουτί, χωρίς να πέφτει η αναγνωσιμότητα. --- */
+@media (max-width: 767px) {
+  #offersContainer > .new-premium-card,
+  .offers-section-catalog #offersContainer > .new-premium-card {
+    border-radius: 18px;
+  }
+
+  .new-premium-card .new-premium-ribbon {
+    padding: 10px 15px 9px;
+  }
+
+  .new-premium-card .new-premium-body {
+    padding: 15px;
+  }
+
+  .new-premium-card .new-premium-head {
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+  }
+
+  #offersContainer > .new-premium-card .new-premium-title,
+  .new-premium-card .new-premium-title {
+    font-size: 18px;
+  }
+
+  .new-premium-card .new-premium-price-num {
+    font-size: 32px;
+  }
+
+  .new-premium-card .new-premium-perks {
+    gap: 9px;
+    margin-bottom: 16px;
+  }
+}
 
 
 

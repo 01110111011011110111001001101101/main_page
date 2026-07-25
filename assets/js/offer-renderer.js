@@ -193,7 +193,9 @@
   // Τρία οφέλη το πολύ: πάνω από αυτό η κάρτα γίνεται τοίχος κειμένου και
   // χάνεται η σύγκριση μεταξύ των προσφορών.
   function renderBenefits(offer) {
-    const list = createElement('ul', 'offer-benefits new-premium-perks');
+    // ΠΡΟΣΟΧΗ: χωρίς την κλάση offer-benefits. Στα κινητά το legacy CSS την
+    // μετατρέπει σε 2-στηλο grid και χαλάει η νέα κάρτα.
+    const list = createElement('ul', 'new-premium-perks');
     const benefits = Array.isArray(offer.benefits) ? offer.benefits.slice(0, 3) : [];
 
     benefits.forEach((benefit) => {
@@ -214,8 +216,10 @@
 
   // Χρωματιστή κορδέλα παρόχου: δίνει ταυτότητα στην κάρτα με μια ματιά.
   function renderCardRibbon(offer) {
+    // Το χρώμα περνά ως color: η γραμμή στην κορυφή είναι currentColor και το
+    // όνομα του παρόχου κληρονομεί το ίδιο χρώμα.
     const ribbon = createElement('div', 'new-premium-ribbon');
-    ribbon.style.background = getProviderColor(offer);
+    ribbon.style.color = getProviderColor(offer);
 
     const providerLabel = offer.provider || getCategoryLabel(offer.category);
     appendTextElement(ribbon, 'span', 'new-premium-ribbon-name', providerLabel);
@@ -248,9 +252,10 @@
   }
 
   function renderCardActions(offer) {
-    // Η κλάση offer-actions διατηρείται γιατί πάνω της στηρίζονται τα
-    // enhanceOfferCard / whole-card-action του assets/js/offers.js.
-    const actions = createElement('div', 'offer-actions new-premium-actions');
+    // Χωρίς την κλάση offer-actions: όλα τα legacy κουμπί-styles κρέμονται από
+    // αυτήν και ξαναγράφουν τα νέα CTA στα κινητά. Η κλάση offer-primary-cta
+    // μένει, γιατί την διαβάζει το tracking.js για το label του event.
+    const actions = createElement('div', 'new-premium-actions');
 
     if (offer.showPrimaryCta !== false) {
       actions.appendChild(createPrimaryCta(offer));

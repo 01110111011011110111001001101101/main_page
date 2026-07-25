@@ -34,7 +34,6 @@
   }
 
   const MOBILE_NAV_QUERY = '(max-width: 767px)';
-  const HEADER_HIDE_DELTA = 6;
 
   function isMobileNavViewport() {
     return window.matchMedia?.(MOBILE_NAV_QUERY).matches ?? false;
@@ -52,29 +51,19 @@
     const triggerSection = document.getElementById('choiceHub') || document.getElementById('offers');
     if (!miniNav || !triggerSection) return;
 
-    let lastScrollY = window.scrollY;
     let ticking = false;
 
     const syncMiniNav = () => {
       const { headerHeight } = readNavigationMetrics();
-      const currentY = window.scrollY;
-      const delta = currentY - lastScrollY;
-      const mobile = isMobileNavViewport();
 
       // Το trigger point είναι η κορυφή της ενότητας "Γρήγορη εκκίνηση".
       const passedTrigger = triggerSection.getBoundingClientRect().top <= headerHeight;
 
       updateChoiceMiniNavVisibility(passedTrigger);
 
-      if (!mobile || !passedTrigger || currentY <= headerHeight) {
-        setTopNavHidden(false);
-      } else if (delta > HEADER_HIDE_DELTA) {
-        setTopNavHidden(true);
-      } else if (delta < -HEADER_HIDE_DELTA) {
-        setTopNavHidden(false);
-      }
-
-      if (Math.abs(delta) > HEADER_HIDE_DELTA) lastScrollY = currentY;
+      // Η πάνω μπάρα και το mini nav είναι αντίστροφα δεμένα: όποτε φαίνεται
+      // το ένα, κρύβεται το άλλο. Στο desktop η μπάρα μένει πάντα ορατή.
+      setTopNavHidden(isMobileNavViewport() && passedTrigger);
       ticking = false;
     };
 
@@ -86,15 +75,7 @@
 
     syncMiniNav();
     window.addEventListener('scroll', requestSync, { passive: true });
-    window.addEventListener('resize', () => {
-      lastScrollY = window.scrollY;
-      requestSync();
-    });
-
-    // Όταν ανοίγει το πλαϊνό μενού ή ένα modal, η μπάρα πρέπει να είναι ορατή.
-    document.addEventListener('click', (event) => {
-      if (event.target.closest('[data-action="toggle-sidebar"]')) setTopNavHidden(false);
-    });
+    window.addEventListener('resize', requestSync);
   }
 
   // Καλύπτει κάθε σύνδεσμο προς #contact (πλαϊνό μενού, μπάρα πληροφοριών, κάρτες).
