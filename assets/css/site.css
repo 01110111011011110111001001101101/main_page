@@ -32,52 +32,19 @@ main {
   padding-top: 2rem !important;
 }
 
-/* Hero first section */
-main > section:first-child {
-  position: relative;
-  overflow: hidden;
-  color: white;
-  background:
-    radial-gradient(circle at 12% 18%, rgba(96, 165, 250, 0.35), transparent 25rem),
-    radial-gradient(circle at 92% 18%, rgba(215, 35, 47, 0.18), transparent 22rem),
-    linear-gradient(135deg, #020617 0%, #071a33 46%, #0f2b5c 100%) !important;
-  border: 0 !important;
-  border-radius: 36px !important;
-  padding: clamp(1.6rem, 5vw, 4.2rem) !important;
-  box-shadow: 0 28px 80px rgba(7, 26, 51, 0.22) !important;
-}
+/* ΑΦΑΙΡΕΘΗΚΕ: main > section:first-child (σκούρο φόντο, padding έως 4.2rem,
+   border-radius 36px, όλα με !important) και το ::after με το πλέγμα.
+   Στόχευαν το <section> του hero από παλιότερο σχεδιασμό και τύλιγαν το
+   .police-hero__shell μέσα σε ένα δεύτερο, σκούρο κουτί — γι' αυτό το hero
+   έδειχνε τεράστιο και δεν χωρούσε στην πρώτη οθόνη.
+   Η εμφάνιση του hero ορίζεται πλέον αποκλειστικά στους .police-hero__* κανόνες. */
 
-main > section:first-child::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.35;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-  background-size: 34px 34px;
-}
-
-main > section:first-child > * {
-  position: relative;
-  z-index: 1;
-}
-
-main > section:first-child h1 {
-  color: white !important;
-  font-size: clamp(2.25rem, 5.3vw, 4.9rem) !important;
-  line-height: 0.95 !important;
-  letter-spacing: -0.055em !important;
-  max-width: 900px;
-}
-
-main > section:first-child p {
-  color: rgba(226, 232, 240, 0.92) !important;
-  max-width: 780px;
-  font-size: clamp(1rem, 1.4vw, 1.16rem) !important;
-  line-height: 1.75 !important;
-}
+/* ΑΦΑΙΡΕΘΗΚΕ: main > section:first-child h1 / p
+   Έβαζαν με !important λευκό χρώμα και font-size έως 4.9rem (78px) σε ΚΑΘΕ h1
+   της πρώτης ενότητας — δηλαδή στον τίτλο του hero. Γράφτηκαν για το παλιό
+   σκούρο hero με τεράστιο slogan. Με τον νέο, μακρύ και κεντραρισμένο τίτλο
+   πάνω σε φωτεινό φόντο, ο κανόνας τον έκανε δυσανάγνωστο και δυσανάλογο.
+   Τα μεγέθη ορίζονται πλέον στους κανόνες .police-hero__title. */
 
 /* All white sections */
 main > section:not(:first-child) {
@@ -162,15 +129,7 @@ a.rounded-full:hover {
     display: none;
   }
 
-  main > section:first-child {
-    border-radius: 24px !important;
-    padding: 1.35rem !important;
-  }
-
-  main > section:first-child h1 {
-    font-size: 2.15rem !important;
-    line-height: 1.02 !important;
-  }
+  /* ΑΦΑΙΡΕΘΗΚΕ μαζί με τους αντίστοιχους desktop κανόνες του hero section. */
 
   main > section:not(:first-child) {
     border-radius: 24px !important;
@@ -11650,12 +11609,19 @@ body.hero-intro-ready .police-hero .police-hero__logo {
     margin-bottom: 0.3rem;
   }
 
+  .police-hero .police-hero__copy {
+    /* Χωρίς όριο πλάτους ο τίτλος απλώνεται σε όλη την οθόνη και φαίνεται
+       δυσανάλογος μόλις ολοκληρωθεί το γράψιμο. */
+    max-width: 40rem;
+  }
+
   .police-hero .police-hero__title,
   body.hero-intro-ready .police-hero .police-hero__title {
-    font-size: clamp(1.1rem, 1.9vw, 1.45rem);
-    line-height: 1.22;
+    font-size: clamp(0.98rem, 1.4vw, 1.18rem);
+    line-height: 1.3;
+    font-weight: 700;
     /* Δεσμεύει χώρο για δύο γραμμές όσο γράφεται ο τίτλος (αποφυγή CLS). */
-    min-height: 2.44em;
+    min-height: 2.6em;
   }
 
   .police-hero .announcement-ticker__track {
