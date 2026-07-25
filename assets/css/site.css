@@ -11562,3 +11562,104 @@ body.hero-intro-ready .police-hero .police-hero__logo {
     gap: 0.15rem;
   }
 }
+
+/* =========================================================
+   HERO — φωτεινή παλέτα, βασισμένη στο teal της πάνω μπάρας
+   (#0e7490). Πριν ήταν σκούρο navy· το έμβλημα είναι σκούρο
+   μπλε, οπότε χρειάζεται ανοιχτό φόντο για αντίθεση.
+   Μπαίνει στο τέλος για να υπερισχύει των παλιών κανόνων.
+   ========================================================= */
+.police-hero {
+  --hero-ink: #0b3a45;
+  --hero-ink-soft: #3d6b76;
+  --hero-line: #a7d5de;
+  --hero-seal: #b3892f;
+  color: var(--hero-ink);
+}
+
+.police-hero .police-hero__shell,
+body.hero-intro-ready .police-hero .police-hero__shell {
+  background:
+    linear-gradient(rgba(14, 116, 144, 0.07) 1px, transparent 1px) 0 0 / 46px 46px,
+    linear-gradient(90deg, rgba(14, 116, 144, 0.07) 1px, transparent 1px) 0 0 / 46px 46px,
+    radial-gradient(circle at 14% 12%, rgba(255, 255, 255, 0.9), transparent 42%),
+    linear-gradient(150deg, #e8f7fa 0%, #cfeef4 55%, #b9e4ee 100%);
+  border: 1px solid var(--hero-line);
+  box-shadow: 0 18px 46px rgba(11, 58, 69, 0.14);
+}
+
+.police-hero .police-hero__shell::before,
+.police-hero .police-hero__shell::after {
+  content: none;
+}
+
+.police-hero .police-hero__copy {
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 10px 30px rgba(11, 58, 69, 0.08);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.police-hero .police-hero__copy::before {
+  border-top-color: rgba(179, 137, 47, 0.55);
+}
+
+.police-hero .police-hero__title,
+body.hero-intro-ready .police-hero .police-hero__title {
+  color: var(--hero-ink);
+}
+
+.police-hero .police-hero__logo,
+body.hero-intro-ready .police-hero .police-hero__logo {
+  filter: drop-shadow(0 10px 18px rgba(11, 58, 69, 0.18));
+}
+
+/* Η λωρίδα ανακοίνωσης κρατά το teal της μπάρας ως σημείο σύνδεσης. */
+.police-hero .announcement-ticker {
+  background: rgba(14, 116, 144, 0.94);
+  border-top: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.police-hero .announcement-ticker__track {
+  color: #ffffff;
+}
+
+/* =========================================================
+   HERO — συμπαγές ύψος στον υπολογιστή, ώστε να χωράει μαζί
+   με τη "Γρήγορη εκκίνηση" στην πρώτη οθόνη.
+   Στόχος: ~320px συνολικό ύψος αντί για ~460px.
+   ΠΡΟΣΟΧΗ: οι ίδιες τιμές υπάρχουν και στο critical.css.
+   ========================================================= */
+@media (min-width: 768px) {
+  .police-hero .police-hero__shell,
+  body.hero-intro-ready .police-hero .police-hero__shell {
+    /* Το bottom padding κρατά χώρο για τη λωρίδα ανακοίνωσης. */
+    padding: 1rem 1rem 3.1rem !important;
+    border-radius: 20px;
+  }
+
+  .police-hero .police-hero__copy {
+    padding: 0.95rem 1.25rem;
+    border-radius: 16px;
+  }
+
+  .police-hero .police-hero__logo,
+  body.hero-intro-ready .police-hero .police-hero__logo {
+    width: clamp(96px, 9vw, 128px);
+    margin-bottom: 0.3rem;
+  }
+
+  .police-hero .police-hero__title,
+  body.hero-intro-ready .police-hero .police-hero__title {
+    font-size: clamp(1.1rem, 1.9vw, 1.45rem);
+    line-height: 1.22;
+    /* Δεσμεύει χώρο για δύο γραμμές όσο γράφεται ο τίτλος (αποφυγή CLS). */
+    min-height: 2.44em;
+  }
+
+  .police-hero .announcement-ticker__track {
+    min-height: 2.2rem;
+    padding: 0.35rem 0.9rem;
+  }
+}

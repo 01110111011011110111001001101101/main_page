@@ -98,7 +98,8 @@ test('το mini nav παίρνει hidden attribute όταν δεν φαίνετ
   assert.equal(miniNav.hidden, true);
 });
 
-const TITLE = 'Προσφορές κινητής και internet για τα μέλη μας';
+// Κρατιέται συγχρονισμένο με τον h1 του index.html.
+const TITLE = 'Προμηθευτικός και Καταναλωτικός Συνεταιρισμός Αστυνομικών Αττικής';
 const HERO = `<body><h1 class="police-hero__title" data-typewriter>${TITLE}</h1></body>`;
 
 function createHeroPage(reducedMotion) {

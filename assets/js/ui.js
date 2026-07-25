@@ -10,8 +10,18 @@
   // (SEO) και περνά ως aria-label ώστε οι αναγνώστες οθόνης να το ακούν
   // ολόκληρο αντί για γράμμα-γράμμα. Χωρίς JS ή με reduced-motion, ο τίτλος
   // απλώς εμφανίζεται κανονικά.
-  const TYPEWRITER_CHAR_MS = 45;
+  // Ο ρυθμός προσαρμόζεται στο μήκος: ένας μακρύς τίτλος με σταθερά 45ms/χαρακτήρα
+  // θα κρατούσε πάνω από 2,5 δευτερόλεπτα, που είναι κουραστικό.
+  const TYPEWRITER_TOTAL_MS = 1700;
+  const TYPEWRITER_MIN_CHAR_MS = 16;
+  const TYPEWRITER_MAX_CHAR_MS = 45;
   const TYPEWRITER_START_MS = 260;
+
+  function getTypewriterCharDelay(length) {
+    if (!length) return TYPEWRITER_MAX_CHAR_MS;
+    const delay = TYPEWRITER_TOTAL_MS / length;
+    return Math.min(TYPEWRITER_MAX_CHAR_MS, Math.max(TYPEWRITER_MIN_CHAR_MS, delay));
+  }
 
   function runTypewriter(element) {
     const fullText = (element.textContent || '').trim();
@@ -30,13 +40,15 @@
     element.append(text, caret);
     element.classList.add('is-typing');
 
+    const charDelay = getTypewriterCharDelay(fullText.length);
     let index = 0;
+
     const step = () => {
       text.textContent = fullText.slice(0, index);
       index += 1;
 
       if (index <= fullText.length) {
-        window.setTimeout(step, TYPEWRITER_CHAR_MS);
+        window.setTimeout(step, charDelay);
         return;
       }
 
