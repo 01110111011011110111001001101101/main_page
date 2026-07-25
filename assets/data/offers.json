@@ -19,22 +19,6 @@
         "Μεταφορά υπολοίπου δεδομένων στον επόμενο μήνα",
         "προσθήκη 300 GB κάθε μήνα"
       ],
-      "style": {
-        "cardClasses": [
-          "offer-card-mobile",
-          "offer-card-mobile-vodafone",
-          "offer-card--glass",
-          "offer-card--police-blue",
-          "offer-card--recommended",
-          "offer-card--vodafone-mobile"
-        ],
-        "priceClasses": [
-          "offer-price",
-          "offer-card__price-panel"
-        ]
-      },
-      "brandSkin": "vodafone-mobile",
-      "isRecommended": true,
       "ctaPrimaryText": "Οδηγός ενεργοποίησης",
       "ctaSecondaryText": "Περισσότερα",
       "ctaType": "activation-guide",
@@ -169,23 +153,6 @@
         "Απεριόριστη ομιλία προς όλους σταθερά και κινητά",
         "300 sms"
       ],
-      "style": {
-        "cardClasses": [
-          "offer-card-mobile",
-          "offer-card-mobile-nova",
-          "offer-card--glass",
-          "offer-card--police-blue",
-          "offer-card--recommended",
-          "offer-card--q-mobile"
-        ],
-        "priceClasses": [
-          "offer-price",
-          "nova-q-price",
-          "offer-card__price-panel"
-        ]
-      },
-      "brandSkin": "q-mobile",
-      "isRecommended": true,
       "ctaPrimaryText": "Οδηγός ενεργοποίησης",
       "ctaSecondaryText": "Περισσότερα",
       "ctaType": "activation-guide",
@@ -314,21 +281,6 @@
         "2 μήνες δωρεάν σε FTTH",
         "Δωρεάν router Wi-Fi"
       ],
-      "style": {
-        "cardClasses": [
-          "offer-card-internet",
-          "offer-card--glass",
-          "offer-card--police-blue",
-          "offer-card--vodafone-fixed"
-        ],
-        "priceClasses": [
-          "offer-price",
-          "offer-card__price-panel",
-          "offer-card__price-panel--monthly"
-        ]
-      },
-      "brandSkin": "vodafone-fixed",
-      "isRecommended": false,
       "ctaPrimaryText": "Με ενδιαφέρει",
       "ctaSecondaryText": "Περισσότερα",
       "ctaType": "modal",
@@ -449,21 +401,6 @@
         "Βήματα για αίτηση και αποστολή",
         "Υποστήριξη από τον Συνεταιρισμό"
       ],
-      "style": {
-        "cardClasses": [
-          "offer-card-internet",
-          "offer-card--glass",
-          "offer-card--police-blue",
-          "offer-card--nova-5g"
-        ],
-        "priceClasses": [
-          "offer-price",
-          "offer-card__price-panel",
-          "offer-card__price-panel--monthly"
-        ]
-      },
-      "brandSkin": "nova-5g",
-      "isRecommended": false,
       "ctaPrimaryText": "Με ενδιαφέρει",
       "ctaSecondaryText": "Περισσότερα",
       "ctaType": "modal",
@@ -555,6 +492,39 @@
       }
     },
     {
+      "id": "nova-fiber-optic",
+      "active": true,
+      "sortOrder": 60,
+      "provider": "Nova",
+      "title": "Nova οπτική ίνα",
+      "cardOfferName": "Nova optic fiber",
+      "category": "internet",
+      "badge": "ταχύτητα 100 fpps",
+      "shortDescription": "Οπτική ίνα απά την Nova",
+      "price": "17,90€",
+      "period": "μήνα",
+      "pricing": {
+        "prefix": "",
+        "amount": "17,90€",
+        "unit": "/ μήνα",
+        "note": "Τιμή με ΦΠΑ"
+      },
+      "benefits": [
+        "50 GB δεδομένα κάθε μήνα",
+        "Απεριόριστη ομιλία προς όλους",
+        "Χωρίς δέσμευση"
+      ],
+      "ctaPrimaryText": "Με ενδιαφέρει",
+      "ctaSecondaryText": "Περισσότερα",
+      "ctaType": "modal",
+      "modalId": "internetChoiceModal",
+      "actionTarget": {
+        "track": "offer_interest_click",
+        "offer": "Cosmote Κινητή",
+        "category": "mobile"
+      }
+    },
+    {
       "id": "eon-cosmote-tv",
       "provider": "EON / Cosmote TV",
       "title": "EON + Cosmote TV",
@@ -571,21 +541,6 @@
         "Euroleague, Super League και premium περιεχόμενο",
         "Οδηγίες για υπογραφή μέσω GOV.gr"
       ],
-      "style": {
-        "cardClasses": [
-          "offer-card-tv",
-          "offer-card--glass",
-          "offer-card--police-blue",
-          "offer-card--tv-combo"
-        ],
-        "priceClasses": [
-          "offer-price",
-          "offer-card__price-panel",
-          "offer-card__price-panel--monthly"
-        ]
-      },
-      "brandSkin": "tv-combo",
-      "isRecommended": false,
       "ctaPrimaryText": "Με ενδιαφέρει",
       "ctaSecondaryText": "Περισσότερα",
       "ctaType": "modal",

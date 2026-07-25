@@ -15,9 +15,11 @@
     "lint": "eslint assets/js scripts tools eslint.config.mjs",
     "audit:coverage": "node ./tools/dead-code-audit.mjs --coverage-only",
     "audit:dead-code": "node ./tools/dead-code-audit.mjs",
-    "check": "node ./scripts/check-tailwind-build.mjs && html-validate index.html && node ./scripts/check-javascript.mjs && node ./scripts/check-repo-clean.mjs && node ./scripts/check-static-assets.mjs && node ./scripts/check-performance-assets.mjs",
+    "check": "node ./scripts/check-tailwind-build.mjs && html-validate index.html && node ./scripts/check-javascript.mjs && node ./scripts/check-repo-clean.mjs && node ./scripts/check-static-assets.mjs && node ./scripts/check-performance-assets.mjs && npm test",
     "prebuild": "node ./scripts/write-site-version.mjs",
-    "test:smoke": "node ./tools/smoke-test.mjs"
+    "test:smoke": "node ./tools/smoke-test.mjs",
+    "test": "node --test \"tests/**/*.test.mjs\"",
+    "audit:css": "node ./tools/strip-dead-css.mjs --check"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

@@ -6,6 +6,60 @@
     return window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   }
 
+  // Γράφει τον τίτλο χαρακτήρα-χαρακτήρα. Το πλήρες κείμενο μένει στο HTML
+  // (SEO) και περνά ως aria-label ώστε οι αναγνώστες οθόνης να το ακούν
+  // ολόκληρο αντί για γράμμα-γράμμα. Χωρίς JS ή με reduced-motion, ο τίτλος
+  // απλώς εμφανίζεται κανονικά.
+  const TYPEWRITER_CHAR_MS = 45;
+  const TYPEWRITER_START_MS = 260;
+
+  function runTypewriter(element) {
+    const fullText = (element.textContent || '').trim();
+    if (!fullText) return;
+
+    element.setAttribute('aria-label', fullText);
+
+    const text = document.createElement('span');
+    text.className = 'typewriter-text';
+
+    const caret = document.createElement('span');
+    caret.className = 'typewriter-caret';
+    caret.setAttribute('aria-hidden', 'true');
+
+    element.textContent = '';
+    element.append(text, caret);
+    element.classList.add('is-typing');
+
+    let index = 0;
+    const step = () => {
+      text.textContent = fullText.slice(0, index);
+      index += 1;
+
+      if (index <= fullText.length) {
+        window.setTimeout(step, TYPEWRITER_CHAR_MS);
+        return;
+      }
+
+      element.classList.remove('is-typing');
+      element.classList.add('is-typed');
+    };
+
+    window.setTimeout(step, TYPEWRITER_START_MS);
+  }
+
+  function initializeTypewriters() {
+    const targets = Array.from(document.querySelectorAll('[data-typewriter]'));
+    if (!targets.length) return;
+
+    // Με prefers-reduced-motion δεν παίζει καθόλου animation.
+    if (prefersReducedMotion()) {
+      targets.forEach((element) => element.classList.add('is-typed'));
+      return;
+    }
+
+    targets.forEach(runTypewriter);
+  }
+
   function readNavigationMetrics() {
     const header = document.querySelector('.site-top-nav');
     const miniNav = document.querySelector('[data-choice-mini-nav]');
@@ -51,8 +105,6 @@
     const triggerSection = document.getElementById('choiceHub') || document.getElementById('offers');
     if (!miniNav || !triggerSection) return;
 
-    let ticking = false;
-
     const syncMiniNav = () => {
       const { headerHeight } = readNavigationMetrics();
 
@@ -64,18 +116,18 @@
       // Η πάνω μπάρα και το mini nav είναι αντίστροφα δεμένα: όποτε φαίνεται
       // το ένα, κρύβεται το άλλο. Στο desktop η μπάρα μένει πάντα ορατή.
       setTopNavHidden(isMobileNavViewport() && passedTrigger);
-      ticking = false;
-    };
-
-    const requestSync = () => {
-      if (ticking) return;
-      ticking = true;
-      window.requestAnimationFrame(syncMiniNav);
     };
 
     syncMiniNav();
-    window.addEventListener('scroll', requestSync, { passive: true });
-    window.addEventListener('resize', requestSync);
+
+    if (window.App?.scroll?.subscribe) {
+      window.App.scroll.subscribe(syncMiniNav);
+      return;
+    }
+
+    // Fallback αν φορτωθεί το ui.js χωρίς τον scroll-coordinator (π.χ. σε test).
+    window.addEventListener('scroll', syncMiniNav, { passive: true });
+    window.addEventListener('resize', syncMiniNav);
   }
 
   // Καλύπτει κάθε σύνδεσμο προς #contact (πλαϊνό μενού, μπάρα πληροφοριών, κάρτες).
@@ -291,8 +343,12 @@ function initializeHeroIntroNavigation() {
         if (listenersBound) return;
         listenersBound = true;
 
-        window.addEventListener('scroll', syncHeroIntroNavigationState, { passive: true });
-        window.addEventListener('resize', syncHeroIntroNavigationState, { passive: true });
+        if (window.App?.scroll?.subscribe) {
+            window.App.scroll.subscribe(syncHeroIntroNavigationState);
+        } else {
+            window.addEventListener('scroll', syncHeroIntroNavigationState, { passive: true });
+            window.addEventListener('resize', syncHeroIntroNavigationState, { passive: true });
+        }
         window.addEventListener('hashchange', syncHeroIntroNavigationState);
 
         if (typeof HERO_INTRO_DESKTOP_QUERY.addEventListener === 'function') {
@@ -320,9 +376,13 @@ function handleCookieConsent(action) {
     if (!banner) return;
 
     if (action === 'accept') {
+        // Το localStorage πετάει σε private mode ή με μπλοκαρισμένα cookies.
+        // Η επιλογή τότε δεν θυμάται, αλλά η σελίδα πρέπει να συνεχίσει κανονικά.
         try {
             localStorage.setItem('cookieConsent', 'accepted');
-        } catch (_e) {}
+        } catch (_error) {
+            console.warn('Η προτίμηση cookies δεν αποθηκεύτηκε: το localStorage δεν είναι διαθέσιμο.');
+        }
 
         // ΑΣΦΑΛΕΙΑ: Εκτέλεση ΜΟΝΟ αν το tracking script είναι διαθέσιμο
         if (typeof window.loadAllTracking === 'function') {
@@ -341,9 +401,12 @@ function handleCookieConsent(action) {
             showToast('Οι προτιμήσεις αποθηκεύτηκαν', 'success');
         }
     } else {
+        // Βλέπε παραπάνω: αποτυχία localStorage δεν είναι λόγος να σπάσει η ροή.
         try {
             localStorage.setItem('cookieConsent', 'rejected');
-        } catch (_e) {}
+        } catch (_error) {
+            console.warn('Η προτίμηση cookies δεν αποθηκεύτηκε: το localStorage δεν είναι διαθέσιμο.');
+        }
         
         if (typeof showToast === 'function') {
             showToast('Τα cookies απορρίφθηκαν', 'info');
@@ -775,6 +838,7 @@ function initializeUi() {
     uiInitialized = true;
 
     initializeHeroIntroNavigation();
+    initializeTypewriters();
     initializeChoiceMiniNav();
     initializeBottomNavOffersState();
     initializePremiumMenuActiveState();

@@ -56,29 +56,16 @@
   }
 })();
 
+// Η κλάση .is-scrolled στην πάνω μπάρα. Η απόκρυψη/εμφάνιση της ίδιας μπάρας
+// ζει στο ui.js (site-top-nav-hidden) — εδώ μένει μόνο η οπτική κατάσταση
+// «έχει γίνει scroll», ώστε να υπάρχει ένας ιδιοκτήτης ανά συμπεριφορά.
 document.addEventListener('DOMContentLoaded', () => {
-  // Βρίσκουμε το κεντρικό navigation bar
   const topNav = document.querySelector('.site-top-nav');
-  
   if (!topNav) return;
 
-  // Ορίζουμε από πόσα pixels scroll και κάτω θα εμφανίζεται το nav
-  // π.χ. μετά από 50px
-  const scrollThreshold = 50; 
+  const SCROLL_THRESHOLD = 50;
 
-  const handleScroll = () => {
-    // Ελέγχουμε την κάθετη θέση του scroll
-    if (window.scrollY > scrollThreshold) {
-      topNav.classList.add('is-scrolled');
-    } else {
-      topNav.classList.remove('is-scrolled');
-    }
-  };
-
-  // 1. Τρέχουμε τη συνάρτηση μία φορά κατά τη φόρτωση 
-  // (για την περίπτωση που ο χρήστης έκανε refresh στη μέση της σελίδας)
-  handleScroll();
-
-  // 2. Ακούμε το scroll event. Το passive: true είναι κρίσιμο για 60fps performance!
-  window.addEventListener('scroll', handleScroll, { passive: true });
+  window.App?.scroll?.subscribe(({ scrollY }) => {
+    topNav.classList.toggle('is-scrolled', scrollY > SCROLL_THRESHOLD);
+  });
 });

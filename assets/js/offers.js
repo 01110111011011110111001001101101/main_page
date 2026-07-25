@@ -86,15 +86,13 @@
     openOfferFromCard(card);
   }
 
-  function makeOfferCardWholeClickTarget(card, primaryAction) {
+  // Οι κάρτες που θέτουν μόνες τους wholeCardAction="true" (π.χ. οι νέες
+  // .new-premium-card) εξαιρούνται σκόπιμα: το σώμα τους είναι αναγνώσιμο
+  // κείμενο και ένα tap δεν πρέπει να ανοίγει modal.
+  function makeOfferCardWholeClickTarget(card) {
     if (card.dataset.wholeCardAction === 'true') return;
 
     card.dataset.wholeCardAction = 'true';
-
-    if (primaryAction.dataset.modalTarget) {
-      card.dataset.cardModalTarget = primaryAction.dataset.modalTarget;
-    }
-
     card.addEventListener('click', handleOfferCardClick);
   }
 
@@ -104,7 +102,7 @@
     if (!actions || !primaryAction) return;
 
     primaryAction.classList.add('offer-primary-cta');
-    makeOfferCardWholeClickTarget(card, primaryAction);
+    makeOfferCardWholeClickTarget(card);
     actions.classList.remove('offer-actions--card-trigger');
     actions.hidden = false;
     actions.removeAttribute('hidden');

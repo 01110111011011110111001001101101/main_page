@@ -22,11 +22,11 @@
     nova: '#0a2896',
     cosmote: '#7ac143',
     wind: '#0067b1',
-    'eon / cosmote tv': '#5c2d91',
-    eon: '#5c2d91',
-    q: '#0a2896',
+    'eon / cosmote tv': '#089414',
+    eon: '#069266',
+    q: '#ff8d13',
   });
-  const DEFAULT_PROVIDER_COLOR = '#16243d';
+  const DEFAULT_PROVIDER_COLOR = '#fff586';
 
   // Ζητούμενες αντικαταστάσεις κειμένου στα CTA της νέας κάρτας.
   const CTA_TEXT_OVERRIDES = Object.freeze({
@@ -287,7 +287,6 @@
     card.dataset.offer = getCardOfferName(offer);
     card.dataset.category = offer.category || 'other';
     card.dataset.provider = offer.provider || '';
-    if (offer.brandSkin) card.dataset.brandSkin = offer.brandSkin;
 
     // Το σώμα της κάρτας είναι αναγνώσιμο περιεχόμενο. Το flag κάνει το
     // enhanceOfferCard του offers.js να ΜΗΝ δέσει whole-card click, ώστε ένα

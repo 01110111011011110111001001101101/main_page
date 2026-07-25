@@ -19,6 +19,7 @@ const indexPath = path.join(root, 'index.html');
  */
 const EAGER_SCRIPTS = [
   'config.js',
+  'scroll-coordinator.js',
   'clipboard.js',
   'image-preview.js',
   'ui.js',

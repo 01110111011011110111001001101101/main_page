@@ -662,15 +662,20 @@ function initializeBehaviorAnalytics() {
         document.addEventListener(eventName, listener, options);
     });
 
-    window.addEventListener('scroll', () => {
+    // Ένας κοινός scroll listener για όλη τη σελίδα (assets/js/scroll-coordinator.js)
+    // αντί για ξεχωριστό εδώ: ο coordinator τρέχει ήδη μέσα σε rAF.
+    const onScrollOrResize = () => {
         markAnalyticsActivity();
-        window.requestAnimationFrame(checkScrollDepth);
-        window.requestAnimationFrame(refreshVisibleSections);
-    }, { passive: true });
-    window.addEventListener('resize', () => {
         checkScrollDepth();
         refreshVisibleSections();
-    }, { passive: true });
+    };
+
+    if (window.App?.scroll?.subscribe) {
+        window.App.scroll.subscribe(onScrollOrResize);
+    } else {
+        window.addEventListener('scroll', onScrollOrResize, { passive: true });
+        window.addEventListener('resize', onScrollOrResize, { passive: true });
+    }
     document.addEventListener('visibilitychange', handleBehaviorVisibilityChange);
     window.addEventListener('pagehide', () => {
         flushActiveTime('pagehide', { force: true, beacon: true });
