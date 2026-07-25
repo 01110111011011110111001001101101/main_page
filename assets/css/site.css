@@ -11629,3 +11629,432 @@ body.hero-intro-ready .police-hero .police-hero__logo {
     padding: 0.35rem 0.9rem;
   }
 }
+
+/* =========================================================
+   ΕΠΙΚΟΙΝΩΝΙΑ — αναδιάταξη καρτών.
+   Πριν: εικονίδιο 1.25rem πάνω αριστερά, τιμή, ετικέτα από κάτω,
+   με min-height 8.5rem και space-between που άφηνε μεγάλα κενά.
+   Τώρα: εικονίδιο σε κύκλο, ετικέτα από πάνω, τιμή ως ήρωας,
+   και ρητή ενέργεια κάτω. Όλη η κάρτα είναι σύνδεσμος.
+   Στο τέλος του αρχείου για να υπερισχύει των παλιών κανόνων.
+   ========================================================= */
+.contact-section .contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 0.85rem;
+}
+
+.contact-section .contact-card {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto auto auto;
+  justify-items: start;
+  gap: 0.3rem;
+  min-height: 0;
+  padding: 1.05rem 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: #ffffff;
+  color: var(--primary);
+  text-decoration: none;
+  box-shadow: 0 1px 2px rgba(7, 26, 51, 0.04);
+  transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+}
+
+.contact-section .contact-card:hover,
+.contact-section .contact-card:focus-visible {
+  transform: translateY(-3px);
+  border-color: #1f5fcc;
+  box-shadow: 0 14px 32px rgba(7, 26, 51, 0.12);
+}
+
+.contact-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  margin-bottom: 0.45rem;
+  border-radius: 50%;
+  background: #e8f2fd;
+  color: #1f5fcc;
+}
+
+.contact-section .contact-card__icon .icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  font-size: 1.15rem;
+}
+
+.contact-card__label {
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.contact-section .contact-card__value {
+  font-size: 1.28rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  word-break: normal;
+}
+
+/* Το email είναι μακρύ: μικρότερο και με σπάσιμο μόνο όπου χρειάζεται. */
+.contact-section .contact-card__value--email {
+  font-size: 1rem;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+}
+
+.contact-card__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+  margin-top: 0.5rem;
+  color: #1f5fcc;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.contact-section .contact-card__action .icon {
+  width: 0.85rem;
+  height: 0.85rem;
+  transition: transform 0.16s ease;
+}
+
+.contact-section .contact-card:hover .contact-card__action .icon {
+  transform: translateX(3px);
+}
+
+/* Λωρίδα διεύθυνσης κάτω από τις κάρτες. */
+.contact-section .contact-address {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: 0.85rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: #f7f9fc;
+  color: var(--primary);
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: border-color 0.16s ease, background-color 0.16s ease;
+}
+
+.contact-section .contact-address:hover {
+  border-color: #1f5fcc;
+  background: #ffffff;
+}
+
+.contact-section .contact-address > .icon {
+  flex: 0 0 auto;
+  width: 1.1rem;
+  height: 1.1rem;
+  color: #1d9e75;
+}
+
+.contact-section .contact-address > span:first-of-type {
+  flex: 1;
+  min-width: 0;
+}
+
+.contact-address__action {
+  flex: 0 0 auto;
+  color: #1f5fcc;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+@media (max-width: 767px) {
+  .contact-section .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+  }
+
+  .contact-section .contact-card {
+    padding: 0.9rem 1rem;
+  }
+
+  .contact-section .contact-card__value {
+    font-size: 1.18rem;
+  }
+
+  .contact-section .contact-address {
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+  }
+}
+
+/* =========================================================
+   ΠΛΗΡΟΦΟΡΙΕΣ (site legal bar) — ξεκάθαρη ιεραρχία.
+   Πριν: τρία ισοδύναμα κουμπιά με μόνο μία λέξη το καθένα και
+   κεφαλίδα χωρίς δικό της styling (.site-info-panel-header δεν
+   είχε κανόνα). Τώρα: κεφαλίδα αριστερά, ενέργειες δεξιά σε
+   δύο στήλες στο desktop, κάθε ενέργεια με εικονίδιο σε κύκλο,
+   τίτλο και επεξήγηση.
+   ========================================================= */
+.site-info-shell .site-info-panel {
+  padding: 1.35rem 1.4rem;
+  border-radius: 22px;
+}
+
+.site-info-panel-header {
+  max-width: 34rem;
+}
+
+.site-info-shell .site-info-panel h2 {
+  margin-top: 0.65rem;
+  font-size: clamp(1.2rem, 1.8vw, 1.5rem);
+  letter-spacing: -0.02em;
+}
+
+.site-info-shell .site-info-panel p {
+  margin-top: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.site-info-shell .site-info-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 0.6rem;
+  margin-top: 1.15rem;
+}
+
+.site-info-shell .site-info-actions button,
+.site-info-shell .site-info-actions a {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.7rem;
+  min-height: 3.6rem;
+  padding: 0.7rem 0.85rem;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: #ffffff;
+  text-align: left;
+  font-weight: 700;
+  box-shadow: 0 1px 2px rgba(7, 26, 51, 0.04);
+}
+
+.site-info-shell .site-info-actions button:hover,
+.site-info-shell .site-info-actions a:hover {
+  border-color: #1f5fcc;
+  box-shadow: 0 12px 26px rgba(7, 26, 51, 0.1);
+}
+
+.site-info-actions__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 2.3rem;
+  height: 2.3rem;
+  border-radius: 50%;
+  background: #e8f2fd;
+  color: #1f5fcc;
+}
+
+.site-info-shell .site-info-actions__icon .icon {
+  width: 1.05rem;
+  height: 1.05rem;
+  font-size: 1.05rem;
+}
+
+.site-info-actions__text {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+
+.site-info-actions__text strong {
+  font-size: 0.94rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--primary);
+}
+
+.site-info-actions__text small {
+  color: var(--text-muted);
+  font-size: 0.76rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.site-info-shell .site-info-copyright {
+  margin-top: 1.1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  max-width: none;
+}
+
+/* Desktop: κεφαλίδα αριστερά, ενέργειες δεξιά — πιο συμπαγές πάνελ. */
+@media (min-width: 900px) {
+  .site-info-shell .site-info-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    grid-template-areas:
+      "header actions"
+      "copyright copyright";
+    align-items: center;
+    column-gap: 2rem;
+    max-width: 1000px;
+  }
+
+  .site-info-panel-header { grid-area: header; }
+
+  .site-info-shell .site-info-actions {
+    grid-area: actions;
+    grid-template-columns: 1fr;
+    margin-top: 0;
+  }
+
+  .site-info-shell .site-info-copyright {
+    grid-area: copyright;
+  }
+}
+
+@media (max-width: 767px) {
+  .site-info-shell .site-info-panel {
+    padding: 1.1rem;
+    border-radius: 18px;
+  }
+
+  .site-info-shell .site-info-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   ΜΠΑΡΑ: ΚΟΙΝΟΤΗΤΑ VIBER στη μέση (μόνο κινητά)
+   Το λογότυπο μένει μόνο στον υπολογιστή.
+   ========================================================= */
+.site-top-nav .top-viber {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .site-top-nav .top-brand {
+    display: none !important;
+  }
+
+  .site-top-nav .top-viber {
+    grid-column: 2 !important;
+    justify-self: center !important;
+    display: inline-flex !important;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 40px;
+    max-width: 100%;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 999px;
+    /* Επίσημο μωβ του Viber. */
+    background: #7360f2;
+    color: #ffffff;
+    font-size: 0.82rem;
+    font-weight: 800;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: 0 6px 16px rgba(115, 96, 242, 0.32);
+    transition: transform 0.12s ease, background-color 0.15s ease;
+  }
+
+  .site-top-nav .top-viber:active {
+    transform: scale(0.97);
+    background: #5f4de0;
+  }
+
+  .site-top-nav .top-viber .icon {
+    width: 1.05rem;
+    height: 1.05rem;
+    flex: 0 0 auto;
+  }
+}
+
+@media (min-width: 768px) {
+  .site-top-nav .top-viber {
+    display: none !important;
+  }
+}
+
+/* =========================================================
+   ΜΕΝΟΥ: τα τρία κουμπιά στον πάτο.
+   Πριν: email μπλε με γαλάζιο περίγραμμα και radius 12px,
+   τηλέφωνο πράσινο με radius 20px, χάρτης χωρίς κανένα στιλ.
+   Τώρα: ίδιο σχήμα, τρία σαφή σημασιολογικά χρώματα.
+   ========================================================= */
+.sidebar-menu .premium-menu-actions {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.sidebar-menu .premium-menu-actions a {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.25rem !important;
+  min-height: 3.4rem !important;
+  padding: 0.55rem 0.35rem !important;
+  border-radius: 14px !important;
+  border: 1px solid transparent !important;
+  color: #ffffff !important;
+  font-size: 0.78rem !important;
+  font-weight: 800 !important;
+  line-height: 1.1 !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  transition: transform 0.12s ease, filter 0.15s ease !important;
+}
+
+.sidebar-menu .premium-menu-actions a .icon {
+  width: 1.15rem !important;
+  height: 1.15rem !important;
+  color: #ffffff !important;
+}
+
+.sidebar-menu .premium-menu-actions a span {
+  color: #ffffff !important;
+}
+
+.sidebar-menu .premium-menu-actions a:active {
+  transform: scale(0.97) !important;
+}
+
+.sidebar-menu .premium-menu-actions a:hover {
+  filter: brightness(1.08) !important;
+}
+
+/* Κλήση — πράσινο τηλεφώνου. */
+.sidebar-menu .premium-menu-actions a.phone-green-btn {
+  background-color: #16a34a !important;
+  box-shadow: 0 6px 16px rgba(22, 163, 74, 0.28) !important;
+}
+
+/* Χάρτης — κόκκινο πινέζας. */
+.sidebar-menu .premium-menu-actions a.maps-btn {
+  background-color: #d93025 !important;
+  box-shadow: 0 6px 16px rgba(217, 48, 37, 0.26) !important;
+}
+
+/* Email — μπλε του site. */
+.sidebar-menu .premium-menu-actions a.email-box {
+  background-color: #1f5fcc !important;
+  border-color: transparent !important;
+  box-shadow: 0 6px 16px rgba(31, 95, 204, 0.26) !important;
+}
+
+.sidebar-menu .premium-menu-actions a.email-box:hover {
+  background-color: #1f5fcc !important;
+  border-color: transparent !important;
+}

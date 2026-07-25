@@ -7,7 +7,13 @@ function closeSidebarInstantly() {
     const menu = document.getElementById('sidebarMenu');
     const overlay = document.getElementById('sidebarOverlay');
 
-    if (menu) menu.classList.add('-translate-x-full');
+    if (menu) {
+        menu.classList.add('-translate-x-full');
+        // Το ίδιο inert/aria-hidden με το toggleSidebar, γιατί αυτή η διαδρομή
+        // κλείνει το μενού ακαριαία (π.χ. όταν ανοίγει modal από μέσα του).
+        menu.setAttribute('inert', '');
+        menu.setAttribute('aria-hidden', 'true');
+    }
     if (overlay) {
         overlay.classList.add('opacity-0');
         overlay.classList.add('hidden');
@@ -257,6 +263,54 @@ function closeModal(id, updateHistory = true) {
 }
 
 
+/* --- Προσβασιμότητα του συρταριού ---------------------------------------
+   Κλειστό, το μενού μένει στο DOM μετατοπισμένο εκτός οθόνης. Χωρίς inert τα
+   8 στοιχεία του παραμένουν εστιάσιμα: με Tab ο χρήστης «έμπαινε» σε αόρατο
+   μενού και ο screen reader διάβαζε επιλογές που δεν φαίνονταν πουθενά.
+------------------------------------------------------------------------- */
+const SIDEBAR_FOCUSABLE = 'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])';
+let sidebarOpener = null;
+
+function setSidebarInert(menu, inert) {
+    if (inert) {
+        menu.setAttribute('inert', '');
+        menu.setAttribute('aria-hidden', 'true');
+        return;
+    }
+    menu.removeAttribute('inert');
+    menu.removeAttribute('aria-hidden');
+}
+
+// Παγίδα εστίασης: όσο το μενού είναι ανοιχτό, το Tab κυκλώνει μέσα του
+// αντί να ξεφεύγει στη σελίδα από κάτω.
+function handleSidebarKeydown(event) {
+    const menu = document.getElementById('sidebarMenu');
+    if (!menu || menu.classList.contains('-translate-x-full')) return;
+
+    if (event.key === 'Escape') {
+        event.preventDefault();
+        toggleSidebar();
+        return;
+    }
+
+    if (event.key !== 'Tab') return;
+
+    const items = Array.from(menu.querySelectorAll(SIDEBAR_FOCUSABLE));
+    if (!items.length) return;
+
+    const first = items[0];
+    const last = items[items.length - 1];
+    const active = document.activeElement;
+
+    if (event.shiftKey && (active === first || !menu.contains(active))) {
+        event.preventDefault();
+        last.focus();
+    } else if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
+    }
+}
+
 function toggleSidebar() {
   const menu = document.getElementById('sidebarMenu');
   const overlay = document.getElementById('sidebarOverlay');
@@ -266,21 +320,31 @@ function toggleSidebar() {
   const isClosed = menu.classList.contains('-translate-x-full');
 
   if (isClosed) {
+    sidebarOpener = document.activeElement;
+    setSidebarInert(menu, false);
     overlay.classList.remove('hidden');
     setMobileBottomNavSuppressed(true);
     lockPageScroll();
+    document.addEventListener('keydown', handleSidebarKeydown);
 
     requestAnimationFrame(() => {
       overlay.classList.remove('opacity-0');
       menu.classList.remove('-translate-x-full');
       syncMobileBottomNavState();
+      menu.querySelector(SIDEBAR_FOCUSABLE)?.focus();
     });
   } else {
     menu.classList.add('-translate-x-full');
     overlay.classList.add('opacity-0');
+    document.removeEventListener('keydown', handleSidebarKeydown);
+
+    // Η εστίαση επιστρέφει στο κουμπί που άνοιξε το μενού.
+    if (sidebarOpener?.isConnected) sidebarOpener.focus();
+    sidebarOpener = null;
 
     setTimeout(() => {
       overlay.classList.add('hidden');
+      setSidebarInert(menu, true);
       syncMobileBottomNavState();
       unlockPageScrollIfIdle();
     }, 300);

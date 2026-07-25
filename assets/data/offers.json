@@ -492,36 +492,110 @@
       }
     },
     {
-      "id": "nova-fiber-optic",
-      "active": true,
-      "sortOrder": 60,
+      "id": "nova-fiber-internet",
       "provider": "Nova",
-      "title": "Nova οπτική ίνα",
-      "cardOfferName": "Nova optic fiber",
+      "title": "Nova fiber Internet",
+      "cardOfferName": "Nova Σταθερό και Internet",
       "category": "internet",
-      "badge": "ταχύτητα 100 fpps",
-      "shortDescription": "Οπτική ίνα απά την Nova",
+      "badge": " Οπτική ίνα έως 100Mbps",
+      "recommendationBadge": "Σταθερή / Internet",
       "price": "17,90€",
       "period": "μήνα",
+      "monthly": null,
+      "shortDescription": "Σταθερό και internet με δωρεάν τέλη και γρήγορη διαδικασία αίτησης.",
+      "benefits": [
+        "Μηδενικό κόστος έναρξης",
+        "Βήματα για αίτηση και αποστολή",
+        "Υποστήριξη από τον Συνεταιρισμό"
+      ],
+      "ctaPrimaryText": "Με ενδιαφέρει",
+      "ctaSecondaryText": "Περισσότερα",
+      "ctaType": "modal",
+      "modalId": "novaLinePhone",
+      "actionTarget": {
+        "track": "offer_interest_click",
+        "offer": "Nova Σταθερό & Internet",
+        "category": "internet"
+      },
+      "details": [
+        {
+          "label": "Περιλαμβάνει",
+          "value": "Ταχύτητες έως 100 Mbps και απεριόριστα προς όλους."
+        },
+        {
+          "label": "Ισχύει για",
+          "value": "Μέλη που θέλουν λύση σταθερού internet."
+        }
+      ],
+      "includes": [
+        "Ταχύτητες έως 100 Mbps",
+        "Απεριόριστα προς όλους",
+        "Δωρεάν τέλη"
+      ],
+      "appliesTo": "Μέλη που θέλουν λύση σταθερού internet.",
+      "modal": {
+        "heading": "Προσφορά Nova Σταθερό & Internet",
+        "steps": [
+          {
+            "title": "Συμπλήρωση Αίτησης",
+            "label": "ΣΥΜΒΟΛΑΙΟ ΤΗΛΕΦΩΝΙΑΣ & ΙΝΤΕΡΝΕΤ (ΣΥΝΟΠΤΙΚΗ ΣΥΜΒΑΣΗ)",
+            "items": [
+              "Πλήρης συμπλήρωση βάσει του επίσημου προτύπου.",
+              "Υπογράφεται υποχρεωτικά μέσω GOV (ψηφιακή υπογραφή)."
+            ]
+          },
+          {
+            "title": "Απαραίτητα Δικαιολογητικά",
+            "items": [
+              "Ταυτότητα (Μπρος – πίσω, ευκρινής)",
+              "Απόδειξη διεύθυνσης εγκατάστασης"
+            ],
+            "addressProofCases": [
+              {
+                "label": "ΠΕΡΙΠΤΩΣΗ Α",
+                "title": "Υπάρχει σταθερή τηλεφωνία",
+                "description": "Όλες οι σελίδες τελευταίου λογαριασμού με ονοματεπώνυμο & διεύθυνση."
+              },
+              {
+                "label": "ΠΕΡΙΠΤΩΣΗ Β",
+                "title": "Δεν υπάρχει σταθερή",
+                "description": "Λογαριασμός ΔΕΚΟ (ΔΕΗ, ΕΥΔΑΠ κ.λπ.) με πλήρη στοιχεία."
+              },
+              {
+                "label": "ΠΕΡΙΠΤΩΣΗ Γ (ΕΚΤΟΣ ΣΧΕΔΙΟΥ)",
+                "title": "Εκτός σχεδίου",
+                "description": "Συντεταγμένες GPS και screenshot Google Maps με pin location.",
+                "warning": "Χωρίς σαφή ταυτοποίηση τοποθεσίας η αίτηση ΔΕΝ προχωρά."
+              }
+            ]
+          },
+          {
+            "title": "Τελική Αποστολή",
+            "description": "Στείλτε όλα τα απαραίτητα έγγραφα στο παρακάτω email:",
+            "email": "synetelas2011@gmail.com"
+          }
+        ]
+      },
+      "documents": [
+        {
+          "title": "ΠΑΡΑΔΕΙΓΜΑ ΑΙΤΗΣΗΣ EON",
+          "href": "assets/docs/Sta8ParadAitisi.pdf"
+        },
+        {
+          "title": "ΑΙΤΗΣΗ EON",
+          "href": "assets/docs/StatheroAitisi.pdf"
+        }
+      ],
+      "notes": [
+        "Για περιοχές χωρίς σαφή διεύθυνση ζητούνται επιπλέον στοιχεία τοποθεσίας."
+      ],
+      "sortOrder": 40,
+      "active": true,
       "pricing": {
         "prefix": "",
         "amount": "17,90€",
         "unit": "/ μήνα",
         "note": "Τιμή με ΦΠΑ"
-      },
-      "benefits": [
-        "50 GB δεδομένα κάθε μήνα",
-        "Απεριόριστη ομιλία προς όλους",
-        "Χωρίς δέσμευση"
-      ],
-      "ctaPrimaryText": "Με ενδιαφέρει",
-      "ctaSecondaryText": "Περισσότερα",
-      "ctaType": "modal",
-      "modalId": "internetChoiceModal",
-      "actionTarget": {
-        "track": "offer_interest_click",
-        "offer": "Cosmote Κινητή",
-        "category": "mobile"
       }
     },
     {

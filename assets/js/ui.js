@@ -72,6 +72,15 @@
     targets.forEach(runTypewriter);
   }
 
+  // Το έτος στο copyright γράφεται στο HTML (ώστε να φαίνεται και χωρίς JS)
+  // και ενημερώνεται εδώ, για να μη μένει ξεχασμένο σε παλιά χρονιά.
+  function initializeCurrentYear() {
+    const year = String(new Date().getFullYear());
+    document.querySelectorAll('[data-current-year]').forEach((element) => {
+      element.textContent = year;
+    });
+  }
+
   function readNavigationMetrics() {
     const header = document.querySelector('.site-top-nav');
     const miniNav = document.querySelector('[data-choice-mini-nav]');
@@ -851,6 +860,7 @@ function initializeUi() {
 
     initializeHeroIntroNavigation();
     initializeTypewriters();
+    initializeCurrentYear();
     initializeChoiceMiniNav();
     initializeBottomNavOffersState();
     initializePremiumMenuActiveState();
