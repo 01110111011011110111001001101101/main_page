@@ -11945,36 +11945,93 @@ body.office-closure-lock {
 
 /* --- Κινητά: πιο συμπαγές κουτί, χωρίς να πέφτει η αναγνωσιμότητα. --- */
 @media (max-width: 767px) {
-  #offersContainer > .new-premium-card,
-  .offers-section-catalog #offersContainer > .new-premium-card {
-    border-radius: 18px;
+  /* ΚΡΙΣΙΜΟ: ο legacy κανόνας
+     .offers-section-catalog #offersContainer > [data-offer-card]
+     επιβάλλει display:grid + grid-template-areas + padding με !important.
+     Η νέα κάρτα γινόταν grid item χωρίς περιοχή και έσπαγε η διάταξη.
+     Ο επιλογέας εδώ προσθέτει [data-offer-card] ώστε να έχει μεγαλύτερη
+     specificity, και ξαναφέρνει τα πάντα σε flex column. */
+  #offersContainer > .new-premium-card[data-offer-card],
+  .offers-section-catalog #offersContainer > .new-premium-card[data-offer-card] {
+    display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: none !important;
+    grid-template-areas: none !important;
+    gap: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    border-radius: 18px !important;
+    background: var(--nk-card) !important;
+    box-shadow: 0 1px 2px rgba(7, 26, 51, 0.04), 0 12px 30px rgba(7, 26, 51, 0.09) !important;
   }
 
-  .new-premium-card .new-premium-ribbon {
+  .offers-section-catalog #offersContainer > .new-premium-card[data-offer-card] .new-premium-ribbon {
     padding: 10px 15px 9px;
   }
 
-  .new-premium-card .new-premium-body {
-    padding: 15px;
+  .offers-section-catalog #offersContainer > .new-premium-card[data-offer-card] .new-premium-body {
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 15px !important;
   }
 
-  .new-premium-card .new-premium-head {
+  .offers-section-catalog #offersContainer > .new-premium-card[data-offer-card] .new-premium-head {
     padding-bottom: 14px;
     margin-bottom: 14px;
   }
 
-  #offersContainer > .new-premium-card .new-premium-title,
-  .new-premium-card .new-premium-title {
-    font-size: 18px;
+  /* Αντίβαρο στον legacy κανόνα για h3 μέσα σε data-offer-card, που ορίζει
+     font-size/color/grid-area με !important. */
+  .offers-section-catalog #offersContainer > .new-premium-card[data-offer-card] .new-premium-title {
+    grid-area: auto !important;
+    margin: 0 0 6px !important;
+    color: var(--nk-ink) !important;
+    font-size: 18px !important;
+    line-height: 1.25 !important;
+    letter-spacing: -0.01em !important;
+    text-align: center !important;
   }
 
-  .new-premium-card .new-premium-price-num {
+  .offers-section-catalog #offersContainer > .new-premium-card[data-offer-card] .new-premium-price-row {
+    display: flex !important;
+    justify-content: center !important;
+  }
+
+  .offers-section-catalog #offersContainer > .new-premium-card[data-offer-card] .new-premium-price-num {
     font-size: 32px;
   }
 
-  .new-premium-card .new-premium-perks {
-    gap: 9px;
-    margin-bottom: 16px;
+  .offers-section-catalog #offersContainer > .new-premium-card[data-offer-card] .new-premium-perks {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 9px !important;
+    margin: 0 0 16px !important;
+    padding: 0 !important;
+  }
+
+  .offers-section-catalog #offersContainer > .new-premium-card[data-offer-card] .new-premium-actions {
+    display: block !important;
+    margin-top: auto !important;
+  }
+
+  .offers-section-catalog #offersContainer > .new-premium-card[data-offer-card] .new-premium-btn {
+    width: 100% !important;
+    min-height: 50px !important;
+    border-radius: 14px !important;
+    font-size: 15.5px !important;
+  }
+
+  .offers-section-catalog #offersContainer > .new-premium-card[data-offer-card] .new-premium-link {
+    width: auto !important;
+    min-height: 0 !important;
+    padding: 4px 6px !important;
+    background: none !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    font-size: 13.5px !important;
   }
 }
 
