@@ -270,6 +270,11 @@
     card.dataset.provider = offer.provider || '';
     if (offer.brandSkin) card.dataset.brandSkin = offer.brandSkin;
 
+    // Στην accordion κάρτα το σώμα είναι αναγνώσιμο περιεχόμενο (περιγραφή,
+    // παροχές). Το flag κάνει το enhanceOfferCard του offers.js να ΜΗΝ δέσει
+    // whole-card click, ώστε ένα tap στο κείμενο να μην ανοίγει το modal.
+    card.dataset.wholeCardAction = 'true';
+
     const contentId = `offerPanel-${offer.id || Math.random().toString(36).slice(2)}`;
     const toggle = renderCardToggle(offer, contentId);
 
