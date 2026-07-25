@@ -658,9 +658,12 @@
       initializeRetryListener();
 
       try {
-        // Το credentials: 'omit' ταιριάζει με το <link rel="preload" as="fetch" crossorigin>
-        // στο <head>, ώστε το αρχείο να μην κατέβει δύο φορές.
-        const response = await fetch(getOffersUrl(), { cache: 'default', credentials: 'omit' });
+        // Σκέτο same-origin request, ΧΩΡΙΣ credentials: 'omit'. Το 'omit' έκανε
+        // το αίτημα CORS-mode και ο browser έστελνε header Origin ακόμη και για
+        // same-origin, που το WAF του host απαντούσε με 403. Πρέπει να ταιριάζει
+        // με το <link rel="preload" as="fetch"> στο <head> (χωρίς crossorigin),
+        // αλλιώς το αρχείο κατεβαίνει δύο φορές.
+        const response = await fetch(getOffersUrl(), { cache: 'default' });
         if (!response.ok) throw new Error('offers.json not available');
         const data = await response.json();
         renderOffers(container, normalizeOffers(data));

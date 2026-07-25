@@ -11990,10 +11990,19 @@ body.office-closure-lock {
     will-change: transform;
   }
 
-  body.site-top-nav-hidden .site-top-nav {
-    transform: translateY(-100%);
-    opacity: 0;
-    pointer-events: none;
+  /* Το hero-intro σύστημα ορίζει
+     body.hero-intro-ready.hero-nav-visible .site-top-nav { transform: translateY(0) }
+     με specificity (0,3,1). Χωρίς ίδια ή μεγαλύτερη specificity ΕΔΩ, η μπάρα
+     δεν κρύβεται ποτέ. Γι' αυτό δηλώνονται και οι δύο συνδυασμοί. */
+  body.site-top-nav-hidden .site-top-nav,
+  body.hero-intro-ready.site-top-nav-hidden .site-top-nav,
+  body.hero-intro-ready.hero-nav-visible.site-top-nav-hidden .site-top-nav,
+  body.site-top-nav-hidden .site-top-nav.top-area-nav,
+  body.hero-intro-ready.hero-nav-visible.site-top-nav-hidden .site-top-nav.top-area-nav {
+    transform: translateY(-100%) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
   }
 
   /* Το mini nav είναι πλέον ο μοναδικός τρόπος πλοήγησης όσο κρύβεται η μπάρα,
