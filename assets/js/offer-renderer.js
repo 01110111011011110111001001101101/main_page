@@ -91,9 +91,26 @@
     return { prefix: match[1].trim(), amount: match[2].trim(), suffix: match[3].trim() };
   }
 
-  function buildPriceUnit(offer) {
-    const { suffix } = splitPrice(offer.price);
-    return [suffix, offer.period ? `/ ${offer.period}` : ''].filter(Boolean).join(' ');
+  // Προτιμάμε το ρητό offer.pricing από το offers.json. Το fallback κρατά
+  // συμβατότητα με προσφορές που δεν το έχουν ακόμη.
+  function getPricing(offer) {
+    const pricing = offer.pricing;
+    if (pricing && pricing.amount) {
+      return {
+        prefix: pricing.prefix || '',
+        amount: pricing.amount,
+        unit: pricing.unit || '',
+        note: pricing.note || offer.monthly || '',
+      };
+    }
+
+    const { prefix, amount, suffix } = splitPrice(offer.price);
+    return {
+      prefix,
+      amount,
+      unit: [suffix, offer.period ? `/ ${offer.period}` : ''].filter(Boolean).join(' '),
+      note: offer.monthly || '',
+    };
   }
 
   function setTrackingDataset(element, offer) {
@@ -163,16 +180,21 @@
 
   function createBenefitItem(text) {
     const item = createElement('li', 'new-premium-perk');
-    const bullet = createElement('span', 'new-premium-perk-dot', '·');
-    bullet.setAttribute('aria-hidden', 'true');
-    item.appendChild(bullet);
+    const icon = window.createIcon?.('check');
+    if (icon) {
+      icon.classList.add('new-premium-perk-icon');
+      icon.setAttribute('aria-hidden', 'true');
+      item.appendChild(icon);
+    }
     appendTextElement(item, 'span', '', text);
     return item;
   }
 
+  // Τρία οφέλη το πολύ: πάνω από αυτό η κάρτα γίνεται τοίχος κειμένου και
+  // χάνεται η σύγκριση μεταξύ των προσφορών.
   function renderBenefits(offer) {
     const list = createElement('ul', 'offer-benefits new-premium-perks');
-    const benefits = Array.isArray(offer.benefits) ? offer.benefits : [];
+    const benefits = Array.isArray(offer.benefits) ? offer.benefits.slice(0, 3) : [];
 
     benefits.forEach((benefit) => {
       list.appendChild(createBenefitItem(benefit));
@@ -190,49 +212,39 @@
       .trim();
   }
 
-  function createBadge(text, background) {
-    const badge = createElement('span', 'new-premium-badge', text);
-    if (background) badge.style.background = background;
-    return badge;
-  }
-
-  // Το header της κάρτας είναι το ίδιο το toggle: badges, τίτλος, τιμή, βελάκι.
-  function renderCardToggle(offer, contentId) {
-    const toggle = createElement('button', 'new-premium-toggle');
-    toggle.type = 'button';
-    toggle.setAttribute('aria-expanded', 'false');
-    toggle.setAttribute('aria-controls', contentId);
+  // Χρωματιστή κορδέλα παρόχου: δίνει ταυτότητα στην κάρτα με μια ματιά.
+  function renderCardRibbon(offer) {
+    const ribbon = createElement('div', 'new-premium-ribbon');
+    ribbon.style.background = getProviderColor(offer);
 
     const providerLabel = offer.provider || getCategoryLabel(offer.category);
-    const badges = createElement('div', 'new-premium-badges');
-    badges.appendChild(createBadge(providerLabel, getProviderColor(offer)));
+    appendTextElement(ribbon, 'span', 'new-premium-ribbon-name', providerLabel);
 
-    const secondaryBadge = offer.badge || offer.recommendationBadge;
-    const isDuplicateBadge = normalizeBadgeText(secondaryBadge) === normalizeBadgeText(providerLabel);
-    if (secondaryBadge && !isDuplicateBadge) {
-      badges.appendChild(createBadge(secondaryBadge, ''));
-      badges.lastElementChild.classList.add('new-premium-badge--soft');
+    // Προτιμάμε το σύντομο badge (specs) από το μακροσκελές recommendationBadge.
+    const flag = offer.badge || offer.recommendationBadge;
+    const isDuplicate = normalizeBadgeText(flag) === normalizeBadgeText(providerLabel);
+    if (flag && !isDuplicate) {
+      appendTextElement(ribbon, 'span', 'new-premium-ribbon-flag', flag);
     }
-    toggle.appendChild(badges);
 
-    appendTextElement(toggle, 'h3', 'new-premium-title', offer.title || offer.id || 'Προσφορά');
+    return ribbon;
+  }
 
+  // Κεντραρισμένη κεφαλίδα: τίτλος, υπότιτλος και η μηνιαία τιμή ως ήρωας.
+  function renderCardHeader(offer) {
+    const header = createElement('div', 'new-premium-head');
+    appendTextElement(header, 'h3', 'new-premium-title', offer.title || offer.id || 'Προσφορά');
+    appendTextElement(header, 'p', 'new-premium-desc', offer.shortDescription);
+
+    const { prefix, amount, unit, note } = getPricing(offer);
     const priceRow = createElement('div', 'new-premium-price-row');
-    const priceGroup = createElement('div', 'new-premium-price-group');
-    const { prefix, amount } = splitPrice(offer.price);
+    appendTextElement(priceRow, 'span', 'new-premium-price-prefix', prefix);
+    appendTextElement(priceRow, 'span', 'new-premium-price-num', amount);
+    appendTextElement(priceRow, 'span', 'new-premium-price-unit', unit);
+    header.appendChild(priceRow);
 
-    appendTextElement(priceGroup, 'span', 'new-premium-price-prefix', prefix);
-    appendTextElement(priceGroup, 'span', 'new-premium-price-num', amount);
-    appendTextElement(priceGroup, 'span', 'new-premium-price-unit', buildPriceUnit(offer));
-    appendTextElement(priceGroup, 'small', 'new-premium-price-note', offer.monthly);
-    priceRow.appendChild(priceGroup);
-
-    const arrow = createElement('span', 'new-premium-arrow', '⌄');
-    arrow.setAttribute('aria-hidden', 'true');
-    priceRow.appendChild(arrow);
-
-    toggle.appendChild(priceRow);
-    return toggle;
+    appendTextElement(header, 'p', 'new-premium-price-note', note);
+    return header;
   }
 
   function renderCardActions(offer) {
@@ -245,9 +257,11 @@
     }
 
     if (offer.showSecondaryCta !== false) {
+      // Δευτερεύουσα ενέργεια ως διακριτικό link, ώστε να μην ανταγωνίζεται
+      // οπτικά το βασικό CTA.
       const secondary = createElement(
         'button',
-        'offer-secondary-cta new-premium-btn new-premium-btn-secondary',
+        'offer-secondary-cta new-premium-link',
         mapCtaText(offer.ctaSecondaryText || 'Δες λεπτομέρειες'),
       );
       secondary.type = 'button';
@@ -270,39 +284,20 @@
     card.dataset.provider = offer.provider || '';
     if (offer.brandSkin) card.dataset.brandSkin = offer.brandSkin;
 
-    // Στην accordion κάρτα το σώμα είναι αναγνώσιμο περιεχόμενο (περιγραφή,
-    // παροχές). Το flag κάνει το enhanceOfferCard του offers.js να ΜΗΝ δέσει
-    // whole-card click, ώστε ένα tap στο κείμενο να μην ανοίγει το modal.
+    // Το σώμα της κάρτας είναι αναγνώσιμο περιεχόμενο. Το flag κάνει το
+    // enhanceOfferCard του offers.js να ΜΗΝ δέσει whole-card click, ώστε ένα
+    // tap στο κείμενο να μην ανοίγει το modal.
     card.dataset.wholeCardAction = 'true';
 
-    const contentId = `offerPanel-${offer.id || Math.random().toString(36).slice(2)}`;
-    const toggle = renderCardToggle(offer, contentId);
-
-    const content = createElement('div', 'new-premium-content');
-    content.id = contentId;
-    content.hidden = true;
-
-    appendTextElement(content, 'p', 'new-premium-desc', offer.shortDescription);
-    content.appendChild(renderBenefits(offer));
+    const body = createElement('div', 'new-premium-body');
+    body.appendChild(renderCardHeader(offer));
+    body.appendChild(renderBenefits(offer));
 
     const actions = renderCardActions(offer);
-    if (actions.childElementCount > 0) content.appendChild(actions);
+    if (actions.childElementCount > 0) body.appendChild(actions);
 
-    toggle.addEventListener('click', () => toggleNewPremiumCard(toggle));
-
-    card.append(toggle, content);
+    card.append(renderCardRibbon(offer), body);
     return card;
-  }
-
-  function toggleNewPremiumCard(toggle) {
-    if (!toggle) return;
-    const content = toggle.nextElementSibling;
-    if (!content) return;
-
-    const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
-    toggle.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
-    content.classList.toggle('is-open', !isExpanded);
-    content.hidden = isExpanded;
   }
 
   function renderFallback(container) {
@@ -686,11 +681,7 @@
     syncFromLocation: syncOfferDetailsFromLocation,
     closeDetailsRoute: closeOfferDetailsRoute,
     getOffers: () => Array.from(offersById.values()),
-    toggleCard: toggleNewPremiumCard,
   };
-
-  // Για inline onclick="toggleNewPremiumCard(this)" σε τυχόν στατικές κάρτες.
-  window.toggleNewPremiumCard = toggleNewPremiumCard;
 
   window.addEventListener('hashchange', () => {
     if (rendererPromise) rendererPromise.then(() => syncOfferDetailsFromLocation());

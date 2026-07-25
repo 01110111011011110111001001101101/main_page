@@ -33,21 +33,68 @@
     requestAnimationFrame(updateNavigationOffsets);
   }
 
+  const MOBILE_NAV_QUERY = '(max-width: 767px)';
+  const HEADER_HIDE_DELTA = 6;
+
+  function isMobileNavViewport() {
+    return window.matchMedia?.(MOBILE_NAV_QUERY).matches ?? false;
+  }
+
+  function setTopNavHidden(hidden) {
+    document.body.classList.toggle('site-top-nav-hidden', hidden);
+  }
+
+  // Στα κινητά: μόλις ο χρήστης φτάσει στη "Γρήγορη εκκίνηση" και συνεχίσει προς
+  // τα κάτω, η πάνω μπάρα κρύβεται και εμφανίζεται το mini nav στον πάτο.
+  // Με scroll προς τα πάνω η μπάρα επανέρχεται αμέσως.
   function initializeChoiceMiniNav() {
     const miniNav = document.querySelector('[data-choice-mini-nav]');
-    const offersSection = document.getElementById('offers');
-    if (!miniNav || !offersSection) return;
+    const triggerSection = document.getElementById('choiceHub') || document.getElementById('offers');
+    if (!miniNav || !triggerSection) return;
+
+    let lastScrollY = window.scrollY;
+    let ticking = false;
 
     const syncMiniNav = () => {
       const { headerHeight } = readNavigationMetrics();
-      const triggerOffset = Math.min(window.innerHeight * 0.35, 320);
-      const shouldShow = offersSection.getBoundingClientRect().top <= headerHeight + triggerOffset;
-      updateChoiceMiniNavVisibility(shouldShow);
+      const currentY = window.scrollY;
+      const delta = currentY - lastScrollY;
+      const mobile = isMobileNavViewport();
+
+      // Το trigger point είναι η κορυφή της ενότητας "Γρήγορη εκκίνηση".
+      const passedTrigger = triggerSection.getBoundingClientRect().top <= headerHeight;
+
+      updateChoiceMiniNavVisibility(passedTrigger);
+
+      if (!mobile || !passedTrigger || currentY <= headerHeight) {
+        setTopNavHidden(false);
+      } else if (delta > HEADER_HIDE_DELTA) {
+        setTopNavHidden(true);
+      } else if (delta < -HEADER_HIDE_DELTA) {
+        setTopNavHidden(false);
+      }
+
+      if (Math.abs(delta) > HEADER_HIDE_DELTA) lastScrollY = currentY;
+      ticking = false;
+    };
+
+    const requestSync = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(syncMiniNav);
     };
 
     syncMiniNav();
-    window.addEventListener('scroll', syncMiniNav, { passive: true });
-    window.addEventListener('resize', syncMiniNav);
+    window.addEventListener('scroll', requestSync, { passive: true });
+    window.addEventListener('resize', () => {
+      lastScrollY = window.scrollY;
+      requestSync();
+    });
+
+    // Όταν ανοίγει το πλαϊνό μενού ή ένα modal, η μπάρα πρέπει να είναι ορατή.
+    document.addEventListener('click', (event) => {
+      if (event.target.closest('[data-action="toggle-sidebar"]')) setTopNavHidden(false);
+    });
   }
 
   // Καλύπτει κάθε σύνδεσμο προς #contact (πλαϊνό μενού, μπάρα πληροφοριών, κάρτες).

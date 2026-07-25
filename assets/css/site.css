@@ -11711,8 +11711,9 @@ body.office-closure-lock {
 }
 
 /* =========================================================
-   NEW PREMIUM OFFER CARD (accordion) — αυτόνομο namespace.
-   Δεν ακουμπάει τις παλιές .offer-card / Tailwind κλάσεις.
+   NEW PREMIUM OFFER CARD — αυτόνομο namespace, δεν ακουμπάει
+   τις παλιές .offer-card / Tailwind κλάσεις.
+   Κεντραρισμένη κεφαλίδα, ορατά οφέλη, ένα βασικό CTA.
    ========================================================= */
 .new-premium-card {
   --nk-ink: #16243d;
@@ -11720,9 +11721,10 @@ body.office-closure-lock {
   --nk-card: #ffffff;
   --nk-line: #e3e0d9;
   --nk-action: #1f5fcc;
-  --nk-seal: #b3892f;
-  --nk-seal-soft: #f2e7cb;
+  --nk-seal: #1d9e75;
 
+  display: flex;
+  flex-direction: column;
   background: var(--nk-card);
   border: 1px solid var(--nk-line);
   border-radius: 16px;
@@ -11734,14 +11736,16 @@ body.office-closure-lock {
 /* Reset των legacy grid κανόνων που στοχεύουν [data-offer-card]. */
 #offersContainer > .new-premium-card,
 .offers-section-catalog #offersContainer > .new-premium-card {
-  display: block;
+  display: flex;
+  flex-direction: column;
   grid-template-columns: none;
   grid-template-areas: none;
   gap: 0;
   padding: 0;
   border-radius: 16px;
   background: var(--nk-card);
-  align-self: start;
+  align-self: stretch;
+  height: 100%;
 }
 
 #offersContainer > .new-premium-card::before,
@@ -11755,169 +11759,142 @@ body.office-closure-lock {
   box-shadow: 0 18px 44px rgba(7, 26, 51, 0.12);
 }
 
-.new-premium-card .new-premium-toggle {
-  width: 100%;
-  text-align: left;
-  padding: 1rem;
-  background: none;
-  border: 0;
-  cursor: pointer;
-  display: block;
-  outline: none;
-}
-
-.new-premium-card .new-premium-toggle:focus-visible {
-  outline: 2px solid var(--nk-action);
-  outline-offset: -3px;
-}
-
-.new-premium-badges {
+.new-premium-ribbon {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 0.6rem;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 9px 16px;
+  color: #fff;
+  background: var(--nk-ink);
 }
 
-.new-premium-badge {
-  background: var(--nk-ink);
-  color: #fff;
-  font-size: 11.5px;
+.new-premium-ribbon-name {
+  font-size: 12.5px;
   font-weight: 700;
   letter-spacing: 0.06em;
-  padding: 4px 9px;
-  border-radius: 6px;
+  text-transform: uppercase;
 }
 
-.new-premium-badge--soft {
-  background: var(--nk-seal-soft);
-  color: #6b5410;
-  letter-spacing: 0.02em;
+.new-premium-ribbon-flag {
+  flex: 0 1 auto;
+  min-width: 0;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.22);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.new-premium-card .new-premium-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 16px;
+}
+
+/* Κεντραρισμένα: τίτλος, περιγραφή, τιμή. */
+.new-premium-head {
+  text-align: center;
+  margin-bottom: 14px;
 }
 
 .new-premium-card .new-premium-title {
-  font-size: 21px;
-  margin: 0 0 8px;
+  font-size: 20px;
+  margin: 0 0 4px;
   color: var(--nk-ink);
   font-family: "Space Grotesk", Inter, sans-serif;
   font-weight: 800;
   line-height: 1.2;
 }
 
+.new-premium-card .new-premium-desc {
+  margin: 0 0 12px;
+  color: var(--nk-ink-soft);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
 .new-premium-price-row {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 0.75rem;
+  justify-content: center;
+  gap: 5px;
 }
 
-.new-premium-price-prefix {
+.new-premium-price-prefix,
+.new-premium-price-unit {
   color: var(--nk-ink-soft);
   font-size: 14.5px;
-  margin-right: 6px;
 }
 
 .new-premium-price-num {
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.01em;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 30px;
-  font-weight: 700;
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1.05;
   color: var(--nk-ink);
 }
 
-.new-premium-price-unit {
+.new-premium-card .new-premium-price-note {
+  margin: 4px 0 0;
   color: var(--nk-ink-soft);
-  font-size: 14.5px;
-  margin-left: 6px;
+  font-size: 12.5px;
 }
 
-.new-premium-price-note {
-  display: block;
-  color: var(--nk-ink-soft);
-  font-size: 13px;
-  margin-top: 2px;
-}
-
-.new-premium-arrow {
-  color: var(--nk-action);
-  font-size: 1.2rem;
-  font-weight: 600;
-  transition: transform 0.2s ease;
-  flex: 0 0 auto;
-}
-
-.new-premium-toggle[aria-expanded="true"] .new-premium-arrow {
-  transform: rotate(180deg);
-}
-
-.new-premium-card .new-premium-content {
-  display: none;
-  padding: 14px 1rem 1rem;
-  border-top: 1px solid var(--nk-line);
-}
-
-.new-premium-card .new-premium-content.is-open {
-  display: block;
-  animation: 0.26s cubic-bezier(0.22, 0.8, 0.3, 1) both newCardSlideIn;
-}
-
-@keyframes newCardSlideIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.new-premium-card .new-premium-desc {
-  margin: 0 0 12px;
-  color: var(--nk-ink-soft);
-  font-size: 15px;
-  line-height: 1.45;
-}
-
+/* Τα οφέλη μένουν αριστερά — κεντραρισμένες λίστες διαβάζονται δύσκολα. */
 .new-premium-card .new-premium-perks {
   list-style: none;
   padding: 0;
-  margin: 0 0 14px;
+  margin: 0 0 16px;
   display: grid;
   gap: 8px;
+  text-align: left;
 }
 
 .new-premium-card .new-premium-perk {
   display: flex;
-  gap: 10px;
-  font-size: 15.5px;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 14.5px;
   line-height: 1.4;
   color: var(--nk-ink-soft);
 }
 
-.new-premium-perk-dot {
+.new-premium-card .new-premium-perk-icon {
+  flex: 0 0 auto;
+  width: 1.05em;
+  height: 1.05em;
+  margin-top: 0.16em;
   color: var(--nk-seal);
-  font-weight: 700;
 }
 
 .new-premium-card .new-premium-actions {
-  display: flex;
-  gap: 0.5rem;
+  display: block;
   width: 100%;
-  flex-wrap: wrap;
-  margin-top: 0;
+  margin-top: auto;
+  text-align: center;
 }
 
 .new-premium-actions .new-premium-btn {
-  flex: 1 1 140px;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 48px;
-  padding: 0 0.9rem;
+  width: 100%;
+  min-height: 50px;
+  padding: 0 1rem;
   background: var(--nk-action);
   color: #fff !important;
   border-radius: 12px;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 15.5px;
+  font-weight: 700;
   text-align: center;
   text-decoration: none;
-  transition: transform 0.12s, background 0.15s, border-color 0.15s;
+  transition: transform 0.12s, background 0.15s;
   border: none;
   cursor: pointer;
 }
@@ -11925,13 +11902,49 @@ body.office-closure-lock {
 .new-premium-actions .new-premium-btn:active { transform: scale(0.985); }
 .new-premium-actions .new-premium-btn:hover { background: #17489b; }
 
-.new-premium-actions .new-premium-btn.new-premium-btn-secondary {
-  background: #f8fafc;
-  color: var(--nk-ink-soft) !important;
-  border: 1px solid var(--nk-line);
+.new-premium-actions .new-premium-link {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 4px 6px;
+  background: none;
+  border: 0;
+  color: var(--nk-action);
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
 }
 
-.new-premium-actions .new-premium-btn.new-premium-btn-secondary:hover {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
+.new-premium-actions .new-premium-link:hover { color: #17489b; }
+
+
+
+/* =========================================================
+   AUTO-HIDE TOP NAV (mobile) — δουλεύει μαζί με το
+   initializeChoiceMiniNav() στο assets/js/ui.js.
+   ========================================================= */
+@media (max-width: 767px) {
+  .site-top-nav {
+    transition: transform 0.22s ease, opacity 0.22s ease;
+    will-change: transform;
+  }
+
+  body.site-top-nav-hidden .site-top-nav {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Το mini nav είναι πλέον ο μοναδικός τρόπος πλοήγησης όσο κρύβεται η μπάρα,
+     οπότε ανεβαίνει πάνω από τυχόν sticky στοιχεία της σελίδας. */
+  body.site-top-nav-hidden .top-bar-mini-nav {
+    z-index: 51 !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-top-nav {
+    transition: none;
+  }
 }
