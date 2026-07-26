@@ -66,6 +66,17 @@
             <h4 id="activationStepThreeTitle">Πληρωμή / αποστολή</h4>
             <p>Κάνε την κατάθεση, κράτησε το αποδεικτικό και στείλε όλα τα δικαιολογητικά στο email.</p>
 
+            <!-- Το ποσό γεμίζει από τον wizard, με βάση την προσφορά που άνοιξε τον οδηγό. -->
+            <article class="activation-amount-card" data-activation-amount-card hidden>
+              <span class="activation-amount-card__label">Ποσό κατάθεσης</span>
+              <strong class="activation-amount-card__value" data-activation-amount-value>—</strong>
+              <small class="activation-amount-card__note" data-activation-amount-note></small>
+              <button type="button" data-activation-copy="" data-activation-copy-label="Αντιγραφή ποσού" data-activation-amount-copy>
+                <svg class="icon" data-icon="copy" aria-hidden="true"><use href="assets/icons/icons.svg?v=ee4ec0f9#icon-copy"></use></svg>
+                <span>Αντιγραφή ποσού</span>
+              </button>
+            </article>
+
             <div class="activation-payment-list">
               <article class="activation-payment-card">
                 <span>ΠΕΙΡΑΙΩΣ</span>

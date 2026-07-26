@@ -129,6 +129,11 @@
       if (actionTarget.activationProvider) button.dataset.activationProvider = actionTarget.activationProvider;
       if (actionTarget.activationOffer) button.dataset.activationOffer = actionTarget.activationOffer;
       if (actionTarget.activationSource) button.dataset.activationSource = actionTarget.activationSource;
+
+      // Το ποσό κατάθεσης το ξέρει μόνο η κάρτα. Χωρίς αυτό, ο οδηγός έφτανε
+      // στο βήμα πληρωμής δείχνοντας IBAN αλλά κανένα ποσό.
+      if (offer.price) button.dataset.activationAmount = offer.price;
+      if (offer.pricing?.note) button.dataset.activationAmountNote = offer.pricing.note;
     } else if (offer.modalId || actionTarget.modalId) {
       button.dataset.modalTarget = offer.modalId || actionTarget.modalId;
     }

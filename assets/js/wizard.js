@@ -89,10 +89,75 @@
     offer: GUIDE_CONFIG.vodafone.offer,
     type: 'new',
     step: 1,
+    amount: '',
+    amountNote: '',
     previousFocus: null,
   };
 
   let modal;
+
+  /* --- Διατήρηση κατάστασης -------------------------------------------
+     Η διαδικασία κρατάει μέρες: υπεύθυνη δήλωση στο gov.gr, κατάθεση στην
+     τράπεζα, αποστολή email. Χωρίς αποθήκευση, κάθε άνοιγμα του οδηγού
+     ξεκινούσε από το μηδέν και χάνονταν τα τσεκαρισμένα δικαιολογητικά.
+  --------------------------------------------------------------------- */
+  const STORAGE_KEY = 'activationGuideProgress';
+
+  function readStoredProgress() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      const parsed = raw ? JSON.parse(raw) : null;
+      return parsed && typeof parsed === 'object' ? parsed : {};
+    } catch (_error) {
+      // Private mode ή μπλοκαρισμένα cookies: ο οδηγός δουλεύει, απλώς δεν θυμάται.
+      return {};
+    }
+  }
+
+  function writeStoredProgress(progress) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+    } catch (_error) {
+      // Δεν είναι λόγος να σπάσει η ροή.
+    }
+  }
+
+  function getChecklistKey() {
+    return `${state.provider}:${state.type}`;
+  }
+
+  function getCheckedDocs() {
+    const stored = readStoredProgress();
+    const checked = stored.docs?.[getChecklistKey()];
+    return Array.isArray(checked) ? checked : [];
+  }
+
+  function setDocChecked(index, checked) {
+    const stored = readStoredProgress();
+    stored.docs = stored.docs || {};
+
+    const key = getChecklistKey();
+    const current = new Set(Array.isArray(stored.docs[key]) ? stored.docs[key] : []);
+
+    if (checked) current.add(index);
+    else current.delete(index);
+
+    stored.docs[key] = [...current];
+    writeStoredProgress(stored);
+  }
+
+  function saveSession() {
+    const stored = readStoredProgress();
+    writeStoredProgress({
+      ...stored,
+      session: {
+        provider: state.provider,
+        type: state.type,
+        step: state.step,
+        savedAt: Date.now(),
+      },
+    });
+  }
 
   function getConfig() {
     return GUIDE_CONFIG[state.provider] || GUIDE_CONFIG.vodafone;
@@ -176,14 +241,29 @@
 
     checklist.textContent = '';
 
+    const checkedDocs = getCheckedDocs();
+
     buildVisibleDocs().forEach((doc, index) => {
       const itemId = `activation-doc-${state.provider}-${state.type}-${index}`;
       const item = document.createElement('div');
       item.className = 'activation-checklist__item';
 
-      const content = document.createElement('span');
+      const content = document.createElement('label');
+      content.className = 'activation-checklist__label';
+      content.htmlFor = itemId;
+
+      // Πραγματικό checkbox: πριν ήταν απλή λίστα ανάγνωσης και ο χρήστης
+      // δεν μπορούσε να σημειώσει τι έχει ήδη ετοιμάσει.
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.id = itemId;
+      checkbox.className = 'activation-checklist__checkbox';
+      checkbox.checked = checkedDocs.includes(index);
+      checkbox.dataset.activationDoc = String(index);
+      content.appendChild(checkbox);
+
       const textLabel = document.createElement('span');
-      textLabel.id = itemId;
+      textLabel.className = 'activation-checklist__text';
 
       const title = document.createElement('strong');
       title.textContent = doc.title;
@@ -196,6 +276,7 @@
       }
 
       content.appendChild(textLabel);
+      item.classList.toggle('is-checked', checkbox.checked);
 
       if (doc.href) {
         const actions = document.createElement('span');
@@ -224,26 +305,81 @@
         link.dataset.offer = state.offer;
         link.textContent = 'Λήψη εντύπου';
         actions.appendChild(link);
-        content.appendChild(actions);
+        item.appendChild(actions);
       }
 
-      item.appendChild(content);
+      item.insertBefore(content, item.firstChild);
       checklist.appendChild(item);
     });
 
     updateChecklistState();
   }
 
+  // Οι κλάσεις --warning/--complete υπήρχαν στο CSS αλλά μόνο αφαιρούνταν εδώ.
+  // Τώρα δείχνουν πραγματική πρόοδο.
   function updateChecklistState() {
     const hint = modal.querySelector('[data-activation-checklist-hint]');
+    const total = buildVisibleDocs().length;
+    const done = getCheckedDocs().filter((index) => index < total).length;
+
+    modal.querySelectorAll('.activation-checklist__item').forEach((item) => {
+      const checkbox = item.querySelector('.activation-checklist__checkbox');
+      item.classList.toggle('is-checked', Boolean(checkbox?.checked));
+    });
 
     if (hint) {
-      hint.classList.remove('activation-guide-note--warning');
-      hint.classList.remove('activation-guide-note--complete');
-      hint.textContent = 'Τα δικαιολογητικά είναι ενημερωτική λίστα. Μπορείς να συνεχίσεις χωρίς τσεκάρισμα.';
+      hint.classList.toggle('activation-guide-note--complete', total > 0 && done === total);
+      hint.classList.toggle('activation-guide-note--warning', done > 0 && done < total);
+
+      if (total === 0) {
+        hint.textContent = 'Δεν απαιτούνται επιπλέον έντυπα για αυτή την επιλογή.';
+      } else if (done === total) {
+        hint.textContent = `Έτοιμα και τα ${total} δικαιολογητικά. Μπορείς να προχωρήσεις στην πληρωμή.`;
+      } else if (done > 0) {
+        hint.textContent = `Έχεις ετοιμάσει ${done} από ${total}. Η πρόοδος αποθηκεύεται αυτόματα.`;
+      } else {
+        hint.textContent = `${total} δικαιολογητικά. Τσέκαρε όσα ετοιμάζεις — η πρόοδος αποθηκεύεται.`;
+      }
     }
 
     updateNavigation();
+  }
+
+  /* --- Ποσό κατάθεσης --------------------------------------------------
+     Το βήμα πληρωμής έδειχνε IBAN χωρίς ποσό. Η τιμή έρχεται από την κάρτα
+     της προσφοράς (data-activation-amount) και, όταν ο οδηγός ανοίγει από
+     την επιλογή παρόχου, από το offers.json μέσω του renderer.
+  --------------------------------------------------------------------- */
+  function findOfferAmount(offerName) {
+    const offers = window.App?.offerRenderer?.getOffers?.() || [];
+    const match = offers.find((offer) => (
+      offer.actionTarget?.activationOffer === offerName || offer.title === offerName
+    ));
+
+    return match ? { amount: match.price || '', note: match.pricing?.note || '' } : { amount: '', note: '' };
+  }
+
+  function renderAmount() {
+    const card = modal.querySelector('[data-activation-amount-card]');
+    if (!card) return;
+
+    const value = card.querySelector('[data-activation-amount-value]');
+    const note = card.querySelector('[data-activation-amount-note]');
+    const copy = card.querySelector('[data-activation-amount-copy]');
+
+    if (!state.amount) {
+      card.hidden = true;
+      return;
+    }
+
+    card.hidden = false;
+    if (value) value.textContent = state.amount;
+    if (note) {
+      note.textContent = state.amountNote || '';
+      note.hidden = !state.amountNote;
+    }
+    // Αντιγράφουμε μόνο τους αριθμούς: το «100€» δεν επικολλάται σε πεδίο ποσού.
+    if (copy) copy.dataset.activationCopy = state.amount.replace(/[^\d,.]/g, '');
   }
 
   function buildMailto(type, offer) {
@@ -349,6 +485,7 @@
 
     state.step = clampedStep;
     renderStep();
+    saveSession();
 
     const activePanel = modal.querySelector(`[data-activation-step="${state.step}"]`);
     const firstControl = activePanel?.querySelector('button, a, input');
@@ -420,6 +557,16 @@
     state.offer = trigger?.dataset?.activationOffer || trigger?.dataset?.offer || getConfig().offer;
     state.step = 1;
 
+    // Το ποσό από την κάρτα· αν λείπει (άνοιγμα από επιλογή παρόχου), από το offers.json.
+    const fallbackAmount = findOfferAmount(state.offer);
+    state.amount = trigger?.dataset?.activationAmount || fallbackAmount.amount;
+    state.amountNote = trigger?.dataset?.activationAmountNote || fallbackAmount.note;
+
+    // Επαναφορά από προηγούμενη επίσκεψη, μόνο για τον ίδιο πάροχο.
+    const session = readStoredProgress().session;
+    const resumeType = session && session.provider === state.provider ? session.type : null;
+    const resumeStep = session && session.provider === state.provider ? Number(session.step) : 0;
+
     if (trigger?.closest?.('#sidebarMenu')) {
       if (typeof closeSidebarInstantly === 'function') {
         closeSidebarInstantly();
@@ -429,9 +576,12 @@
     }
 
     closeSourceModal(trigger);
-    setType(trigger?.dataset?.activationType || 'new');
+    setType(trigger?.dataset?.activationType || resumeType || 'new');
     renderProvider();
+    renderAmount();
     updateEmailLinks();
+
+    if (resumeStep > 1 && resumeStep <= TOTAL_STEPS) state.step = resumeStep;
 
     if (trigger?.dataset?.track && typeof trackEvent === 'function') {
       trackEvent(trigger.dataset.track, {
@@ -484,6 +634,18 @@
     }
 
     if (!modal || modal.classList.contains('hidden')) return;
+
+    // Τσεκάρισμα δικαιολογητικού: αποθηκεύεται αμέσως.
+    const docCheckbox = event.target.closest('[data-activation-doc]');
+    if (docCheckbox) {
+      setDocChecked(Number(docCheckbox.dataset.activationDoc), docCheckbox.checked);
+      updateChecklistState();
+      trackActivationEvent('activation_guide_doc_toggle', {
+        document_index: Number(docCheckbox.dataset.activationDoc),
+        checked: docCheckbox.checked,
+      });
+      return;
+    }
 
     const pdfPreviewButton = event.target.closest('[data-pdf-url]');
     if (pdfPreviewButton) {

@@ -42,15 +42,15 @@ const headTransparent = await sharp(headPixels, {
   raw: { width: headInfo.width, height: headInfo.height, channels: 4 },
 }).png().toBuffer();
 
-// 420px = διπλάσιο του μέγιστου πλάτους προβολής (190px), για retina.
+// 320px = πάνω από διπλάσιο του μέγιστου πλάτους προβολής (150px στο κινητό,
+// 128px στον υπολογιστή). Στα 420px η εικόνα ήταν 3x μεγαλύτερη από ό,τι χρειάζεται.
 await sharp(headTransparent)
   .trim({ threshold: 10 })
-  .resize({ width: 420, withoutEnlargement: true })
+  .resize({ width: 320, withoutEnlargement: true })
   .webp({ quality: 82, alphaQuality: 100, effort: 6 })
   .toFile(path.join(images, 'hero-head.webp'));
 
 await fs.copyFile(path.join(root, 'node_modules/@fontsource-variable/inter/files/inter-greek-wght-normal.woff2'), path.join(fonts, 'inter-greek.woff2'));
 await fs.copyFile(path.join(root, 'node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2'), path.join(fonts, 'inter-latin.woff2'));
-await fs.copyFile(path.join(root, 'node_modules/@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2'), path.join(fonts, 'space-grotesk-latin.woff2'));
 
 console.log('Optimized images and copied self-hosted fonts.');

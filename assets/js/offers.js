@@ -30,6 +30,12 @@
     document.querySelectorAll('[data-category-filter]').forEach((button) => {
         button.classList.toggle('is-active', button.dataset.categoryFilter === normalizedCategory);
     });
+
+    // Το πλαϊνό μενού κρατά τη δική του ένδειξη ενεργού, ώστε να συμφωνεί με
+    // τη μπάρα φίλτρων ακόμη κι όταν το φίλτρο άλλαξε από αλλού.
+    if (typeof syncSidebarActiveCategory === 'function') {
+        syncSidebarActiveCategory(normalizedCategory);
+    }
   }
 
   function ensureInitialOfferFilter() {

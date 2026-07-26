@@ -376,14 +376,34 @@ function openModalFromSidebar(modalId) {
     }, 80);
 }
 
+// Σημειώνει ποια επιλογή του μενού αντιστοιχεί στο ενεργό φίλτρο, ώστε ο
+// χρήστης να βλέπει πού βρίσκεται όταν ξαναανοίξει το μενού.
+function syncSidebarActiveCategory(category) {
+    const normalized = category || 'all';
+
+    document.querySelectorAll('#sidebarMenu [data-sidebar-category]').forEach((element) => {
+        const isActive = element.dataset.sidebarCategory === normalized;
+        element.classList.toggle('is-active', isActive);
+        if (isActive) element.setAttribute('aria-current', 'true');
+        else element.removeAttribute('aria-current');
+    });
+}
+
 function applySidebarOfferFilter(category, source) {
+    syncSidebarActiveCategory(category);
+
     if (typeof closeSidebarInstantly === 'function') {
         closeSidebarInstantly();
     } else {
         toggleSidebar();
     }
 
-    window.setTimeout(() => applyOfferFilter(category, source), 80);
+    // Πριν εδώ υπήρχε setTimeout(80): αυθαίρετη αναμονή που σε αργή συσκευή
+    // μπορούσε να σκρολάρει με το body ακόμη κλειδωμένο. Το rAF τρέχει μετά το
+    // επόμενο repaint, δηλαδή αφού έχει εφαρμοστεί το κλείσιμο του μενού.
+    window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => applyOfferFilter(category, source));
+    });
 }
 
 function handlePopState(event) {

@@ -17,8 +17,57 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const cssPath = path.join(root, 'assets/css/site.css');
 const checkOnly = process.argv.includes('--check');
 
-// Κλάσεις των παλιών καρτών προσφορών, πριν το redesign σε .new-premium-*.
+/*
+ * Κλάσεις που δεν εμφανίζονται ΠΟΥΘΕΝΑ σε HTML, JS ή JSON του project.
+ * Παράγονται από τη σάρωση παρακάτω· ο έλεγχος επαναλαμβάνεται σε κάθε
+ * εκτέλεση, οπότε αν κάποια ξαναχρησιμοποιηθεί το script σταματά.
+ *
+ * Πρώτη ομάδα: παλιές κάρτες προσφορών (πριν το redesign σε .new-premium-*).
+ * Δεύτερη ομάδα: υπολείμματα από προηγούμενες εκδόσεις hero, mobile καρτών,
+ * κουμπιών και intro — εντοπίστηκαν στον έλεγχο ταχύτητας.
+ */
 const DEAD_CLASSES = [
+  'page-loaded',
+  'premium-mobile-card',
+  'btn-secondary',
+  'btn-primary',
+  'btn-ghost',
+  'hero-kicker',
+  'brand-center',
+  'mobile-plan-hero',
+  'mobile-plan-feature',
+  'mobile-plan-summary-nova',
+  'mobile-plan-annual',
+  'mobile-offer-bg',
+  'mobile-signal-lines',
+  'mobile-provider-cta',
+  'mobile-title-panel',
+  'mobile-network-chip',
+  'official-intro-tags',
+  'official-intro-card',
+  'official-intro-badge',
+  'menu-nameday-pill',
+  'hero-title-svg',
+  'hero-title-wrap',
+  'hero-service-panel',
+  'landing-hero-copy',
+  'offer-card--nova-5g',
+  'offer-card--vodafone-fixed',
+  'offer-card--nova-fiber-new',
+  'offer-card--vodafone-mobile',
+  'offer-card--q-mobile',
+  'offer-card--tv-combo',
+  'offer-price',
+  'police-hero__actions',
+  'police-hero__primary',
+  'police-hero__secondary',
+  'police-hero__badge',
+  'police-hero__text',
+  'process-steps',
+  'phone-cta',
+  'quick-actions-grid',
+  'blue-orange-info',
+  'activation-email-template-button',
   'offer-card--glass',
   'offer-card-mobile',
   'offer-card-mobile-vodafone',

@@ -38,7 +38,7 @@ html = html.replace(/\s*<link\s+rel="stylesheet"\s+href="assets\/css\/(?:tailwin
 // αξίζει preload. Το Space Grotesk είναι latin-only (δεν έχει ελληνικούς χαρακτήρες)
 // και φορτώνεται κανονικά μέσω unicode-range μόνο όπου χρειάζεται.
 const fontPreload = '<link rel="preload" href="assets/fonts/inter-greek.woff2" as="font" type="font/woff2" crossorigin>';
-html = html.replace(/\s*<link rel="preload" href="assets\/fonts\/(?:inter-greek|space-grotesk-latin)\.woff2(?:\?v=[a-f0-9]{8})?" as="font" type="font\/woff2" crossorigin>/g, '');
+html = html.replace(/\s*<link rel="preload" href="assets\/fonts\/(?:inter-greek|inter-latin|space-grotesk-latin)\.woff2(?:\?v=[a-f0-9]{8})?" as="font" type="font\/woff2" crossorigin>/g, '');
 html = html.replace(/\n\s*<script type="application\/ld\+json">/, `\n  ${fontPreload}\n  ${criticalBlock}\n  ${appCssBlock}\n\n  <script type="application/ld+json">`);
 await fs.writeFile(indexPath, html);
 
