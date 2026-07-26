@@ -69,6 +69,38 @@ test('καμία κάρτα δεν έχει δικό της ύψος ή θέση
   assert.deepEqual(offenders, [], 'επέστρεψαν overrides ύψους/πλέγματος ανά κάρτα');
 });
 
+/* Στο κινητό το σύρσιμο αριστερά-δεξιά δεν κάνει τίποτα: ούτε πλοηγεί πίσω,
+   ούτε κουνάει τη σελίδα πλάγια. */
+test('δεν υπάρχει χειρονομία swipe-back στον κώδικα', () => {
+  const scripts = ['config.js', 'ui.js', 'modals.js', 'offers.js', 'main.js'];
+
+  for (const file of scripts) {
+    const source = readFileSync(path.join(root, 'assets/js', file), 'utf8');
+    assert.doesNotMatch(source, /swipeBack|SWIPE_BACK/i, `το ${file} έχει ξανά κώδικα swipe-back`);
+  }
+});
+
+test('το κινητό δεν επιτρέπει οριζόντια μετακίνηση της σελίδας', () => {
+  const html = readFileSync(path.join(root, 'index.html'), 'utf8');
+  const bundle = html.match(/assets\/css\/bundle\.[a-f0-9]{8}\.min\.css/)[0];
+  const css = readFileSync(path.join(root, bundle), 'utf8');
+
+  // Μετά το lightningcss το (max-width: 767px) γίνεται (width<=767px). Μέσα στο
+  // media query υπάρχουν πολλά μπλοκ html,body — αρκεί ένα να τα έχει και τα τρία.
+  const mobileCss = css.split('@media (width<=767px){').slice(1).join('');
+  const blocks = [...mobileCss.matchAll(/html,body\{([^}]*)\}/g)].map(([, body]) => body);
+
+  assert.ok(blocks.length, 'λείπει εντελώς κανόνας html/body για το κινητό');
+
+  const guard = blocks.find((body) => (
+    /touch-action:pan-y/.test(body) &&
+    /overscroll-behavior-x:none/.test(body) &&
+    /overflow-x:clip/.test(body)
+  ));
+
+  assert.ok(guard, `κανένα μπλοκ html/body δεν κλειδώνει την οριζόντια κίνηση:\n${blocks.join('\n')}`);
+});
+
 test('τα modalId των προσφορών αντιστοιχούν σε υπαρκτό modal', () => {
   const modals = readFileSync(path.join(root, 'assets/js/modals.js'), 'utf8');
 

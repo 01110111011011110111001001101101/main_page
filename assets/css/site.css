@@ -3375,14 +3375,18 @@ body.scroll-locked {
     display: none !important;
   }
 
+  /* Τυλίγει σε δεύτερη σειρά αντί να κρύβει επιλογές δεξιά: στο κινητό η
+     οριζόντια μετακίνηση με το δάχτυλο είναι κλειδωμένη, οπότε ό,τι έβγαινε
+     εκτός οθόνης θα ήταν απρόσιτο. */
   .quick-actions-grid {
     display: flex !important;
     grid-template-columns: none !important;
-    overflow-x: auto;
+    flex-wrap: wrap !important;
+    justify-content: center;
+    overflow-x: hidden !important;
     gap: 0.75rem;
     padding-bottom: 0.15rem;
-    scroll-snap-type: x proximity;
-    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
   }
 
   .quick-actions-grid::-webkit-scrollbar {
@@ -7395,13 +7399,17 @@ body.hero-intro-ready .site-main {
 
 /* Mobile horizontal containment and Vodafone Internet modal hardening. */
 @media (max-width: 767px) {
+  /* Στο κινητό η σελίδα κινείται ΜΟΝΟ πάνω-κάτω. Το pan-y λέει στον browser να
+     μη δεχτεί οριζόντιο σύρσιμο, το overscroll-behavior-x κόβει το ελαστικό
+     τίναγμα στα άκρα, και το overflow-x: clip δεν αφήνει τίποτα να ξεφύγει
+     πλάγια. Δεν υπάρχει πια οριζόντιος scroller μέσα στη σελίδα. */
   html,
   body {
     width: 100% !important;
     max-width: 100% !important;
     overflow-x: clip !important;
-    overscroll-behavior-x: none;
-    touch-action: pan-y;
+    overscroll-behavior-x: none !important;
+    touch-action: pan-y !important;
   }
 
   @supports not (overflow-x: clip) {
@@ -10964,9 +10972,21 @@ body.hero-intro-ready .police-hero .police-hero__logo {
 }
 
 /* Το ίδιο πρόβλημα υπήρχε και στην κάρτα email του βήματος 3. */
+/* «Άνοιγμα email»: μαύρο με λευκά γράμματα. Το #111827 είναι το ίδιο μαύρο που
+   χρησιμοποιείται ήδη στα κουμπιά επικοινωνίας, ώστε να μη μπει νέα απόχρωση. */
 .activation-guide .activation-email-card__actions a[href^="mailto:"] {
-  background: var(--activation-brand) !important;
-  border: 1px solid var(--activation-brand) !important;
+  background: #111827 !important;
+  border: 1px solid #111827 !important;
   border-radius: 14px !important;
   color: #ffffff !important;
+  box-shadow: 0 6px 16px rgba(17, 24, 39, 0.22) !important;
+}
+
+.activation-guide .activation-email-card__actions a[href^="mailto:"] .icon {
+  color: #ffffff !important;
+}
+
+.activation-guide .activation-email-card__actions a[href^="mailto:"]:hover {
+  background: #000000 !important;
+  border-color: #000000 !important;
 }

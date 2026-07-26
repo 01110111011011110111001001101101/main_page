@@ -232,107 +232,6 @@
     return true;
   }
 
-function resetSwipeBackTracking() {
-    swipeBackTracking = false;
-    swipeBackStartX = 0;
-    swipeBackStartY = 0;
-    swipeBackStartTime = 0;
-}
-
-function shouldIgnoreSwipeBackTarget(target) {
-    if (!target || !target.closest) return false;
-
-    // Όταν είμαστε μέσα σε οποιοδήποτε modal, το γενικό browser swipe-back
-    // δεν πρέπει να τρέχει ποτέ, γιατί στέλνει τον χρήστη στην αρχική/προηγούμενη σελίδα.
-    // Τα modals/οδηγοί έχουν δική τους πλοήγηση.
-    if (target.closest('.modal-backdrop')) {
-        return true;
-    }
-
-    if (target.closest('input, textarea, select, button, a, [role="button"], [contenteditable="true"]')) {
-        return true;
-    }
-
-    if (target.closest('[data-preview-zoom], [data-preview-reset], [data-copy-text], [data-copy-iban], [data-copy-beneficiary], [data-tab-show]')) {
-        return true;
-    }
-
-    let node = target;
-    while (node && node !== document.body) {
-        if (node.scrollWidth > node.clientWidth + 12) {
-            const style = window.getComputedStyle(node);
-            if (style.overflowX === 'auto' || style.overflowX === 'scroll') {
-                return true;
-            }
-        }
-
-        node = node.parentElement;
-    }
-
-    return false;
-}
-
-function handleSwipeBackTouchStart(event) {
-    if (!event.touches || event.touches.length !== 1) {
-        resetSwipeBackTracking();
-        return;
-    }
-
-    if (imagePreviewPinchDistance > 0 || imagePreviewDragging || (isImagePreviewOpen() && imagePreviewZoom > 1)) {
-        resetSwipeBackTracking();
-        return;
-    }
-
-    if (shouldIgnoreSwipeBackTarget(event.target)) {
-        resetSwipeBackTracking();
-        return;
-    }
-
-    const touch = event.touches[0];
-
-    if (touch.clientX <= SWIPE_BACK_EDGE_GUARD || touch.clientX >= window.innerWidth - SWIPE_BACK_EDGE_GUARD) {
-        resetSwipeBackTracking();
-        return;
-    }
-
-    swipeBackStartX = touch.clientX;
-    swipeBackStartY = touch.clientY;
-    swipeBackStartTime = Date.now();
-    swipeBackTracking = true;
-}
-
-function handleSwipeBackTouchEnd(event) {
-    if (!swipeBackTracking || !event.changedTouches || event.changedTouches.length !== 1) {
-        resetSwipeBackTracking();
-        return;
-    }
-
-    const touch = event.changedTouches[0];
-    const deltaX = touch.clientX - swipeBackStartX;
-    const deltaY = Math.abs(touch.clientY - swipeBackStartY);
-    const duration = Date.now() - swipeBackStartTime;
-
-    resetSwipeBackTracking();
-
-    if (
-        deltaX >= SWIPE_BACK_MIN_DISTANCE &&
-        deltaY <= SWIPE_BACK_MAX_VERTICAL_DISTANCE &&
-        duration <= SWIPE_BACK_MAX_DURATION_MS
-    ) {
-        trackEvent('Navigation', 'swipe_back', 'touch_gesture', {
-            direction: 'right',
-        });
-
-        // Extra ασφάλεια: αν υπάρχει ανοιχτό modal, μη χρησιμοποιείς browser history back.
-        // Αλλιώς σε Safari/iPhone μπορεί να πετάξει τον χρήστη στην αρχική.
-        if (document.querySelector('.modal-backdrop:not(.hidden)')) {
-            return;
-        }
-
-        window.history.back();
-    }
-}
-
 function initializeBottomNavOffersState() {
     const offersSection = document.getElementById('offers');
     const offersNavLink = document.querySelector('.mobile-nav-offers-link');
@@ -807,9 +706,8 @@ function initializeRevealAnimations() {
 function initializeDocumentDelegates() {
     document.addEventListener('click', handleDocumentClick);
     document.addEventListener('keydown', handleDocumentKeydown);
-    document.addEventListener('touchstart', handleSwipeBackTouchStart, { passive: true });
-    document.addEventListener('touchend', handleSwipeBackTouchEnd, { passive: true });
-    document.addEventListener('touchcancel', resetSwipeBackTracking, { passive: true });
+    // Δεν υπάρχει πια χειρονομία swipe-back: το σύρσιμο αριστερά-δεξιά δεν
+    // πλοηγεί. Η επιστροφή γίνεται από τα κουμπιά κλεισίματος και το Escape.
     document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'hidden') {
             stopAllOfferViews({ beacon: true });
