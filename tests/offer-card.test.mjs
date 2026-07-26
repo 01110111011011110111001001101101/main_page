@@ -174,7 +174,8 @@ test('η τιμή παίρνει τον τόνο του παρόχου', async (
 
   assert.equal(tone('vodafone-cu'), 'rgb(197, 0, 0)', 'Vodafone: κόκκινο');
   assert.equal(tone('nova-q'), 'rgb(194, 65, 12)', 'Nova: πορτοκαλί');
-  assert.equal(tone('eon-cosmote-tv'), 'rgb(92, 45, 145)', 'EON: μοβ, όχι της Cosmote');
+  // Πράσινο EON, όχι το λαδί της Cosmote — σε απόχρωση που περνά WCAG AA.
+  assert.equal(tone('eon-cosmote-tv'), 'rgb(14, 122, 20)', 'EON: πράσινο, όχι της Cosmote');
 });
 
 test('οι κάρτες κινητής δείχνουν λωρίδα προπληρωμής στον πάτο', async () => {

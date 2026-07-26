@@ -59,13 +59,25 @@
 // Η κλάση .is-scrolled στην πάνω μπάρα. Η απόκρυψη/εμφάνιση της ίδιας μπάρας
 // ζει στο ui.js (site-top-nav-hidden) — εδώ μένει μόνο η οπτική κατάσταση
 // «έχει γίνει scroll», ώστε να υπάρχει ένας ιδιοκτήτης ανά συμπεριφορά.
-document.addEventListener('DOMContentLoaded', () => {
-  const topNav = document.querySelector('.site-top-nav');
-  if (!topNav) return;
+(function () {
+  'use strict';
 
   const SCROLL_THRESHOLD = 50;
 
-  window.App?.scroll?.subscribe(({ scrollY }) => {
-    topNav.classList.toggle('is-scrolled', scrollY > SCROLL_THRESHOLD);
-  });
-});
+  function bindTopNavScrollState() {
+    const topNav = document.querySelector('.site-top-nav');
+    if (!topNav) return;
+
+    window.App?.scroll?.subscribe(({ scrollY }) => {
+      topNav.classList.toggle('is-scrolled', scrollY > SCROLL_THRESHOLD);
+    });
+  }
+
+  // Ίδιος έλεγχος readyState με το initializeApp παραπάνω: αν το bundle φορτωθεί
+  // δυναμικά μετά το DOMContentLoaded, ένας σκέτος listener δεν θα έτρεχε ποτέ.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindTopNavScrollState, { once: true });
+  } else {
+    bindTopNavScrollState();
+  }
+})();

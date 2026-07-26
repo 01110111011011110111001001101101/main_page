@@ -905,9 +905,12 @@ function initializeMobileModalReturnPosition() {
     }, 0);
   }, true);
 
-  // Και για κλείσιμο με Escape ή backdrop, αν υπάρχει τέτοια λειτουργία
+  // Και για κλείσιμο με Escape ή backdrop, αν υπάρχει τέτοια λειτουργία.
+  // Μόνο όταν όντως υπάρχει ανοιχτό modal: αλλιώς ένα Escape στη μέση της
+  // σελίδας πεταγόταν στη θέση που είχε ανοίξει κάποιο modal νωρίτερα.
   document.addEventListener('keydown', function (event) {
     if (event.key !== 'Escape' || !isMobile()) return;
+    if (!document.querySelector('.modal-backdrop:not(.hidden)')) return;
 
     const scrollY = modalOpenScrollY || getCurrentPageScrollY();
 

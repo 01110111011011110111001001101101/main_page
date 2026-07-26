@@ -55,12 +55,7 @@ const { code } = await transform(sources.join('\n;\n'), {
 const hash = createHash('sha256').update(code).digest('hex').slice(0, 8);
 const outputName = `app.${hash}.min.js`;
 
-for (const file of await fs.readdir(jsDirectory)) {
-  if (/^app\.[a-f0-9]{8}\.min\.js$/.test(file) && file !== outputName) {
-    await fs.rm(path.join(jsDirectory, file));
-  }
-}
-
+// Ίδια σειρά με το build-css-bundle: γράψε πρώτα, ενημέρωσε το HTML, σβήσε τελευταία.
 await fs.writeFile(path.join(jsDirectory, outputName), code);
 
 const block = `<!-- app-js:start -->\n<script defer src="assets/js/${outputName}"></script>\n<!-- app-js:end -->`;
@@ -72,6 +67,12 @@ if (!/<!-- app-js:start -->[\s\S]*?<!-- app-js:end -->/.test(html)) {
 
 html = html.replace(/<!-- app-js:start -->[\s\S]*?<!-- app-js:end -->/, block);
 await fs.writeFile(indexPath, html);
+
+for (const file of await fs.readdir(jsDirectory)) {
+  if (/^app\.[a-f0-9]{8}\.min\.js$/.test(file) && file !== outputName) {
+    await fs.rm(path.join(jsDirectory, file), { force: true });
+  }
+}
 
 const originalBytes = sources.reduce((total, source) => total + Buffer.byteLength(source), 0);
 console.log(

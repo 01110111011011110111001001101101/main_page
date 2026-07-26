@@ -40,7 +40,9 @@
     q: Object.freeze({ ink: '#c2410c', tint: '#fff6ed', border: '#fbd3ad' }),
     // Το ακριβές κλειδί πρέπει να προηγείται: το "EON / Cosmote TV" περιέχει
     // και τα δύο ονόματα και αλλιώς θα έπαιρνε τον τόνο της Cosmote.
-    'eon / cosmote tv': Object.freeze({ ink: '#01e109', tint: '#f7f3fd', border: '#63e124' }),
+    // Το πράσινο του EON, σκουρεμένο ώστε η τιμή να διαβάζεται: το καθαρό
+    // #01e109 έδινε 1,63:1 πάνω στο φόντο της κάρτας (όριο WCAG AA: 4,5:1).
+    'eon / cosmote tv': Object.freeze({ ink: '#0e7a14', tint: '#f2fbf1', border: '#bfe3bc' }),
     cosmote: Object.freeze({ ink: '#3f6d0f', tint: '#f4faec', border: '#cfe6b4' }),
     eon: Object.freeze({ ink: '#5c2d91', tint: '#f7f3fd', border: '#ddcdf2' }),
   });

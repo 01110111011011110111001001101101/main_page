@@ -224,7 +224,16 @@ function openModalFromHash() {
         window.App?.offerRenderer?.syncFromLocation?.();
         return;
     }
-    const modalId = decodeURIComponent(window.location.hash.replace('#', ''));
+    // Το decodeURIComponent πετάει URIError σε κακοσχηματισμένο hash (π.χ. "#100%").
+    // Χωρίς guard, το σφάλμα σταματούσε το initializeUi πριν δεθούν τα delegated
+    // events, δηλαδή ολόκληρη η σελίδα έμενε χωρίς κλικ.
+    let modalId;
+    try {
+        modalId = decodeURIComponent(window.location.hash.replace('#', ''));
+    } catch (_error) {
+        return;
+    }
+
     if (!modalId) return;
 
     if (document.getElementById(modalId)?.classList.contains('modal-backdrop') || lazyModalFragments[modalId]) {

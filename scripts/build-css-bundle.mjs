@@ -14,11 +14,10 @@ const { code } = transform({ filename: 'bundle.css', code: Buffer.from(sourceCss
 const hash = createHash('sha256').update(code).digest('hex').slice(0, 8);
 const outputName = `bundle.${hash}.min.css`;
 
-for (const file of await fs.readdir(cssDirectory)) {
-  if (/^bundle\.[a-f0-9]{8}\.min\.css$/.test(file) && file !== outputName) {
-    await fs.rm(path.join(cssDirectory, file));
-  }
-}
+// Γράψε ΠΡΩΤΑ το νέο bundle. Ο καθαρισμός των παλιών γίνεται στο τέλος, αφού
+// ενημερωθεί το index.html: αν σβήναμε πρώτα και κάτι διέκοπτε τη ροή (δίσκος,
+// δικαιώματα, Ctrl+C), το HTML έμενε να δείχνει σε αρχείο που δεν υπάρχει και
+// η σελίδα φόρτωνε μόνο με το critical CSS.
 await fs.writeFile(path.join(cssDirectory, outputName), code);
 
 const criticalSource = await fs.readFile(path.join(cssDirectory, 'critical.css'));
@@ -41,5 +40,12 @@ const fontPreload = '<link rel="preload" href="assets/fonts/inter-greek.woff2" a
 html = html.replace(/\s*<link rel="preload" href="assets\/fonts\/(?:inter-greek|inter-latin|space-grotesk-latin)\.woff2(?:\?v=[a-f0-9]{8})?" as="font" type="font\/woff2" crossorigin>/g, '');
 html = html.replace(/\n\s*<script type="application\/ld\+json">/, `\n  ${fontPreload}\n  ${criticalBlock}\n  ${appCssBlock}\n\n  <script type="application/ld+json">`);
 await fs.writeFile(indexPath, html);
+
+// Τώρα που το index.html δείχνει στο νέο bundle, τα παλιά μπορούν να φύγουν.
+for (const file of await fs.readdir(cssDirectory)) {
+  if (/^bundle\.[a-f0-9]{8}\.min\.css$/.test(file) && file !== outputName) {
+    await fs.rm(path.join(cssDirectory, file), { force: true });
+  }
+}
 
 console.log(`Built assets/css/${outputName} (${code.length} bytes) and inlined critical CSS (${Buffer.byteLength(criticalCode)} bytes).`);
