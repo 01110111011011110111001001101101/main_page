@@ -46,7 +46,8 @@ test('η κάρτα δείχνει τη μηνιαία τιμή από το pric
 
   assert.equal(card.querySelector('.new-premium-price-num').textContent, '8,3€');
   assert.equal(card.querySelector('.new-premium-price-unit').textContent, '/ μήνα');
-  assert.match(card.querySelector('.new-premium-price-note').textContent, /100€/);
+  // Στις προσφορές κινητής η προπληρωμή προβάλλεται ως λωρίδα, όχι ως σημείωση.
+  assert.match(card.querySelector('.new-premium-note-banner').textContent, /100€/);
 });
 
 test('το prefix της τιμής αποδίδεται ξεχωριστά', async () => {
@@ -164,4 +165,64 @@ test('όταν το fetch αποτύχει εμφανίζεται μήνυμα �
   const container = page.document.getElementById('offersContainer');
   assert.equal(container.dataset.offerLoadState, 'failed');
   assert.ok(container.querySelector('[data-offers-retry]'));
+});
+
+test('η τιμή παίρνει τον τόνο του παρόχου', async () => {
+  const { cards } = await renderCards();
+  const tone = (id) => cards.find((card) => card.dataset.offerId === id)
+    .querySelector('.new-premium-price-num').style.color;
+
+  assert.equal(tone('vodafone-cu'), 'rgb(197, 0, 0)', 'Vodafone: κόκκινο');
+  assert.equal(tone('nova-q'), 'rgb(194, 65, 12)', 'Nova: πορτοκαλί');
+  assert.equal(tone('eon-cosmote-tv'), 'rgb(92, 45, 145)', 'EON: μοβ, όχι της Cosmote');
+});
+
+test('οι κάρτες κινητής δείχνουν λωρίδα προπληρωμής στον πάτο', async () => {
+  const { cards } = await renderCards();
+
+  for (const id of ['vodafone-cu', 'nova-q']) {
+    const card = cards.find((one) => one.dataset.offerId === id);
+    const banner = card.querySelector('.new-premium-note-banner');
+
+    assert.ok(banner, `λείπει η λωρίδα από ${id}`);
+    assert.match(banner.textContent, /100€ προπληρωμή/);
+    assert.equal(card.lastElementChild, banner, 'η λωρίδα είναι το τελευταίο στοιχείο της κάρτας');
+  }
+});
+
+test('οι υπόλοιπες κάρτες δεν έχουν λωρίδα, κρατούν μικρή σημείωση', async () => {
+  const { cards } = await renderCards();
+  const card = cards.find((one) => one.dataset.offerId === 'eon-cosmote-tv');
+
+  assert.equal(card.querySelector('.new-premium-note-banner'), null);
+  assert.match(card.querySelector('.new-premium-price-note').textContent, /ΦΠΑ/);
+});
+
+test('η λωρίδα δεν εμφανίζεται χωρίς highlightNote', async () => {
+  const offers = readOffers();
+  offers.offers.forEach((offer) => { delete offer.pricing?.highlightNote; });
+  const { cards } = await renderCards(offers);
+
+  assert.equal(cards.filter((card) => card.querySelector('.new-premium-note-banner')).length, 0);
+});
+
+test('ο τίτλος του πακέτου ζει μέσα στην κεφαλίδα, πάνω από την τιμή', async () => {
+  const { cards } = await renderCards();
+  const card = cards.find((one) => one.dataset.offerId === 'vodafone-cu');
+  const title = card.querySelector('.new-premium-title');
+
+  assert.ok(title, 'υπάρχει τίτλος');
+  assert.equal(title.tagName, 'H3');
+  assert.ok(card.querySelector('.new-premium-ribbon').contains(title), 'ο τίτλος είναι στην κεφαλίδα');
+  assert.equal(card.querySelectorAll('h3').length, 1, 'ένας μόνο τίτλος ανά κάρτα');
+
+  // Σειρά ανάγνωσης: πάροχος → τίτλος → περιγραφή → τιμή.
+  const order = [...card.querySelectorAll('.new-premium-ribbon-name, .new-premium-title, .new-premium-desc, .new-premium-price-num')]
+    .map((element) => element.className);
+  assert.deepEqual(order, [
+    'new-premium-ribbon-name',
+    'new-premium-title',
+    'new-premium-desc',
+    'new-premium-price-num',
+  ]);
 });

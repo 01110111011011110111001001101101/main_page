@@ -121,15 +121,30 @@
   // Στα κινητά: μόλις ο χρήστης φτάσει στη "Γρήγορη εκκίνηση" και συνεχίσει προς
   // τα κάτω, η πάνω μπάρα κρύβεται και εμφανίζεται το mini nav στον πάτο.
   // Με scroll προς τα πάνω η μπάρα επανέρχεται αμέσως.
+  // Η "Γρήγορη εκκίνηση" κρύβεται στον υπολογιστή, όπου η πλοήγηση γίνεται από
+  // την πάνω μπάρα. Όταν είναι κρυφή, το σημείο ενεργοποίησης γίνονται οι
+  // προσφορές — αλλιώς ένα στοιχείο με μηδενικό ύψος θα έδινε top === 0 και το
+  // trigger θα χτυπούσε από την πρώτη στιγμή.
+  function getMiniNavTrigger() {
+    const choiceHub = document.getElementById('choiceHub');
+    // getComputedStyle αντί για getClientRects: διαβάζει το media query που
+    // κρύβει την ενότητα, και δουλεύει και εκτός browser (tests σε jsdom).
+    const isVisible = choiceHub && window.getComputedStyle(choiceHub).display !== 'none';
+    return isVisible ? choiceHub : document.getElementById('offers');
+  }
+
   function initializeChoiceMiniNav() {
     const miniNav = document.querySelector('[data-choice-mini-nav]');
-    const triggerSection = document.getElementById('choiceHub') || document.getElementById('offers');
-    if (!miniNav || !triggerSection) return;
+    if (!miniNav || !getMiniNavTrigger()) return;
 
     const syncMiniNav = () => {
       const { headerHeight } = readNavigationMetrics();
 
-      // Το trigger point είναι η κορυφή της ενότητας "Γρήγορη εκκίνηση".
+      // Ξαναϋπολογίζεται σε κάθε κλήση: σε αλλαγή μεγέθους παραθύρου το
+      // choiceHub μπορεί να εμφανιστεί ή να κρυφτεί.
+      const triggerSection = getMiniNavTrigger();
+      if (!triggerSection) return;
+
       const passedTrigger = triggerSection.getBoundingClientRect().top <= headerHeight;
 
       updateChoiceMiniNavVisibility(passedTrigger);

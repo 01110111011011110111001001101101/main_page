@@ -94,7 +94,7 @@ test('το Tab κυκλώνει μέσα στο ανοιχτό μενού', asyn
   assert.equal(site.document.activeElement, items[0]);
 });
 
-test('η μπάρα έχει σύνδεσμο κοινότητας Viber και όχι λογότυπο στο κέντρο', () => {
+test('η μπάρα έχει σύνδεσμο κοινότητας Viber', () => {
   const site = createSite();
   const viber = site.document.querySelector('.site-top-nav .top-viber');
 
@@ -102,7 +102,21 @@ test('η μπάρα έχει σύνδεσμο κοινότητας Viber και 
   assert.match(viber.getAttribute('href'), /invite\.viber\.com/);
   assert.equal(viber.getAttribute('target'), '_blank');
   assert.equal(viber.getAttribute('rel'), 'noopener noreferrer');
-  assert.match(viber.textContent.trim(), /Κοινότητα Viber/);
+  assert.match(viber.getAttribute('aria-label'), /Viber/);
+});
+
+test('η μπάρα δεν έχει πια κουμπί κλήσης', () => {
+  const site = createSite();
+
+  assert.equal(site.document.querySelector('.site-top-nav .top-call-button'), null);
+});
+
+test('η μπάρα δείχνει το λογότυπο και στο κινητό', () => {
+  const site = createSite();
+  const brand = site.document.querySelector('.site-top-nav .top-brand img');
+
+  assert.ok(brand, 'το λογότυπο υπάρχει στη μπάρα');
+  assert.ok(brand.getAttribute('alt'));
 });
 
 test('τα τρία κουμπιά του μενού έχουν σωστούς προορισμούς', () => {

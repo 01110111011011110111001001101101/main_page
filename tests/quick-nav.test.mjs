@@ -102,3 +102,28 @@ test('ο τίτλος της ενότητας δεν είναι γραμμένο
 
   assert.notEqual(eyebrow.textContent.trim(), eyebrow.textContent.trim().toUpperCase());
 });
+
+test('η Γρήγορη εκκίνηση κρύβεται στον υπολογιστή', async () => {
+  const site = await createSite();
+  const bundle = site.document.querySelector('link[rel="preload"][as="style"]')?.getAttribute('href')
+    || site.document.querySelector('link[rel="stylesheet"][href*="bundle."]')?.getAttribute('href');
+  const css = readFileSync(path.join(root, bundle.split('?')[0]), 'utf8');
+
+  // Ο κανόνας ζει σε @media (width>=768px) μετά το lightningcss.
+  assert.match(css, /\(width>=768px\)[\s\S]*?#choiceHub[^{]*\{[^}]*display:\s*none/);
+});
+
+test('το mini nav πέφτει στις προσφορές όταν η Γρήγορη εκκίνηση είναι κρυφή', async () => {
+  const site = await createSite();
+  const choiceHub = site.document.getElementById('choiceHub');
+
+  // Προσομοιώνουμε desktop: το media query κρύβει την ενότητα.
+  choiceHub.style.display = 'none';
+  const offers = site.document.getElementById('offers');
+  offers.getBoundingClientRect = () => ({ top: -10, height: 800 });
+
+  site.window.dispatchEvent(new site.window.Event('scroll'));
+  await settle(60);
+
+  assert.equal(site.document.body.classList.contains('choice-mini-nav-visible'), true);
+});

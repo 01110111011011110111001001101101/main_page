@@ -18,17 +18,26 @@ async function contentHash(assetPath) {
   return hashCache.get(normalized);
 }
 
+/*
+ * ΠΡΟΣΟΧΗ: παλιότερα αυτή η συνάρτηση έκανε content.split(match).join(stamped)
+ * για κάθε μοναδικό match. Αν το ίδιο αρχείο εμφανιζόταν μία φορά με ?v= και
+ * μία χωρίς, το ασφράγιστο match ταίριαζε και ΜΕΣΑ στο ήδη σφραγισμένο URL και
+ * έβγαινε "hero-head.webp?v=abc?v=abc". Τώρα γίνεται μία μόνο διέλευση με
+ * callback, οπότε δεν υπάρχουν επικαλυπτόμενες αντικαταστάσεις.
+ */
 async function stampSharedAssets(content) {
-  const pattern = /assets\/(?:images\/[a-zA-Z0-9._-]+\.(?:png|webp)|icons\/icons\.svg|fonts\/[a-zA-Z0-9._-]+\.woff2)(?:\?v=[a-f0-9]{8})?(?:#[a-zA-Z0-9_-]+)?/g;
+  const pattern = /assets\/(?:images\/[a-zA-Z0-9._-]+\.(?:png|webp)|icons\/icons\.svg|fonts\/[a-zA-Z0-9._-]+\.woff2)(?:\?v=[a-f0-9]{8})*(?:#[a-zA-Z0-9_-]+)?/g;
   const matches = [...new Set(content.match(pattern) || [])];
+
+  const replacements = new Map();
   for (const match of matches) {
     const [urlPart, fragment] = match.split('#');
-    const assetPath = urlPart.replace(/\?v=[a-f0-9]{8}$/, '');
+    const assetPath = urlPart.replace(/(?:\?v=[a-f0-9]{8})+$/, '');
     const hash = await contentHash(assetPath);
-    const stamped = `${assetPath}?v=${hash}${fragment ? `#${fragment}` : ''}`;
-    content = content.split(match).join(stamped);
+    replacements.set(match, `${assetPath}?v=${hash}${fragment ? `#${fragment}` : ''}`);
   }
-  return content;
+
+  return content.replace(pattern, (match) => replacements.get(match) ?? match);
 }
 
 for (const file of await fs.readdir(jsDirectory)) {
