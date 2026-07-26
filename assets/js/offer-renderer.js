@@ -22,7 +22,7 @@
     nova: '#0a2896',
     cosmote: '#7ac143',
     wind: '#0067b1',
-    'eon / cosmote tv': '#089414',
+    'eon / cosmote tv': '#00bf10',
     eon: '#069266',
     q: '#ff8d13',
   });
@@ -40,7 +40,7 @@
     q: Object.freeze({ ink: '#c2410c', tint: '#fff6ed', border: '#fbd3ad' }),
     // Το ακριβές κλειδί πρέπει να προηγείται: το "EON / Cosmote TV" περιέχει
     // και τα δύο ονόματα και αλλιώς θα έπαιρνε τον τόνο της Cosmote.
-    'eon / cosmote tv': Object.freeze({ ink: '#5c2d91', tint: '#f7f3fd', border: '#ddcdf2' }),
+    'eon / cosmote tv': Object.freeze({ ink: '#01e109', tint: '#f7f3fd', border: '#63e124' }),
     cosmote: Object.freeze({ ink: '#3f6d0f', tint: '#f4faec', border: '#cfe6b4' }),
     eon: Object.freeze({ ink: '#5c2d91', tint: '#f7f3fd', border: '#ddcdf2' }),
   });
@@ -162,6 +162,9 @@
       if (offer.pricing?.note) button.dataset.activationAmountNote = offer.pricing.note;
     } else if (offer.modalId || actionTarget.modalId) {
       button.dataset.modalTarget = offer.modalId || actionTarget.modalId;
+      // Ποια προσφορά άνοιξε το modal: επιτρέπει σε ένα κοινό modal να δείχνει
+      // διαφορετικό τίτλο και διαφορετικά έντυπα ανά προσφορά.
+      if (offer.id) button.dataset.modalOffer = offer.id;
     }
 
     setTrackingDataset(button, offer);
@@ -379,6 +382,54 @@
     if (noteBanner) card.appendChild(noteBanner);
 
     return card;
+  }
+
+  /*
+   * Κοινό modal, διαφορετικό περιεχόμενο ανά προσφορά.
+   *
+   * Το Nova 5G και το Nova fiber μοιράζονται το ίδιο modal (novaLinePhone),
+   * αλλά χρειάζονται δικό τους τίτλο και δικά τους έντυπα. Αντί για δύο
+   * αντίγραφα του ίδιου fragment 144 γραμμών, το modal γεμίζει από το
+   * offers.json: αρκεί να αλλάξει ο πίνακας documents της κάθε προσφοράς.
+   */
+  function fillModalForOffer(modal, offerId) {
+    const offer = offersById.get(offerId);
+    if (!modal || !offer) return false;
+
+    modal.querySelectorAll('[data-modal-offer-title]').forEach((element) => {
+      element.textContent = offer.title || element.textContent;
+    });
+
+    const docsHost = modal.querySelector('[data-modal-offer-docs]');
+    const documents = Array.isArray(offer.documents) ? offer.documents.filter((item) => item?.href) : [];
+    if (!docsHost) return true;
+
+    if (!documents.length) {
+      docsHost.hidden = true;
+      return true;
+    }
+
+    docsHost.hidden = false;
+    docsHost.textContent = '';
+
+    documents.forEach((item) => {
+      const link = createElement('a', 'modal-offer-doc');
+      link.href = item.href;
+      link.download = '';
+      link.dataset.track = 'pdf_download';
+      link.dataset.label = item.href.split('/').pop();
+      link.dataset.offer = getCardOfferName(offer);
+
+      const iconWrap = createElement('span', 'modal-offer-doc__icon');
+      const icon = window.createIcon?.('file-pdf');
+      if (icon) iconWrap.appendChild(icon);
+      link.appendChild(iconWrap);
+
+      appendTextElement(link, 'span', 'modal-offer-doc__label', item.title || item.href.split('/').pop());
+      docsHost.appendChild(link);
+    });
+
+    return true;
   }
 
   function renderFallback(container) {
@@ -765,6 +816,8 @@
     syncFromLocation: syncOfferDetailsFromLocation,
     closeDetailsRoute: closeOfferDetailsRoute,
     getOffers: () => Array.from(offersById.values()),
+    getOffer: (offerId) => offersById.get(offerId) || null,
+    fillModalForOffer,
   };
 
   window.addEventListener('hashchange', () => {

@@ -81,6 +81,48 @@
     });
   }
 
+  /* --- Επιστροφή στην κορυφή -------------------------------------------
+     Στο κινητό η πάνω μπάρα κρύβεται μόλις εμφανιστεί το mini nav, οπότε
+     χάνεται και ο σύνδεσμος του λογοτύπου προς την αρχή. Το κουμπί εμφανίζεται
+     αφού ο χρήστης κατέβει αρκετά και κάθεται πάνω από το mini nav.
+  --------------------------------------------------------------------- */
+  const SCROLL_TOP_THRESHOLD = 700;
+
+  function initializeScrollTopButton() {
+    const button = document.querySelector('[data-scroll-top]');
+    if (!button) return;
+
+    const setVisible = (visible) => {
+      if (visible) button.hidden = false;
+      button.classList.toggle('is-visible', visible);
+      if (!visible) button.hidden = true;
+    };
+
+    button.addEventListener('click', () => {
+      const behavior = prefersReducedMotion() ? 'auto' : 'smooth';
+      window.scrollTo({ top: 0, behavior });
+
+      // Η εστίαση επιστρέφει στην κορυφή, αλλιώς ο χρήστης πληκτρολογίου
+      // συνεχίζει από εκεί που ήταν παρότι η σελίδα γύρισε πάνω.
+      const target = document.querySelector('.top-menu-button') || document.body;
+      target.focus?.({ preventScroll: true });
+
+      if (typeof trackEvent === 'function') trackEvent('scroll_top_click', {});
+    });
+
+    const sync = ({ scrollY }) => setVisible(isMobileNavViewport() && scrollY > SCROLL_TOP_THRESHOLD);
+
+    if (window.App?.scroll?.subscribe) {
+      window.App.scroll.subscribe(sync);
+      return;
+    }
+
+    const fallback = () => sync({ scrollY: window.scrollY });
+    fallback();
+    window.addEventListener('scroll', fallback, { passive: true });
+    window.addEventListener('resize', fallback);
+  }
+
   function readNavigationMetrics() {
     const header = document.querySelector('.site-top-nav');
     const miniNav = document.querySelector('[data-choice-mini-nav]');
@@ -643,6 +685,14 @@ if (modalCloseTarget) {
             category: modalTarget.dataset.category,
         });
         openModal(targetModalId);
+
+        // Κοινό modal για πολλές προσφορές: γεμίζει με τα δικά της στοιχεία.
+        if (modalTarget.dataset.modalOffer) {
+            window.App?.offerRenderer?.fillModalForOffer?.(
+                document.getElementById(targetModalId),
+                modalTarget.dataset.modalOffer,
+            );
+        }
         return;
     }
 
@@ -876,6 +926,7 @@ function initializeUi() {
     initializeHeroIntroNavigation();
     initializeTypewriters();
     initializeCurrentYear();
+    initializeScrollTopButton();
     initializeChoiceMiniNav();
     initializeBottomNavOffersState();
     initializePremiumMenuActiveState();

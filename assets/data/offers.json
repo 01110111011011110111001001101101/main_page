@@ -390,7 +390,7 @@
       "id": "nova-5g-internet",
       "provider": "Nova",
       "title": "Nova 5G Internet",
-      "cardOfferName": "Nova Σταθερό και Internet",
+      "cardOfferName": "Nova 5G Internet",
       "category": "internet",
       "badge": "5G Home Internet",
       "recommendationBadge": "Σταθερή / Internet",
@@ -409,7 +409,7 @@
       "modalId": "novaLinePhone",
       "actionTarget": {
         "track": "offer_interest_click",
-        "offer": "Nova Σταθερό & Internet",
+        "offer": "Nova 5G Internet",
         "category": "internet"
       },
       "details": [
@@ -473,12 +473,12 @@
       },
       "documents": [
         {
-          "title": "ΠΑΡΑΔΕΙΓΜΑ ΑΙΤΗΣΗΣ EON",
-          "href": "assets/docs/Sta8ParadAitisi.pdf"
+          "title": "Αίτηση Nova 5G",
+          "href": "assets/docs/nova-5g-aitisi.pdf"
         },
         {
-          "title": "ΑΙΤΗΣΗ EON",
-          "href": "assets/docs/StatheroAitisi.pdf"
+          "title": "Παράδειγμα συμπλήρωσης",
+          "href": "assets/docs/nova-5g-paradeigma.pdf"
         }
       ],
       "notes": [
@@ -496,8 +496,8 @@
     {
       "id": "nova-fiber-internet",
       "provider": "Nova",
-      "title": "Nova fiber Internet",
-      "cardOfferName": "Nova Σταθερό και Internet",
+      "title": "Nova οπτική ίνα",
+      "cardOfferName": "Nova οπτική ίνα",
       "category": "internet",
       "badge": " Οπτική ίνα έως 100Mbps",
       "recommendationBadge": "Σταθερή / Internet",
@@ -516,7 +516,7 @@
       "modalId": "novaLinePhone",
       "actionTarget": {
         "track": "offer_interest_click",
-        "offer": "Nova Σταθερό & Internet",
+        "offer": "Nova οπτική ίνα",
         "category": "internet"
       },
       "details": [
@@ -580,12 +580,8 @@
       },
       "documents": [
         {
-          "title": "ΠΑΡΑΔΕΙΓΜΑ ΑΙΤΗΣΗΣ EON",
-          "href": "assets/docs/Sta8ParadAitisi.pdf"
-        },
-        {
-          "title": "ΑΙΤΗΣΗ EON",
-          "href": "assets/docs/StatheroAitisi.pdf"
+          "title": "Αίτηση οπτικής ίνας",
+          "href": "assets/docs/nova-fiber-aitisi.pdf"
         }
       ],
       "notes": [
@@ -669,12 +665,12 @@
       },
       "documents": [
         {
-          "title": "ΠΑΡΑΔΕΙΓΜΑ ΑΙΤΗΣΗΣ EON",
-          "href": "assets/docs/TVaitisiExampl.pdf"
+          "title": "Αίτηση EON TV",
+          "href": "assets/docs/eon-tv-aitisi.pdf"
         },
         {
-          "title": "ΑΙΤΗΣΗ EON",
-          "href": "assets/docs/AitisiTV.pdf"
+          "title": "Παράδειγμα συμπλήρωσης",
+          "href": "assets/docs/eon-tv-paradeigma.pdf"
         }
       ],
       "notes": [

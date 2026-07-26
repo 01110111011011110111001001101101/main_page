@@ -10931,3 +10931,320 @@ body.hero-intro-ready .police-hero .police-hero__logo {
     min-height: 2.4em;
   }
 }
+
+/* =========================================================
+   VODAFONE INTERNET MODAL — ανάγνωση στο κινητό.
+
+   Στο desktop τα τρία πακέτα είναι δίπλα-δίπλα και συγκρίνονται.
+   Στο κινητό γίνονταν τρεις σχεδόν ίδιες στοίβες: ίδια κορδέλα
+   «2 μήνες δωρεάν», ίδιος τίτλος «Σταθερή + Internet», ίδια τιμή
+   16,00€ σε δύο από αυτά — δεν ξεχώριζε τι αλλάζει.
+   Εδώ κάθε πακέτο γίνεται συμπαγής γραμμή: ταχύτητα αριστερά,
+   τιμή δεξιά, και η διαφορά (ADSL / FTTH 100 / FTTH 300) ως
+   έγχρωμη ετικέτα στην κορυφή.
+   ========================================================= */
+@media (max-width: 767px) {
+  #vodafoneFixedModal .vodafone-plan-card {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    grid-template-areas:
+      "tag   tag"
+      "name  price"
+      "speed price" !important;
+    align-items: center;
+    gap: 0.15rem 0.75rem !important;
+    padding: 0.9rem 0.95rem !important;
+    border-radius: 1rem !important;
+    text-align: left !important;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.07) !important;
+  }
+
+  #vodafoneFixedModal .vodafone-plan-card::before {
+    height: 3px;
+  }
+
+  /* Η ετικέτα του πακέτου είναι η μόνη πραγματική διαφορά — μπροστά. */
+  #vodafoneFixedModal .vodafone-plan-top {
+    grid-area: tag;
+    display: flex !important;
+    align-items: baseline;
+    gap: 0.45rem;
+    margin-bottom: 0.35rem;
+  }
+
+  #vodafoneFixedModal .vodafone-plan-top span {
+    display: inline !important;
+    font-size: 0.6rem !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  #vodafoneFixedModal .vodafone-plan-top strong {
+    display: inline-block !important;
+    margin-top: 0 !important;
+    padding: 0.18rem 0.5rem;
+    border-radius: 999px;
+    background: #fee2e2;
+    color: #991b1b !important;
+    font-size: 0.78rem !important;
+  }
+
+  #vodafoneFixedModal .vodafone-plan-card h4 {
+    grid-area: name;
+    margin-top: 0 !important;
+    font-size: 0.95rem !important;
+  }
+
+  #vodafoneFixedModal .vodafone-plan-card p {
+    grid-area: speed;
+    margin-top: 0 !important;
+    font-size: 0.82rem !important;
+  }
+
+  #vodafoneFixedModal .vodafone-plan-price {
+    grid-area: price;
+    align-self: center;
+    margin-top: 0 !important;
+    font-size: 1.7rem !important;
+    text-align: right;
+  }
+
+  #vodafoneFixedModal .vodafone-plan-note {
+    display: none !important;
+  }
+
+  /* Η κορδέλα γίνεται μικρό σήμα πάνω δεξιά αντί για μπλοκ. */
+  #vodafoneFixedModal .vodafone-plan-ribbon {
+    position: absolute;
+    top: 0.55rem;
+    right: 0.6rem;
+    margin: 0 !important;
+    padding: 0.2rem 0.45rem !important;
+    font-size: 0.58rem !important;
+    letter-spacing: 0.04em !important;
+  }
+
+  /* --- Δικαιολογητικά: αριθμός δίπλα στο κείμενο, όχι από πάνω. --- */
+  #vodafoneFixedModal .vodafone-doc-item {
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) !important;
+    align-items: start;
+    gap: 0.65rem !important;
+    padding: 0.8rem !important;
+    border-radius: 0.9rem !important;
+    background: #ffffff !important;
+  }
+
+  #vodafoneFixedModal .vodafone-doc-item span {
+    margin-bottom: 0 !important;
+    width: 1.6rem !important;
+    height: 1.6rem !important;
+    font-size: 0.82rem;
+  }
+
+  #vodafoneFixedModal .vodafone-doc-item p {
+    font-size: 0.86rem !important;
+    line-height: 1.45 !important;
+  }
+
+  #vodafoneFixedModal .vodafone-docs-title {
+    font-size: 0.95rem;
+  }
+
+  /* Τα δύο κουμπιά της Υπεύθυνης Δήλωσης το ένα κάτω από το άλλο. */
+  #vodafoneFixedModal .vodafone-declaration-box .flex {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 0.5rem !important;
+  }
+
+  #vodafoneFixedModal .vodafone-declaration-box a,
+  #vodafoneFixedModal .vodafone-declaration-box button {
+    min-height: 48px;
+    padding: 0.7rem 0.9rem !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* Λιγότερο κενό ανάμεσα στις ενότητες, ώστε να χωρά περισσότερο περιεχόμενο. */
+  #vodafoneFixedModal .vodafone-fixed-modal > .p-6 {
+    gap: 1rem;
+  }
+
+  #vodafoneFixedModal .space-y-7 > * + * {
+    margin-top: 1rem !important;
+  }
+}
+
+/* =========================================================
+   ΚΟΥΜΠΙ ΕΠΙΣΤΡΟΦΗΣ ΣΤΗΝ ΚΟΡΥΦΗ (μόνο κινητό).
+   Κάθεται πάνω από το mini nav, χρησιμοποιώντας το ίδιο
+   --choice-mini-nav-height που ήδη υπολογίζει το ui.js.
+   ========================================================= */
+.scroll-top-button {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .scroll-top-button {
+    position: fixed;
+    right: max(12px, env(safe-area-inset-right));
+    bottom: calc(var(--choice-mini-nav-height, 0px) + env(safe-area-inset-bottom, 0px) + 1.1rem);
+    z-index: 48;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    background: #0e7490;
+    color: #ffffff;
+    box-shadow: 0 8px 22px rgba(7, 26, 51, 0.28);
+    opacity: 0;
+    transform: translateY(0.6rem);
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    cursor: pointer;
+  }
+
+  .scroll-top-button[hidden] {
+    display: none;
+  }
+
+  .scroll-top-button.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .scroll-top-button:active {
+    transform: scale(0.94);
+  }
+
+  .scroll-top-button .icon {
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+}
+
+/* =========================================================
+   ΕΝΤΥΠΑ ΜΕΣΑ ΣΕ MODAL — παράγονται από το offers.json, ώστε
+   κάθε προσφορά που μοιράζεται το ίδιο modal (Nova 5G / οπτική
+   ίνα) να δείχνει τα δικά της αρχεία.
+   ========================================================= */
+.modal-offer-docs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.modal-offer-docs[hidden] {
+  display: none;
+}
+
+.modal-offer-doc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  width: 8rem;
+  text-align: center;
+  text-decoration: none;
+  transition: transform 0.14s ease;
+}
+
+.modal-offer-doc:hover {
+  transform: translateY(-2px);
+}
+
+.modal-offer-doc__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border: 2px solid #cbd5e1;
+  border-radius: 50%;
+  color: #94a3b8;
+  background: #ffffff;
+  transition: border-color 0.14s ease, color 0.14s ease, background-color 0.14s ease;
+}
+
+.modal-offer-doc:hover .modal-offer-doc__icon {
+  border-color: #0057ff;
+  background: #eff6ff;
+  color: #dc2626;
+}
+
+.modal-offer-doc__icon .icon {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
+.modal-offer-doc__label {
+  color: #475569;
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.modal-offer-doc:hover .modal-offer-doc__label {
+  color: #1d4ed8;
+}
+
+@media (max-width: 767px) {
+  .modal-offer-docs {
+    gap: 1rem;
+  }
+
+  .modal-offer-doc {
+    width: 6.5rem;
+  }
+
+  .modal-offer-doc__icon {
+    width: 3rem;
+    height: 3rem;
+  }
+}
+
+/* =========================================================
+   ΟΔΗΓΟΣ — κουμπί «Κλήση για βοήθεια».
+   Ο γενικός κανόνας section a[href^="tel:"] επιβάλλει με
+   !important ανοιχτό γκρι φόντο #f8fafc. Το κουμπί όμως
+   κρατούσε color: #fff από το .activation-help-box a:first-child
+   — λευκά γράμματα σε σχεδόν λευκό φόντο, δηλαδή αόρατο.
+   Πράσινο κλήσης, ίδιο με το κουμπί του πλαϊνού μενού.
+   ========================================================= */
+.activation-guide .activation-help-box__actions a[href^="tel:"] {
+  background: #16a34a !important;
+  border: 1px solid #16a34a !important;
+  border-radius: 14px !important;
+  color: #ffffff !important;
+  box-shadow: 0 6px 16px rgba(22, 163, 74, 0.26) !important;
+}
+
+.activation-guide .activation-help-box__actions a[href^="tel:"]:hover {
+  background: #15803d !important;
+  border-color: #15803d !important;
+}
+
+.activation-guide .activation-help-box__actions a[href^="tel:"] .icon {
+  color: #ffffff !important;
+}
+
+/* Το δεύτερο κουμπί μένει λευκό, αλλά με ορατό περίγραμμα και σκούρο κείμενο. */
+.activation-guide .activation-help-box__actions a[href^="mailto:"] {
+  background: #ffffff !important;
+  border: 1px solid #d8e1ec !important;
+  border-radius: 14px !important;
+  color: #10233f !important;
+}
+
+/* Το ίδιο πρόβλημα υπήρχε και στην κάρτα email του βήματος 3. */
+.activation-guide .activation-email-card__actions a[href^="mailto:"] {
+  background: var(--activation-brand) !important;
+  border: 1px solid var(--activation-brand) !important;
+  border-radius: 14px !important;
+  color: #ffffff !important;
+}
