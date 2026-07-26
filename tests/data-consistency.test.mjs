@@ -50,6 +50,25 @@ test('κάθε έντυπο που αναφέρεται υπάρχει στον 
   }
 });
 
+/* Το παλιό σχέδιο είχε overrides ανά κάρτα: η «Vodafone Internet» έπαιρνε
+   grid-row: span 3 και τεντωνόταν σε τρεις σειρές του πλέγματος, με τα κουμπιά
+   της να πέφτουν πολύ πιο κάτω από τις υπόλοιπες. Καμία κάρτα δεν πρέπει να
+   ξαναπάρει δικό της ύψος ή θέση στο πλέγμα. */
+test('καμία κάρτα δεν έχει δικό της ύψος ή θέση στο πλέγμα', () => {
+  const html = readFileSync(path.join(root, 'index.html'), 'utf8');
+  const bundle = html.match(/assets\/css\/bundle\.[a-f0-9]{8}\.min\.css/)[0];
+  const css = readFileSync(path.join(root, bundle), 'utf8');
+
+  const offenders = [...css.matchAll(/([^{}]*#offersContainer[^{}]*)\{([^}]*)\}/g)]
+    .filter(([, selector, body]) => (
+      /\[data-modal-target=[^\]]+\]|:nth-child/.test(selector) &&
+      /(?:^|;)\s*(?:grid-row|min-height|height)\s*:/.test(body)
+    ))
+    .map(([, selector]) => selector.trim());
+
+  assert.deepEqual(offenders, [], 'επέστρεψαν overrides ύψους/πλέγματος ανά κάρτα');
+});
+
 test('τα modalId των προσφορών αντιστοιχούν σε υπαρκτό modal', () => {
   const modals = readFileSync(path.join(root, 'assets/js/modals.js'), 'utf8');
 
