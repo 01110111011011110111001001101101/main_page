@@ -11244,3 +11244,324 @@ body.hero-intro-ready .police-hero .police-hero__logo {
     gap: 0.35rem;
   }
 }
+
+/* =========================================================
+   PANEL ΛΕΠΤΟΜΕΡΕΙΩΝ ΠΡΟΣΦΟΡΑΣ
+   Τρεις ενότητες: τι παίρνεις, τι πρέπει να ξέρεις, τι χρειάζεσαι.
+   Κεφαλίδα ίδια με την κάρτα, ώστε να φαίνεται ότι είναι η ίδια προσφορά.
+   ========================================================= */
+.offer-details-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1rem 1.1rem;
+  background: #0b3a45;
+}
+
+.offer-details-heading {
+  min-width: 0;
+}
+
+.offer-details-title {
+  margin: 0;
+  color: #ffffff;
+  font-size: 1.15rem;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.offer-details-price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  margin: 0.5rem 0 0;
+}
+
+.offer-details-price-num {
+  color: #d6a23a;
+  font-size: 1.7rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.offer-details-price-prefix,
+.offer-details-price-unit {
+  color: #a7d5de;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.offer-details-note {
+  margin: 0.3rem 0 0;
+  color: #a7d5de;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.offer-details-block {
+  padding: 0.95rem 1.1rem;
+  border-top: 1px solid #e6edf2;
+}
+
+.offer-details-block:first-child {
+  border-top: 0;
+}
+
+.offer-details-block h3 {
+  margin: 0 0 0.6rem;
+  color: #58708f;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.offer-details-highlights {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.offer-details-highlights li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  color: #10233f;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.offer-details-highlights .icon {
+  flex: 0 0 auto;
+  width: 1rem;
+  height: 1rem;
+  margin-top: 0.15rem;
+  color: #0e7490;
+}
+
+/* Οι όροι σε δικό τους πλαίσιο: είναι αυτά που αλλάζουν απόφαση. */
+.offer-details-notes {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0.7rem 0.8rem;
+  border-radius: 12px;
+  background: #fff8ec;
+}
+
+.offer-details-note dt,
+.offer-details-notes dt {
+  margin: 0;
+  color: #8a5a12;
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.offer-details-notes dd {
+  margin: 0.1rem 0 0;
+  color: #3f3018;
+  font-size: 0.86rem;
+  line-height: 1.4;
+}
+
+.offer-details-documents {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.offer-details-document {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #cfe0e5;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #0b3a45;
+  font-size: 0.86rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.offer-details-plans {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.offer-details-plan {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #e6edf2;
+  border-radius: 12px;
+}
+
+.offer-details-plan span {
+  color: #58708f;
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.offer-details-plan strong {
+  color: #0b3a45;
+  font-size: 1.15rem;
+  font-weight: 900;
+}
+
+.offer-details-plan small {
+  color: #58708f;
+  font-size: 0.78rem;
+}
+
+/* Καρφωμένο στον πάτο: πριν έπρεπε να κλείσεις το panel για να ενεργήσεις. */
+.offer-details-footer {
+  position: sticky;
+  bottom: 0;
+  padding: 0.75rem 1.1rem calc(0.75rem + env(safe-area-inset-bottom));
+  border-top: 1px solid #e6edf2;
+  background: #ffffff;
+}
+
+.offer-details-footer .offer-primary-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid #0b3a45;
+  border-radius: 12px;
+  background: #0b3a45;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+/* =========================================================
+   MODAL VODAFONE INTERNET — ΕΥΘΥΓΡΑΜΜΙΣΗ ΜΕ ΤΗ ΓΛΩΣΣΑ Γ3
+
+   Το modal είχε μείνει στο παλιό σχέδιο: κόκκινο gradient με πλέγμα και
+   φωτοστέφανα, τη στιγμή που κάρτες και panel λεπτομερειών πέρασαν στο βαθύ
+   teal με χρυσή τιμή. Ανοίγοντάς το από μια teal κάρτα, έμοιαζε με άλλο site.
+   Το περιεχόμενο μένει ακέραιο — αλλάζει μόνο η οπτική γλώσσα.
+   ========================================================= */
+#vodafoneFixedModal .vodafone-fixed-hero {
+  background: #0b3a45 !important;
+}
+
+#vodafoneFixedModal .vodafone-fixed-hero::after,
+#vodafoneFixedModal .vodafone-fixed-hero-glow {
+  display: none !important;
+}
+
+#vodafoneFixedModal .vodafone-sticky-header {
+  background: #0b3a45 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+#vodafoneFixedModal .vodafone-sticky-badge {
+  background: #0e7490 !important;
+  color: #ffffff !important;
+}
+
+#vodafoneFixedModal .vodafone-fixed-price-box {
+  border: 1px solid rgba(167, 213, 222, 0.35) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Η τιμή στο ίδιο χρυσό με τις κάρτες: 5,33:1 πάνω στο #0b3a45. */
+#vodafoneFixedModal .vodafone-fixed-price-box .text-6xl,
+#vodafoneFixedModal .vodafone-fixed-price-box .text-4xl {
+  color: #d6a23a !important;
+}
+
+#vodafoneFixedModal .vodafone-fixed-price-box .text-red-100,
+#vodafoneFixedModal .vodafone-fixed-hero .text-red-100 {
+  color: #a7d5de !important;
+}
+
+#vodafoneFixedModal .vodafone-plan-card::before {
+  background: #0e7490 !important;
+}
+
+#vodafoneFixedModal .vodafone-plan-price {
+  color: #0b3a45 !important;
+}
+
+#vodafoneFixedModal .vodafone-plan-featured {
+  border-color: rgba(14, 116, 144, 0.35) !important;
+  box-shadow: 0 18px 40px rgba(11, 58, 69, 0.12) !important;
+}
+
+#vodafoneFixedModal .vodafone-plan-ribbon {
+  background: #0e7490 !important;
+  color: #ffffff !important;
+}
+
+#vodafoneFixedModal .vodafone-benefit .icon {
+  background: #e1f5ee !important;
+  color: #0e7490 !important;
+}
+
+#vodafoneFixedModal .vodafone-docs-box,
+#vodafoneFixedModal .vodafone-declaration-box {
+  border-color: #cfe0e5 !important;
+}
+
+/* Ο τίτλος, το κείμενο και οι ενέργειες της Υπεύθυνης Δήλωσης, με σειρά. */
+.vodafone-declaration-title {
+  margin: 0 0 0.5rem;
+  color: #0b3a45;
+  font-size: 0.88rem;
+  font-weight: 900;
+}
+
+.vodafone-declaration-actions {
+  display: grid;
+  gap: 0.55rem;
+  margin-top: 0.85rem;
+}
+
+.vodafone-declaration-actions a,
+.vodafone-declaration-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 48px;
+  padding: 0.7rem 0.9rem;
+  border-radius: 12px;
+  font-size: 0.86rem;
+  font-weight: 800;
+  text-align: center;
+  text-decoration: none;
+}
+
+.vodafone-declaration-actions a {
+  border: 1px solid #0b3a45;
+  background: #0b3a45;
+  color: #ffffff;
+}
+
+.vodafone-declaration-actions button {
+  border: 1px solid #cfe0e5;
+  background: #ffffff;
+  color: #0b3a45;
+}
+
+.vodafone-declaration-actions .copy-msg {
+  color: #0f6e56;
+  font-size: 0.75rem;
+  transition: opacity 0.2s ease;
+}
+
+@media (min-width: 768px) {
+  .vodafone-declaration-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

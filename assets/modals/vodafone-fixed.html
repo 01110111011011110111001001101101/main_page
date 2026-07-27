@@ -133,33 +133,36 @@
             </div>
 
             <div class="vodafone-declaration-box">
-              <div class="text-sm font-black text-slate-900 mb-2">
-                Κείμενο Υπεύθυνης Δήλωσης
-                <div class="mt-4 flex flex-col sm:flex-row gap-3">
-  <a
-    href="assets/docs/ypefthini-dilosi-vodafone-statheri.pdf"
-    download
-    class="inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 px-5 py-3 text-sm font-black text-white shadow-lg shadow-red-500/25 hover:bg-red-700 transition">
-    <svg class="icon" data-icon="file-arrow-down" aria-hidden="true"><use href="assets/icons/icons.svg?v=01d88846#icon-file-arrow-down"></use></svg>
-    Κατέβασε Υπεύθυνη Δήλωση
-  </a>
-
-  <button
-    type="button"
-    data-copy-text="Εξουσιοδοτώ την South Attica όπως προβεί σε όλες τις απαραίτητες ενέργειες αντί εμού για την ενεργοποίηση της σταθερής μου γραμμής με αριθμό τηλεφώνου ................................ στη Vodafone, στην προσφορά ................................"
-    class="inline-flex items-center justify-center gap-2 rounded-xl bg-white border border-red-200 px-5 py-3 text-sm font-black text-red-700 hover:bg-red-50 transition">
-    <svg class="icon" data-icon="copy" aria-hidden="true"><use href="assets/icons/icons.svg?v=01d88846#icon-copy"></use></svg>
-    Αντιγραφή Κειμένου
-    <span class="copy-msg opacity-0 text-green-600 text-xs">Αντιγράφηκε!</span>
-  </button>
-</div>
-              </div>
+              <!-- Τα κουμπιά ήταν φωλιασμένα ΜΕΣΑ στον τίτλο και εμφανίζονταν
+                   πριν από το κείμενο που κατεβάζουν και αντιγράφουν. Τώρα ο
+                   τίτλος είναι τίτλος, ακολουθεί το κείμενο, και οι ενέργειες
+                   έρχονται τελευταίες. -->
+              <p class="vodafone-declaration-title">Κείμενο Υπεύθυνης Δήλωσης</p>
 
               <p>
                 «Εξουσιοδοτώ την <strong>South Attica</strong> όπως προβεί σε όλες τις απαραίτητες ενέργειες
                 αντί εμού για την ενεργοποίηση της σταθερής μου γραμμής με αριθμό τηλεφώνου
                 ................................ στη Vodafone, στην προσφορά ................................»
               </p>
+
+              <div class="vodafone-declaration-actions">
+                <a
+                  href="assets/docs/ypefthini-dilosi-vodafone-statheri.pdf"
+                  download
+                  data-track="pdf_download"
+                  data-label="ypefthini-dilosi-vodafone-statheri.pdf">
+                  <svg class="icon" data-icon="file-arrow-down" aria-hidden="true"><use href="assets/icons/icons.svg?v=01d88846#icon-file-arrow-down"></use></svg>
+                  <span>Κατέβασε Υπεύθυνη Δήλωση</span>
+                </a>
+
+                <button
+                  type="button"
+                  data-copy-text="Εξουσιοδοτώ την South Attica όπως προβεί σε όλες τις απαραίτητες ενέργειες αντί εμού για την ενεργοποίηση της σταθερής μου γραμμής με αριθμό τηλεφώνου ................................ στη Vodafone, στην προσφορά ................................">
+                  <svg class="icon" data-icon="copy" aria-hidden="true"><use href="assets/icons/icons.svg?v=01d88846#icon-copy"></use></svg>
+                  <span>Αντιγραφή κειμένου</span>
+                  <span class="copy-msg opacity-0">Αντιγράφηκε!</span>
+                </button>
+              </div>
 
               <div class="vodafone-declaration-note">
                 <svg class="icon" data-icon="circle-info" aria-hidden="true"><use href="assets/icons/icons.svg?v=01d88846#icon-circle-info"></use></svg>

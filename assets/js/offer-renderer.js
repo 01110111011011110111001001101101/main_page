@@ -526,40 +526,125 @@
     });
 }
 
-  function createDetailPair(label, value) {
-    if (!label && !value) return null;
-    const row = createElement('div', 'offer-json-detail-row');
-    appendTextElement(row, 'dt', '', label);
-    appendTextElement(row, 'dd', '', value);
-    return row;
+  /* --- ΠΕΡΙΕΧΟΜΕΝΟ ΤΟΥ PANEL ΛΕΠΤΟΜΕΡΕΙΩΝ -------------------------------
+     Το panel απαντά τρεις ερωτήσεις: τι παίρνεις, τι πρέπει να ξέρεις, τι
+     χρειάζεσαι για να το κάνεις.
+
+     Πριν είχε επτά ισοδύναμες ενότητες που έλεγαν σε μεγάλο βαθμό το ίδιο
+     πράγμα: για τη Vodafone CU το «300 GB και απεριόριστη ομιλία» εμφανιζόταν
+     πέντε φορές, ενώ το roaming — η μόνη πληροφορία που δεν υπήρχε στην κάρτα —
+     ήταν θαμμένο στην τρίτη ενότητα.
+  --------------------------------------------------------------------- */
+
+  // Κανονικοποίηση για σύγκριση: πεζά, χωρίς τόνους και σημεία στίξης. Έτσι το
+  // «Απεριόριστη ομιλία προς όλους σταθερά και κινητά» και το «...σε σταθερά
+  // και κινητά» αναγνωρίζονται ως το ίδιο.
+  const ACCENTS = /[̀-ͯ]/g;
+
+  function normalizeText(value) {
+    return String(value || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(ACCENTS, '')
+      .replace(/[^a-z0-9α-ω\s]/gi, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
   }
 
-  function appendListSection(parent, title, values) {
-    const items = Array.isArray(values) ? values.filter(Boolean) : [];
-    if (!items.length) return;
+  // Λέξεις χωρίς νόημα για τη σύγκριση· αν μείνουν μέσα, δύο άσχετες φράσεις
+  // μοιάζουν όμοιες επειδή μοιράζονται «και», «σε», «για».
+  const STOP_WORDS = new Set(['και', 'σε', 'για', 'με', 'το', 'τα', 'της', 'του', 'των', 'στον', 'στη', 'στην', 'προς', 'ολους', 'καθε']);
 
-    const section = createElement('section', 'offer-json-details-section');
-    appendTextElement(section, 'h3', '', title);
-    const list = createElement('ul', 'offer-json-details-list');
-    items.forEach((value) => {
-      const item = createElement('li');
-      item.textContent = typeof value === 'string' ? value : value.title || value.name || value.description || '';
-      if (item.textContent) list.appendChild(item);
+  function contentWords(value) {
+    return normalizeText(value).split(' ').filter((word) => word.length > 2 && !STOP_WORDS.has(word));
+  }
+
+  /*
+   * Πόσο από το `candidate` λέγεται ήδη μέσα στο `pool`. Επιστρέφει 0..1.
+   * Χρησιμοποιείται με κατώφλι 0,8: μια γραμμή που επαναλαμβάνει σχεδόν όλα τα
+   * ουσιαστικά της λόγια δεν προσθέτει τίποτα και παραλείπεται.
+   */
+  function coverage(candidate, pool) {
+    const words = contentWords(candidate);
+    if (!words.length) return 1;
+
+    const known = new Set(pool.flatMap(contentWords));
+    return words.filter((word) => known.has(word)).length / words.length;
+  }
+
+  const DUPLICATE_THRESHOLD = 0.8;
+
+  // Ενοποιεί benefits + includes κρατώντας την πιο περιγραφική εκδοχή κάθε
+  // στοιχείου. Τα δεδομένα δεν χρειάζεται να καθαριστούν χειροκίνητα.
+  function mergeOfferHighlights(offer) {
+    const candidates = [
+      ...(Array.isArray(offer.includes) ? offer.includes : []),
+      ...(Array.isArray(offer.benefits) ? offer.benefits : []),
+    ].map((value) => String(value || '').trim()).filter(Boolean);
+
+    const kept = [];
+    candidates.forEach((candidate) => {
+      const twin = kept.findIndex((existing) => (
+        coverage(candidate, [existing]) >= DUPLICATE_THRESHOLD ||
+        coverage(existing, [candidate]) >= DUPLICATE_THRESHOLD
+      ));
+
+      if (twin === -1) {
+        kept.push(candidate);
+        return;
+      }
+
+      // Κρατάμε τη μακρύτερη διατύπωση: λέει τα ίδια συν κάτι παραπάνω.
+      if (contentWords(candidate).length > contentWords(kept[twin]).length) kept[twin] = candidate;
     });
-    section.appendChild(list);
-    parent.appendChild(section);
+
+    return kept;
   }
 
-  function appendDetailsSection(parent, offer) {
-    const rows = Array.isArray(offer.details) ? offer.details : [];
-    if (!rows.length) return;
+  // Ό,τι δεν λέει ήδη η λίστα: όροι, roaming, σε ποιον απευθύνεται.
+  function collectOfferNotes(offer, highlights) {
+    const notes = [];
 
-    const section = createElement('section', 'offer-json-details-section');
-    appendTextElement(section, 'h3', '', 'Λεπτομέρειες');
-    const list = createElement('dl', 'offer-json-details-dl');
-    rows.forEach((detail) => {
-      const row = createDetailPair(detail?.label, detail?.value);
-      if (row) list.appendChild(row);
+    (Array.isArray(offer.details) ? offer.details : []).forEach((detail) => {
+      const value = String(detail?.value || '').trim();
+      if (!value || coverage(value, highlights) >= DUPLICATE_THRESHOLD) return;
+      notes.push({ label: String(detail?.label || '').trim(), value });
+    });
+
+    (Array.isArray(offer.notes) ? offer.notes : []).forEach((note) => {
+      const value = String(note || '').trim();
+      if (value) notes.push({ label: '', value });
+    });
+
+    /*
+     * Το appliesTo υπάρχει και στις έξι προσφορές αλλά δεν αποδιδόταν πουθενά.
+     * Σε μερικές όμως το ίδιο κείμενο υπάρχει ήδη ως γραμμή «Ισχύει για» στα
+     * details — χωρίς έλεγχο θα γραφόταν δύο φορές στην ίδια ενότητα.
+     */
+    const appliesTo = String(offer.appliesTo || '').trim();
+    const alreadySaid = notes.map((note) => note.value);
+    if (appliesTo && coverage(appliesTo, alreadySaid) < DUPLICATE_THRESHOLD) {
+      notes.push({ label: 'Για ποιον είναι', value: appliesTo });
+    }
+
+    return notes;
+  }
+
+  function appendHighlightsSection(parent, highlights) {
+    if (!highlights.length) return;
+
+    const section = createElement('section', 'offer-details-block');
+    appendTextElement(section, 'h3', '', 'Τι παίρνεις');
+    const list = createElement('ul', 'offer-details-highlights');
+    highlights.forEach((value) => {
+      const item = createElement('li');
+      const icon = window.createIcon?.('check');
+      if (icon) {
+        icon.setAttribute('aria-hidden', 'true');
+        item.appendChild(icon);
+      }
+      appendTextElement(item, 'span', '', value);
+      list.appendChild(item);
     });
     section.appendChild(list);
     parent.appendChild(section);
@@ -569,11 +654,11 @@
     const plans = Array.isArray(offer.plans) ? offer.plans : [];
     if (!plans.length) return;
 
-    const section = createElement('section', 'offer-json-details-section');
+    const section = createElement('section', 'offer-details-block');
     appendTextElement(section, 'h3', '', 'Πακέτα');
-    const grid = createElement('div', 'offer-json-plans');
+    const grid = createElement('div', 'offer-details-plans');
     plans.forEach((plan) => {
-      const card = createElement('article', 'offer-json-plan');
+      const card = createElement('article', 'offer-details-plan');
       appendTextElement(card, 'span', '', plan.name);
       appendTextElement(card, 'strong', '', plan.price);
       appendTextElement(card, 'small', '', [plan.speed, plan.period, plan.ribbon].filter(Boolean).join(' · '));
@@ -583,15 +668,31 @@
     parent.appendChild(section);
   }
 
+  function appendNotesSection(parent, notes) {
+    if (!notes.length) return;
+
+    const section = createElement('section', 'offer-details-block');
+    appendTextElement(section, 'h3', '', 'Καλό να ξέρεις');
+    const list = createElement('dl', 'offer-details-notes');
+    notes.forEach((note) => {
+      const row = createElement('div', 'offer-details-note');
+      appendTextElement(row, 'dt', '', note.label);
+      appendTextElement(row, 'dd', '', note.value);
+      list.appendChild(row);
+    });
+    section.appendChild(list);
+    parent.appendChild(section);
+  }
+
   function appendDocumentsSection(parent, offer) {
-    const documents = Array.isArray(offer.documents) ? offer.documents.filter((documentItem) => documentItem?.href) : [];
+    const documents = Array.isArray(offer.documents) ? offer.documents.filter((item) => item?.href) : [];
     if (!documents.length) return;
 
-    const section = createElement('section', 'offer-json-details-section');
-    appendTextElement(section, 'h3', '', 'Έγγραφα');
-    const list = createElement('div', 'offer-json-documents');
+    const section = createElement('section', 'offer-details-block');
+    appendTextElement(section, 'h3', '', 'Τι χρειάζεσαι');
+    const list = createElement('div', 'offer-details-documents');
     documents.forEach((documentItem) => {
-      const link = createElement('a', 'offer-json-document-link', documentItem.title || documentItem.href);
+      const link = createElement('a', 'offer-details-document', documentItem.title || documentItem.href);
       link.href = documentItem.href;
       link.download = '';
       link.dataset.track = 'pdf_download';
@@ -600,25 +701,6 @@
       list.appendChild(link);
     });
     section.appendChild(list);
-    parent.appendChild(section);
-  }
-
-  function appendContactLinks(parent, offer) {
-    const links = Array.isArray(offer.modal?.contactLinks) ? offer.modal.contactLinks : [];
-    if (!links.length) return;
-
-    const section = createElement('section', 'offer-json-details-section');
-    appendTextElement(section, 'h3', '', 'Επικοινωνία');
-    const actions = createElement('div', 'offer-json-contact-links');
-    links.forEach((item) => {
-      if (!item.href) return;
-      const link = createElement('a', 'offer-json-contact-link', item.label || item.href);
-      link.href = item.href;
-      link.dataset.track = item.href.startsWith('tel:') ? 'phone_click' : 'email_click';
-      link.dataset.label = item.label || item.href;
-      actions.appendChild(link);
-    });
-    section.appendChild(actions);
     parent.appendChild(section);
   }
 
@@ -635,12 +717,15 @@
     panel.setAttribute('aria-modal', 'true');
     panel.setAttribute('aria-labelledby', 'offerDetailsTitle');
 
-    const header = createElement('div', 'offer-json-details-header');
-    const headingGroup = createElement('div');
-    const category = createElement('span', 'offer-json-details-category');
-    const title = createElement('h2');
+    // Ίδια βαθιά κεφαλίδα με την κάρτα, ώστε να είναι σαφές ότι πρόκειται για
+    // την προσφορά που μόλις πατήθηκε.
+    const header = createElement('div', 'offer-details-header');
+    const headingGroup = createElement('div', 'offer-details-heading');
+    const title = createElement('h2', 'offer-details-title');
     title.id = 'offerDetailsTitle';
-    headingGroup.append(category, title);
+    const price = createElement('p', 'offer-details-price');
+    const note = createElement('p', 'offer-details-note');
+    headingGroup.append(title, price, note);
 
     const closeButton = createElement('button', 'offer-json-details-close', '×');
     closeButton.type = 'button';
@@ -649,36 +734,49 @@
     header.append(headingGroup, closeButton);
 
     const body = createElement('div', 'offer-json-details-body custom-scroll');
-    panel.append(header, body);
+
+    // Το CTA μένει καρφωμένο στον πάτο: πριν, ο χρήστης διάβαζε τις
+    // λεπτομέρειες, έκλεινε το panel και ξανάψαχνε την κάρτα για να ενεργήσει.
+    const footer = createElement('div', 'offer-details-footer');
+
+    panel.append(header, body, footer);
     modal.appendChild(panel);
     document.body.appendChild(modal);
     return modal;
   }
 
   function populateDetailsModal(modal, offer) {
-    const category = modal.querySelector('.offer-json-details-category');
     const title = modal.querySelector('#offerDetailsTitle');
+    const price = modal.querySelector('.offer-details-price');
+    const note = modal.querySelector('.offer-details-note');
     const body = modal.querySelector('.offer-json-details-body');
+    const footer = modal.querySelector('.offer-details-footer');
     if (!body) return;
 
-    if (category) category.textContent = getCategoryLabel(offer.category);
     if (title) title.textContent = offer.title || 'Προσφορά';
 
-    body.textContent = '';
-    const summary = createElement('div', 'offer-json-details-summary');
-    appendTextElement(summary, 'strong', '', offer.price || '');
-    appendTextElement(summary, 'span', '', offer.period ? `/ ${offer.period}` : '');
-    appendTextElement(summary, 'small', '', offer.monthly);
-    appendTextElement(summary, 'p', '', offer.shortDescription);
-    body.appendChild(summary);
+    const pricing = getPricing(offer);
+    if (price) {
+      price.textContent = '';
+      appendTextElement(price, 'span', 'offer-details-price-prefix', pricing.prefix);
+      appendTextElement(price, 'strong', 'offer-details-price-num', pricing.amount);
+      appendTextElement(price, 'span', 'offer-details-price-unit', pricing.unit);
+    }
+    if (note) note.textContent = pricing.note || '';
 
-    appendListSection(body, 'Βασικά οφέλη', offer.benefits);
-    appendDetailsSection(body, offer);
-    appendListSection(body, 'Περιλαμβάνει', offer.includes);
+    body.textContent = '';
+    const highlights = mergeOfferHighlights(offer);
+    appendHighlightsSection(body, highlights);
     appendPlansSection(body, offer);
+    appendNotesSection(body, collectOfferNotes(offer, highlights));
     appendDocumentsSection(body, offer);
-    appendListSection(body, 'Σημειώσεις', offer.notes);
-    appendContactLinks(body, offer);
+
+    if (footer) {
+      footer.textContent = '';
+      const cta = createPrimaryCta(offer);
+      cta.classList.add('offer-details-cta');
+      footer.appendChild(cta);
+    }
   }
 
   function getOfferIdFromHash() {
