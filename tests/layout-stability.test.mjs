@@ -69,3 +69,75 @@ test('το πλήρες stylesheet σηματοδοτεί πότε είναι έ
   assert.match(html, /<noscript>[\s\S]*?#cookieConsentBanner\{transform:none!important/,
     'χωρίς JavaScript το banner θα έμενε κρυφό');
 });
+
+/* Το PageSpeed βρήκε 25 KiB περιττά: το σήμα ήταν 184px για προβολή 42px και το
+   έμβλημα του hero 320px για προβολή 64px στο κινητό. */
+test('οι εικόνες δεν είναι μεγαλύτερες από ό,τι δείχνονται', () => {
+  const html = readFileSync(path.join(root, 'index.html'), 'utf8');
+
+  const mark = html.match(/<img[^>]*brand-mark\.webp[^>]*>/g) || [];
+  assert.ok(mark.length >= 2, 'το τετράγωνο σήμα πρέπει να καλύπτει μπάρα και μενού');
+  for (const tag of mark) {
+    assert.match(tag, /width="96"/, `το σήμα δηλώνει λάθος πλάτος: ${tag.slice(0, 90)}`);
+  }
+
+  const hero = html.match(/<img[^>]*police-hero__logo[\s\S]*?>/)[0];
+  assert.match(hero, /srcset="[^"]*hero-head-160\.webp(\?v=[a-f0-9]+)? 160w/, 'λείπει η μικρή εκδοχή για το κινητό');
+  assert.match(hero, /sizes="\(max-width: 767px\) 64px/, 'το sizes δεν δηλώνει το πραγματικό πλάτος');
+});
+
+test('το preload του hero διαλέγει αρχείο ανά οθόνη', () => {
+  const html = readFileSync(path.join(root, 'index.html'), 'utf8');
+
+  assert.match(html, /preload[^>]*hero-head-160\.webp[^>]*media="\(max-width: 767px\)"/, 'το κινητό δεν προφορτώνει το μικρό');
+  assert.match(html, /preload[^>]*hero-head\.webp[^>]*media="\(min-width: 768px\)"/, 'ο υπολογιστής δεν προφορτώνει το μεγάλο');
+});
+
+/* Ο κανόνας για το μέγεθος του εμβλήματος έχανε σε specificity και το 64px δεν
+   εφαρμοζόταν ποτέ — το έμβλημα έμενε έως 150px στο κινητό. */
+test('το έμβλημα του hero είναι όντως 64px στο κινητό', () => {
+  const html = readFileSync(path.join(root, 'index.html'), 'utf8');
+  const css = readFileSync(path.join(root, html.match(/assets\/css\/bundle\.[a-f0-9]{8}\.min\.css/)[0]), 'utf8');
+  const mobile = css.split('@media (width<=767px)').slice(1).join('');
+
+  assert.match(
+    mobile,
+    /body(?:\.hero-intro-ready)? \.police-hero \.police-hero__logo[^{}]*\{[^}]*width:64px/,
+    'ο κανόνας δεν έχει αρκετή specificity για να κερδίσει'
+  );
+});
+
+/* Η μεγαλύτερη πηγή CLS ήταν ότι το critical CSS περιέγραφε ακόμη την παλιά
+   μπάρα: δεν ήξερε το --top-area-height, οπότε το .site-main έπαιρνε άλλο
+   padding-top στο πρώτο βάψιμο και ΟΛΗ η σελίδα κατέβαινε μόλις έφτανε το
+   bundle. Το τεστ συγκρίνει τις δύο εκδοχές στα σημεία που καθορίζουν ύψος. */
+test('το πρώτο βάψιμο συμφωνεί με το τελικό στα κρίσιμα μεγέθη', () => {
+  const html = readFileSync(path.join(root, 'index.html'), 'utf8');
+  const critical = html.match(/<style id="critical-css">([\s\S]*?)<\/style>/)[1];
+  const full = readFileSync(path.join(root, html.match(/assets\/css\/bundle\.[a-f0-9]{8}\.min\.css/)[0]), 'utf8');
+
+  const pairs = [
+    ['--top-area-height', /--top-area-height:\s*([^;}]+)/g],
+    // Το «;» πριν το height αποκλείει το min-height, που αλλιώς περνά ως ύψος.
+    ['ύψος μπάρας', /\.site-top-nav-inner\{[^}]*[;{]height:\s*([^;}]+)/g],
+  ];
+
+  for (const [name, pattern] of pairs) {
+    const inCritical = [...critical.matchAll(pattern)].map(([, value]) => value.trim());
+    const inFull = [...full.matchAll(pattern)].map(([, value]) => value.trim());
+
+    assert.ok(inCritical.length > 0, `το critical CSS δεν ορίζει ${name}`);
+    for (const value of inCritical) {
+      assert.ok(inFull.includes(value), `${name}: το critical λέει «${value}», το τελικό δεν το έχει`);
+    }
+  }
+});
+
+test('το critical CSS δεν περιγράφει πια το παλιό σήμα', () => {
+  const html = readFileSync(path.join(root, 'index.html'), 'utf8');
+  const critical = html.match(/<style id="critical-css">([\s\S]*?)<\/style>/)[1];
+
+  assert.doesNotMatch(critical, /\.top-brand img\{/, 'έμεινε ο κανόνας της παλιάς εικόνας');
+  assert.match(critical, /\.top-brand__mark\{/, 'λείπει το νέο σήμα από το πρώτο βάψιμο');
+  assert.match(critical, /\.top-guide-cta\{[^}]*display:inline-flex/, 'ο οδηγός εμφανίζεται μόνο μετά το bundle');
+});

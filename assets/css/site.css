@@ -11667,3 +11667,21 @@ body.hero-intro-ready .police-hero .police-hero__logo {
     white-space: normal;
   }
 }
+
+/* Το έμβλημα του hero στο κινητό. Ο προηγούμενος κανόνας μου ήταν .police-hero__logo
+   σκέτο (0,1,0) και έχανε από το body.hero-intro-ready .police-hero .police-hero__logo
+   (0,3,1): το έμβλημα έμενε έως 150px αντί για 64px, και το srcset κατέβαζε
+   περιττά pixel. Ίδια δομή επιλογέα ώστε να κερδίζει καθαρά. */
+@media (max-width: 767px) {
+  body .police-hero .police-hero__logo,
+  body.hero-intro-ready .police-hero .police-hero__logo {
+    width: 64px;
+    margin: 0;
+  }
+}
+
+/* Το σήμα του πλαϊνού μενού είναι πλέον τετράγωνο, όχι πορτρέτο. */
+.premium-menu-brand img {
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+}

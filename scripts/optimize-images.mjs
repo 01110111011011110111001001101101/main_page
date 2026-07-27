@@ -44,11 +44,24 @@ const headTransparent = await sharp(headPixels, {
 
 // 320px = πάνω από διπλάσιο του μέγιστου πλάτους προβολής (150px στο κινητό,
 // 128px στον υπολογιστή). Στα 420px η εικόνα ήταν 3x μεγαλύτερη από ό,τι χρειάζεται.
+/*
+ * Δύο μεγέθη για το έμβλημα του hero.
+ *
+ * Το αρχείο ήταν 320px ενώ η μεγαλύτερη προβολή είναι 128px στον υπολογιστή και
+ * 64px στο κινητό — δηλαδή κατέβαιναν 36,5 KB για να δειχθούν σε 64 pixel.
+ * Το 256 καλύπτει τον υπολογιστή σε διπλή ανάλυση, το 160 το κινητό.
+ */
 await sharp(headTransparent)
   .trim({ threshold: 10 })
-  .resize({ width: 320, withoutEnlargement: true })
-  .webp({ quality: 82, alphaQuality: 100, effort: 6 })
+  .resize({ width: 256, withoutEnlargement: true })
+  .webp({ quality: 78, alphaQuality: 100, effort: 6 })
   .toFile(path.join(images, 'hero-head.webp'));
+
+await sharp(headTransparent)
+  .trim({ threshold: 10 })
+  .resize({ width: 160, withoutEnlargement: true })
+  .webp({ quality: 78, alphaQuality: 100, effort: 6 })
+  .toFile(path.join(images, 'hero-head-160.webp'));
 
 /*
  * Τετράγωνη εκδοχή για τη σταθερή μπάρα.
@@ -61,11 +74,13 @@ await sharp(headTransparent)
  * fit: 'contain' με διάφανο φόντο, όχι 'cover': το cover θα έκοβε πηγούνι και
  * κορυφή. Προτιμάμε να χωρέσει ολόκληρη και να ρυθμίσουμε το padding.
  */
+// 96px: η μπάρα το δείχνει σε 32-36px και το πλαϊνό μενού σε 44px, οπότε
+// καλύπτει διπλή ανάλυση παντού. Στα 184px κατέβαιναν 12,1 KB για 42 pixel.
 await sharp(headTransparent)
   .trim({ threshold: 10 })
-  .resize(160, 160, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
-  .extend({ top: 12, bottom: 12, left: 12, right: 12, background: { r: 0, g: 0, b: 0, alpha: 0 } })
-  .webp({ quality: 84, alphaQuality: 100, effort: 6 })
+  .resize(84, 84, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+  .extend({ top: 6, bottom: 6, left: 6, right: 6, background: { r: 0, g: 0, b: 0, alpha: 0 } })
+  .webp({ quality: 80, alphaQuality: 100, effort: 6 })
   .toFile(path.join(images, 'brand-mark.webp'));
 
 await fs.copyFile(path.join(root, 'node_modules/@fontsource-variable/inter/files/inter-greek-wght-normal.woff2'), path.join(fonts, 'inter-greek.woff2'));
