@@ -40,12 +40,32 @@ test('η μπάρα βάζει σήμα αριστερά και ενέργεια
 });
 
 /* Στο κινητό ένας legacy κανόνας επιβάλλει display:flex!important στη μπάρα,
-   οπότε κάθε grid-column αγνοείται σιωπηλά. Η τοποθέτηση γίνεται με margin. */
-test('στο κινητό η τοποθέτηση δεν βασίζεται σε grid', () => {
+   οπότε κάθε grid-column αγνοείται σιωπηλά. Η σειρά ορίζεται με order. */
+test('στο κινητό το μενού είναι αριστερά και το σήμα δεξιά του', () => {
   const mobile = site.slice(site.indexOf('ΣΤΑΘΕΡΗ ΜΠΑΡΑ'));
 
-  assert.match(mobile, /\.top-brand\s*\{[^}]*margin-right:\s*auto/, 'το σήμα δεν σπρώχνει το μενού δεξιά');
-  assert.match(mobile, /\.top-menu-button\s*\{[^}]*margin-left:\s*auto/, 'το μενού δεν κολλά δεξιά');
+  assert.match(mobile, /\.top-menu-button\s*\{[^}]*order:\s*-1/, 'το μενού δεν πάει πρώτο');
+  assert.match(mobile, /\.top-brand\s*\{[^}]*flex:\s*1 1 auto/, 'το σήμα δεν παίρνει τον υπόλοιπο χώρο');
+});
+
+/* Το markup βάζει πρώτο το σήμα ώστε ο αναγνώστης οθόνης και το Tab να
+   ακολουθούν τη λογική σειρά· η οπτική εναλλαγή γίνεται μόνο με CSS. */
+test('η σειρά στο markup μένει σήμα πριν από μενού', () => {
+  const html = readFileSync(path.join(root, 'index.html'), 'utf8');
+  const bar = html.slice(html.indexOf('site-top-nav-inner'), html.indexOf('</nav>'));
+
+  assert.ok(bar.indexOf('top-brand') < bar.indexOf('top-menu-button'), 'άλλαξε η σειρά στο DOM');
+});
+
+test('το κουμπί μενού μένει κρυφό στον υπολογιστή', () => {
+  const html = readFileSync(path.join(root, 'index.html'), 'utf8');
+  const bundle = html.match(/assets\/css\/bundle\.[a-f0-9]{8}\.min\.css/)[0];
+  const css = readFileSync(path.join(root, bundle), 'utf8');
+
+  const desktop = css.split('@media (width>=48rem)').slice(1).join('')
+    + css.split('@media (width>=768px)').slice(1).join('');
+
+  assert.match(desktop, /top-menu-button[^{}]*\{[^}]*display:none/, 'το μενού εμφανίζεται στον υπολογιστή');
 });
 
 test('ο οδηγός δεν εμφανίζεται δύο φορές στη μπάρα', () => {

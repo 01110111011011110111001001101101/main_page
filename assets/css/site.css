@@ -9397,13 +9397,9 @@ body.hero-intro-ready .police-hero .police-hero__logo {
 }
 
 @media (min-width: 768px) {
-  /* Δύο ορατά στοιχεία: λογότυπο αριστερά, links δεξιά. */
-  .site-top-nav-inner {
-    grid-template-columns: auto minmax(0, 1fr) !important;
-  }
-
-  .site-top-nav .top-menu-button,
-
+  /* Ο κανόνας αφορούσε πάντα μόνο τους συνδέσμους. Το .top-menu-button ήταν
+     μέσα στον selector και κρυβόταν αλλού με display:none — όταν έφυγε εκείνος
+     ο κανόνας, το κουμπί μενού εμφανίστηκε στον υπολογιστή. */
   .top-desktop-nav {
     grid-column: 2 !important;
     display: flex !important;
@@ -11217,15 +11213,34 @@ body.hero-intro-ready .police-hero .police-hero__logo {
     gap: 0.6rem !important;
   }
 
-  .site-top-nav .top-brand {
+  /* Το μενού πρώτο αριστερά. Στο markup το σήμα προηγείται (σωστή σειρά
+     ανάγνωσης για screen readers και πληκτρολόγιο), οπότε η οπτική εναλλαγή
+     γίνεται με order και όχι αλλάζοντας το DOM. */
+  .site-top-nav .top-menu-button {
+    order: -1;
     grid-column: auto !important;
     justify-self: auto !important;
-    margin-right: auto;
+    margin: 0;
   }
 
-  .site-top-nav .top-menu-button {
+  /* Το σήμα παίρνει τον υπόλοιπο χώρο και κεντράρεται μέσα του: επειδή το
+     μενού κρατά την αριστερή άκρη, οπτικά κάθεται στη μέση προς τα δεξιά. */
+  .site-top-nav .top-brand {
+    order: 0;
+    flex: 1 1 auto;
     grid-column: auto !important;
     justify-self: auto !important;
-    margin-left: auto;
+    justify-content: center;
+    margin: 0;
+  }
+}
+
+/* Οι σύνδεσμοι κεντράρονται στη μεσαία στήλη. Ένας παλαιότερος κανόνας τους
+   έσπρωχνε δεξιά (justify-content: flex-end) από την εποχή που η τρίτη στήλη
+   ήταν άδεια· τώρα εκεί κάθεται το κουμπί του οδηγού και θα κολλούσαν πάνω του. */
+@media (min-width: 768px) {
+  .site-top-nav .top-desktop-nav {
+    justify-content: center !important;
+    gap: 0.35rem;
   }
 }
