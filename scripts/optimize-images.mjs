@@ -50,6 +50,24 @@ await sharp(headTransparent)
   .webp({ quality: 82, alphaQuality: 100, effort: 6 })
   .toFile(path.join(images, 'hero-head.webp'));
 
+/*
+ * Τετράγωνη εκδοχή για τη σταθερή μπάρα.
+ *
+ * Η μπάρα δείχνει το σήμα σε κύκλο ~36px. Το hero-head.webp είναι πορτρέτο
+ * 320×442: μπαίνοντας σε τετράγωνο ή πλατύ πλαίσιο άφηνε μεγάλα λευκά κενά
+ * δεξιά κι αριστερά και η κεφαλή γινόταν δυσδιάκριτη. Εδώ η κεφαλή κόβεται σε
+ * τετράγωνο με λίγο αέρα γύρω της, ώστε να γεμίζει τον κύκλο.
+ *
+ * fit: 'contain' με διάφανο φόντο, όχι 'cover': το cover θα έκοβε πηγούνι και
+ * κορυφή. Προτιμάμε να χωρέσει ολόκληρη και να ρυθμίσουμε το padding.
+ */
+await sharp(headTransparent)
+  .trim({ threshold: 10 })
+  .resize(160, 160, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+  .extend({ top: 12, bottom: 12, left: 12, right: 12, background: { r: 0, g: 0, b: 0, alpha: 0 } })
+  .webp({ quality: 84, alphaQuality: 100, effort: 6 })
+  .toFile(path.join(images, 'brand-mark.webp'));
+
 await fs.copyFile(path.join(root, 'node_modules/@fontsource-variable/inter/files/inter-greek-wght-normal.woff2'), path.join(fonts, 'inter-greek.woff2'));
 await fs.copyFile(path.join(root, 'node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2'), path.join(fonts, 'inter-latin.woff2'));
 

@@ -94,15 +94,21 @@ test('το Tab κυκλώνει μέσα στο ανοιχτό μενού', asyn
   assert.equal(site.document.activeElement, items[0]);
 });
 
-test('η μπάρα έχει σύνδεσμο κοινότητας Viber', () => {
+/* Το Viber έφυγε από τη μπάρα: ήταν κρυφό με display:none σε κάθε ανάλυση και
+   υπάρχει ήδη σε δική του ενότητα και στο πλαϊνό μενού. */
+test('η μπάρα δεν κουβαλά πια κρυφό σύνδεσμο Viber', () => {
   const site = createSite();
-  const viber = site.document.querySelector('.site-top-nav .top-viber');
 
-  assert.ok(viber, 'υπάρχει ο σύνδεσμος Viber');
-  assert.match(viber.getAttribute('href'), /invite\.viber\.com/);
-  assert.equal(viber.getAttribute('target'), '_blank');
-  assert.equal(viber.getAttribute('rel'), 'noopener noreferrer');
-  assert.match(viber.getAttribute('aria-label'), /Viber/);
+  assert.equal(site.document.querySelector('.site-top-nav .top-viber'), null);
+});
+
+test('η μπάρα έχει μία ενέργεια: τον οδηγό ενεργοποίησης', () => {
+  const site = createSite();
+  const cta = site.document.querySelector('.site-top-nav .top-guide-cta');
+
+  assert.ok(cta, 'λείπει το κουμπί του οδηγού');
+  assert.equal(cta.dataset.modalTarget, 'activationProviderChoiceModal');
+  assert.equal(cta.tagName, 'BUTTON');
 });
 
 test('η μπάρα δεν έχει πια κουμπί κλήσης', () => {
@@ -111,12 +117,26 @@ test('η μπάρα δεν έχει πια κουμπί κλήσης', () => {
   assert.equal(site.document.querySelector('.site-top-nav .top-call-button'), null);
 });
 
-test('η μπάρα δείχνει το λογότυπο και στο κινητό', () => {
+/* Το σήμα είναι τετράγωνο αρχείο σε κύκλο. Το παλιό hero-head.webp είναι
+   πορτρέτο 320x442: μέσα σε πλαίσιο 109x50 άφηνε ~36px λευκό σε κάθε πλευρά
+   και η κεφαλή γινόταν δυσδιάκριτη. */
+test('το σήμα της μπάρας χρησιμοποιεί το τετράγωνο αρχείο', () => {
   const site = createSite();
-  const brand = site.document.querySelector('.site-top-nav .top-brand img');
+  const mark = site.document.querySelector('.site-top-nav .top-brand__mark');
 
-  assert.ok(brand, 'το λογότυπο υπάρχει στη μπάρα');
-  assert.ok(brand.getAttribute('alt'));
+  assert.ok(mark, 'λείπει το σήμα από τη μπάρα');
+  assert.match(mark.getAttribute('src'), /brand-mark\.webp/);
+  assert.equal(mark.getAttribute('width'), mark.getAttribute('height'), 'το αρχείο πρέπει να είναι τετράγωνο');
+  // Το κείμενο του συνδέσμου δίνει το όνομα· το alt θα το διάβαζε δεύτερη φορά.
+  assert.equal(mark.getAttribute('alt'), '');
+});
+
+test('η μπάρα γράφει το όνομα του φορέα', () => {
+  const site = createSite();
+  const brand = site.document.querySelector('.site-top-nav .top-brand');
+
+  assert.match(brand.querySelector('.top-brand__text strong').textContent, /Π\.Κ\.Σ\.Α\.Α\./);
+  assert.ok(brand.getAttribute('aria-label'), 'ο σύνδεσμος χρειάζεται όνομα');
 });
 
 test('τα τρία κουμπιά του μενού έχουν σωστούς προορισμούς', () => {

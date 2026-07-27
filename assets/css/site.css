@@ -5925,7 +5925,6 @@ body.hero-intro-ready.hero-nav-visible .site-top-nav.top-area-nav {
 }
 
 .top-menu-button,
-.top-call-button,
 .top-desktop-nav a,
 .top-desktop-nav button {
   min-height: 44px;
@@ -5968,55 +5967,13 @@ body.hero-intro-ready.hero-nav-visible .site-top-nav.top-area-nav {
   text-transform: none;
 }
 
-.site-top-nav .top-brand {
-  min-width: 0;
-  display: inline-flex !important;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  text-decoration: none;
-  justify-self: center;
-}
 
-.site-top-nav .top-brand img {
-  display: block;
-  width: 5.9rem !important;
-  height: auto !important;
-  max-height: 3rem !important;
-  object-fit: contain;
-  padding: 0.2rem 0.34rem !important;
-  border-radius: 14px !important;
-  border: 1px solid rgba(214, 162, 58, 0.42);
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 8px 18px rgba(7, 45, 58, 0.18);
-}
 
 .top-desktop-nav {
   display: none;
 }
 
-.top-call-button {
-  width: 4.25rem;
-  border: 1px solid rgba(214, 162, 58, 0.58);
-  border-radius: 16px;
-  background: #D6A23A;
-  color: #10251D;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.12rem;
-  font-size: 0.68rem;
-  font-weight: 950;
-  line-height: 1;
-  text-decoration: none;
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.16);
-  justify-self: end;
-}
 
-.top-call-button .icon {
-  font-size: 0.88rem;
-}
 
 .site-main,
 body.hero-intro-ready .site-main {
@@ -6048,9 +6005,6 @@ body.hero-intro-ready .hero-single-shell::after {
 }
 
 @media (min-width: 768px) {
-  .top-call-button {
-    display: none !important;
-  }
 
   :root {
     --top-area-height: 4.35rem;
@@ -6067,16 +6021,7 @@ body.hero-intro-ready .hero-single-shell::after {
     display: none !important;
   }
 
-  .site-top-nav .top-brand {
-    justify-self: start;
-    justify-content: flex-start;
-  }
 
-  .site-top-nav .top-brand img {
-    display: block;
-    width: 6.8rem !important;
-    max-height: 3.15rem !important;
-  }
 
   .top-desktop-nav {
     display: flex;
@@ -6109,15 +6054,6 @@ body.hero-intro-ready .hero-single-shell::after {
     color: #ffffff;
   }
 
-  .top-call-button {
-    width: auto;
-    min-width: 6.1rem;
-    min-height: 2.75rem;
-    flex-direction: row;
-    gap: 0.42rem;
-    padding: 0 0.95rem;
-    font-size: 0.9rem;
-  }
 
   .hero-single-shell,
   body.hero-intro-ready .hero-single-shell {
@@ -6171,16 +6107,7 @@ body.hero-intro-ready .hero-single-shell::after {
     grid-template-columns: 3.9rem minmax(0, 1fr) 3.9rem;
   }
 
-  .top-menu-button,
-  .top-call-button {
-    width: 3.9rem;
-    border-radius: 14px;
-  }
 
-  .site-top-nav .top-brand img {
-    width: 5.35rem !important;
-    max-height: 2.8rem !important;
-  }
 
 }
 
@@ -6883,9 +6810,6 @@ body.choice-mini-nav-visible:not(.mobile-bottom-nav-suppressed) .choice-mini-nav
     width: min(100% - 0.85rem, 1180px) !important;
   }
 
-  .site-top-nav .top-brand img {
-    display: block !important;
-  }
 
   .landing-hero,
   body.hero-intro-ready .landing-hero {
@@ -7404,23 +7328,11 @@ body.hero-intro-ready .site-main {
     grid-template-columns: auto minmax(0, 1fr) auto !important;
   }
 
-  .site-top-nav.top-area-nav .top-brand {
-    position: static !important;
-    grid-column: auto !important;
-    justify-self: start !important;
-    width: auto !important;
-    max-width: none !important;
-    transform: none !important;
-    overflow: visible !important;
-  }
 
   .site-top-nav.top-area-nav .top-desktop-nav {
     justify-self: center !important;
   }
 
-  .site-top-nav.top-area-nav .top-call-button {
-    justify-self: end !important;
-  }
 }
 
 /* Mobile horizontal containment and Vodafone Internet modal hardening. */
@@ -9463,15 +9375,8 @@ body.hero-intro-ready .police-hero .police-hero__logo {
    TOP BAR — τελική διάταξη.
    Κινητό:      [Μενού]   [λογότυπο]   [Κλήση]
    Υπολογιστής: [λογότυπο] .......... [links]
-   Στο τέλος του αρχείου ώστε να υπερισχύει των παλιών
-   κανόνων .site-top-nav .top-brand / .top-desktop-nav.
+   Στο τέλος του αρχείου ώστε να υπερισχύει των παλιών κανόνων.
    ========================================================= */
-.site-top-nav .top-brand {
-  display: inline-flex !important;
-  align-items: center;
-  min-width: 0;
-  text-decoration: none;
-}
 
 @media (max-width: 767px) {
   /* Τρεις στήλες: το λογότυπο παίρνει τη μεσαία και κεντράρεται οπτικά,
@@ -9482,30 +9387,13 @@ body.hero-intro-ready .police-hero .police-hero__logo {
     gap: 0.4rem !important;
   }
 
-  .site-top-nav .top-brand {
-    grid-column: 2 !important;
-    justify-self: center !important;
-    justify-content: center;
-  }
 
-  .site-top-nav .top-brand img {
-    width: auto !important;
-    max-width: min(46vw, 190px) !important;
-    height: 40px !important;
-    max-height: 40px !important;
-    padding: 0.16rem 0.3rem !important;
-    border-radius: 12px !important;
-  }
 
   .site-top-nav .top-menu-button {
     grid-column: 1 !important;
     justify-self: start !important;
   }
 
-  .top-call-button {
-    grid-column: 3 !important;
-    justify-self: end !important;
-  }
 }
 
 @media (min-width: 768px) {
@@ -9515,18 +9403,6 @@ body.hero-intro-ready .police-hero .police-hero__logo {
   }
 
   .site-top-nav .top-menu-button,
-  .site-top-nav .top-call-button {
-    display: none !important;
-  }
-
-  /* Το .top-area-nav στον επιλογέα χρειάζεται για να υπερισχύσει του
-     .site-top-nav.top-area-nav .top-brand { grid-column: auto !important }. */
-  .site-top-nav .top-brand,
-  .site-top-nav.top-area-nav .top-brand {
-    grid-column: 1 !important;
-    justify-self: start !important;
-    justify-content: flex-start;
-  }
 
   .top-desktop-nav {
     grid-column: 2 !important;
@@ -9952,54 +9828,14 @@ body.hero-intro-ready .police-hero .police-hero__logo {
    ΜΠΑΡΑ: ΚΟΙΝΟΤΗΤΑ VIBER στη μέση (μόνο κινητά)
    Το λογότυπο μένει μόνο στον υπολογιστή.
    ========================================================= */
-.site-top-nav .top-viber {
-  display: none;
-}
 
 @media (max-width: 767px) {
-  .site-top-nav .top-brand {
-    display: none !important;
-  }
 
-  .site-top-nav .top-viber {
-    grid-column: 2 !important;
-    justify-self: center !important;
-    display: inline-flex !important;
-    align-items: center;
-    gap: 0.4rem;
-    min-height: 40px;
-    max-width: 100%;
-    padding: 0.4rem 0.8rem;
-    border: 1px solid rgba(255, 255, 255, 0.28);
-    border-radius: 999px;
-    /* Επίσημο μωβ του Viber. */
-    background: #7360f2;
-    color: #ffffff;
-    font-size: 0.82rem;
-    font-weight: 800;
-    line-height: 1;
-    text-decoration: none;
-    white-space: nowrap;
-    box-shadow: 0 6px 16px rgba(115, 96, 242, 0.32);
-    transition: transform 0.12s ease, background-color 0.15s ease;
-  }
 
-  .site-top-nav .top-viber:active {
-    transform: scale(0.97);
-    background: #5f4de0;
-  }
 
-  .site-top-nav .top-viber .icon {
-    width: 1.05rem;
-    height: 1.05rem;
-    flex: 0 0 auto;
-  }
 }
 
 @media (min-width: 768px) {
-  .site-top-nav .top-viber {
-    display: none !important;
-  }
 }
 
 /* =========================================================
@@ -10402,41 +10238,6 @@ body.hero-intro-ready .police-hero .police-hero__logo {
 }
 
 /* Το έμβλημα κρατά το χρώμα του και μπαίνει σε λευκό πλαίσιο — δες τον
-   κανόνα .site-top-nav .top-brand img παρακάτω, στην ενότητα ΕΜΒΛΗΜΑ. */
-
-@media (max-width: 767px) {
-  .site-top-nav .site-top-nav-inner {
-    width: calc(100% - 1rem) !important;
-    margin: 0.4rem auto 0 !important;
-    padding: 0.35rem 0.5rem !important;
-    /* Το λογότυπο επιστρέφει στο κέντρο· το Viber παίρνει τη δεξιά θέση. */
-    grid-template-columns: 3rem minmax(0, 1fr) auto !important;
-    gap: 0.4rem !important;
-    min-height: 52px !important;
-  }
-
-  .site-top-nav .top-brand {
-    display: inline-flex !important;
-    grid-column: 2 !important;
-    justify-self: center !important;
-  }
-
-  .site-top-nav .top-brand img {
-    max-width: min(42vw, 168px) !important;
-    height: 34px !important;
-    max-height: 34px !important;
-  }
-
-  /* Το Viber αφαιρέθηκε από τη μπάρα: υπάρχει ήδη σε δική του ενότητα
-     και δεν χρειάζεται θέση στη σταθερή λωρίδα. */
-  .site-top-nav .top-viber {
-    display: none !important;
-  }
-
-  .site-top-nav .site-top-nav-inner {
-    grid-template-columns: 3rem minmax(0, 1fr) 3rem !important;
-  }
-}
 
 @media (min-width: 768px) {
   .site-top-nav .site-top-nav-inner {
@@ -10465,22 +10266,7 @@ body.hero-intro-ready .police-hero .police-hero__logo {
    κάθεται σε μικρό λευκό πλαίσιο, ώστε να διαβάζεται πάνω σε
    κάθε φόντο (teal μπάρα, navy κεφαλίδα μενού, σκούρο header).
    ========================================================= */
-.site-top-nav .top-brand img,
-.premium-menu-brand img,
-.top-emblem {
-  background: #ffffff;
-  border-radius: 10px;
-  padding: 0.2rem 0.3rem;
-  object-fit: contain;
-  filter: none !important;
-}
 
-.site-top-nav .top-brand img {
-  border: 1px solid rgba(255, 255, 255, 0.6) !important;
-  padding: 0.18rem 0.28rem !important;
-  border-radius: 10px !important;
-  background: #ffffff !important;
-}
 
 .premium-menu-brand img {
   width: 44px !important;
@@ -11305,5 +11091,141 @@ body.hero-intro-ready .police-hero .police-hero__logo {
     grid-column: 1 / -1;
     justify-content: flex-start;
     margin: 0;
+  }
+}
+
+/* =========================================================
+   ΣΤΑΘΕΡΗ ΜΠΑΡΑ — ΣΗΜΑ, ΟΝΟΜΑ ΚΑΙ Η ΜΙΑ ΕΝΕΡΓΕΙΑ
+
+   Αυτό είναι το ΜΟΝΟ σημείο που ορίζει το .top-brand. Πριν υπήρχαν 21
+   κανόνες σε οκτώ διαφορετικά σημεία του αρχείου, γραμμένοι ο ένας για να
+   νικήσει τον άλλο σε specificity — γι' αυτό το σήμα κατέληγε σε θέσεις που
+   δεν είχε ζητήσει κανείς. Αν χρειαστεί αλλαγή, γίνεται εδώ.
+
+   Διάταξη (grid τριών στηλών):
+     κινητό:      σήμα + όνομα | —            | μενού
+     υπολογιστής: σήμα + όνομα | σύνδεσμοι    | οδηγός ενεργοποίησης
+   ========================================================= */
+.site-top-nav .top-brand {
+  display: inline-flex;
+  grid-column: 1;
+  align-items: center;
+  justify-self: start;
+  gap: 0.55rem;
+  min-width: 0;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* Τετράγωνο αρχείο σε κύκλο: γεμίζει τον κύκλο χωρίς λευκά κενά στα πλάγια. */
+.site-top-nav .top-brand__mark {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  padding: 3px;
+  border-radius: 50%;
+  background: #ffffff;
+  object-fit: contain;
+}
+
+.site-top-nav .top-brand__text {
+  display: grid;
+  min-width: 0;
+  line-height: 1.15;
+}
+
+.site-top-nav .top-brand__text strong {
+  color: #ffffff;
+  font-size: 0.92rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+
+.site-top-nav .top-brand__text small {
+  overflow: hidden;
+  color: #cfeef4;
+  font-size: 0.66rem;
+  font-weight: 700;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.site-top-nav .top-guide-cta {
+  display: inline-flex;
+  grid-column: 3;
+  align-items: center;
+  justify-self: end;
+  gap: 0.4rem;
+  min-height: 40px;
+  padding: 0.5rem 0.85rem;
+  border: 1px solid #0b3a45;
+  border-radius: 12px;
+  background: #0b3a45;
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.site-top-nav .top-guide-cta .icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.site-top-nav .top-menu-button {
+  grid-column: 3;
+  justify-self: end;
+}
+
+@media (max-width: 767px) {
+  /* Στο κινητό δεν χωρά δεύτερη ενέργεια: μένει το μενού, που οδηγεί σε όλα. */
+  .site-top-nav .top-guide-cta {
+    display: none;
+  }
+
+  .site-top-nav .top-brand__mark {
+    width: 32px;
+    height: 32px;
+  }
+
+  .site-top-nav .top-brand__text strong {
+    font-size: 0.84rem;
+  }
+
+  .site-top-nav .top-brand__text small {
+    font-size: 0.6rem;
+  }
+}
+
+@media (min-width: 768px) {
+  /* Ο υπότιτλος λέει ό,τι λέει ήδη το hero από κάτω. */
+  .site-top-nav .top-brand__text small {
+    display: none;
+  }
+
+  .site-top-nav .top-brand__text strong {
+    font-size: 1rem;
+  }
+}
+
+/* Στο κινητό ένας legacy κανόνας επιβάλλει display: flex !important στη μπάρα,
+   οπότε τα grid-column αγνοούνται σιωπηλά. Αντί για ένατο μπάλωμα specificity,
+   δηλώνουμε ρητά flex και τοποθετούμε με margin: σήμα αριστερά, μενού δεξιά. */
+@media (max-width: 767px) {
+  .site-top-nav .site-top-nav-inner {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.6rem !important;
+  }
+
+  .site-top-nav .top-brand {
+    grid-column: auto !important;
+    justify-self: auto !important;
+    margin-right: auto;
+  }
+
+  .site-top-nav .top-menu-button {
+    grid-column: auto !important;
+    justify-self: auto !important;
+    margin-left: auto;
   }
 }
