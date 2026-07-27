@@ -11565,3 +11565,105 @@ body.hero-intro-ready .police-hero .police-hero__logo {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+/* =========================================================
+   ΚΟΥΜΠΙ ΑΠΟΣΤΟΛΗΣ EMAIL ΣΤΑ MODALS
+
+   Ήταν φτιαγμένο με utilities του Tailwind και αυθαίρετο χρώμα
+   (text-[#0057ff]) που υπάρχει ΜΟΝΟ μέσα στα αρχεία των modals. Όταν το
+   σάρωμα του Tailwind δεν έπιανε τον φάκελο, η κλάση δεν παραγόταν, το κείμενο
+   κληρονομούσε το text-white του μπλε γονέα και το κουμπί έμενε λευκό κουτί
+   χωρίς τίποτα μέσα.
+
+   Με δική του κλάση και ρητά χρώματα από την παλέτα του site, δεν εξαρτάται
+   από καμία παραγόμενη utility και δεν μπορεί να εξαφανιστεί.
+   Λευκό σε #0b3a45: 12,31:1.
+   ========================================================= */
+.modal-send-email {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  width: 100%;
+  min-height: 52px;
+  margin-top: 0.25rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #0b3a45;
+  border-radius: 14px;
+  background: #0b3a45;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 900;
+  line-height: 1.25;
+  text-align: center;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.modal-send-email .icon {
+  flex: 0 0 auto;
+  width: 1.15rem;
+  height: 1.15rem;
+  color: #d6a23a;
+}
+
+.modal-send-email:hover {
+  background: #0e7490;
+  border-color: #0e7490;
+}
+
+@media (min-width: 768px) {
+  .modal-send-email {
+    width: auto;
+    min-width: 18rem;
+  }
+}
+
+/* Το κείμενο της κάρτας πληροφοριών ήταν flex item χωρίς κανένα στυλ: χωρίς
+   min-width: 0 μια μακριά διεύθυνση δεν σπάει και ξεχειλίζει από την κάρτα. */
+.info-coop-card-content {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* =========================================================
+   ΚΟΥΜΠΙΑ ΟΔΗΓΟΥ — ΟΡΙΖΟΝΤΙΟ PADDING ΚΑΙ ΠΛΑΤΟΣ ΚΑΤΑ ΠΕΡΙΕΧΟΜΕΝΟ
+
+   Ο κοινός κανόνας (.activation-payment-card button, .activation-email-card a,
+   .activation-help-box a, .activation-actions button) όριζε ύψος, γωνίες και
+   στοίχιση αλλά ποτέ padding — και το preflight του Tailwind μηδενίζει το
+   padding των button. Το κείμενο ακουμπούσε στις στρογγυλεμένες άκρες και το
+   «Άνοιγμα email» φαινόταν κομμένο.
+
+   Επιπλέον, στον υπολογιστή οι δύο ενέργειες ήταν κλειδωμένες σε δύο ίσες
+   στήλες: το πλατύ «Άνοιγμα email» στριμωχνόταν στο ίδιο πλάτος με το σύντομο
+   «Αντιγραφή». Τώρα κάθε κουμπί παίρνει το πλάτος του και στοιχίζονται δεξιά.
+   ========================================================= */
+.activation-guide .activation-payment-card button,
+.activation-guide .activation-email-card button,
+.activation-guide .activation-email-card a,
+.activation-guide .activation-help-box a,
+.activation-guide .activation-actions button {
+  padding: 0.6rem 0.95rem;
+}
+
+.activation-guide .activation-email-card__actions a,
+.activation-guide .activation-email-card__actions button {
+  white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+  .activation-guide .activation-email-card__actions {
+    grid-template-columns: auto auto;
+    justify-content: end;
+  }
+}
+
+/* Σε πολύ στενές οθόνες το «Άνοιγμα email» δεν χωρά σε μία γραμμή δίπλα στο
+   εικονίδιο· εκεί επιτρέπουμε αναδίπλωση αντί για υπερχείλιση. */
+@media (max-width: 380px) {
+  .activation-guide .activation-email-card__actions a,
+  .activation-guide .activation-email-card__actions button {
+    white-space: normal;
+  }
+}
