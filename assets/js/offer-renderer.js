@@ -16,45 +16,12 @@
     other: 'Άλλο',
   });
 
-  // Χρώμα του πάνω badge ανά πάροχο / brand skin (νέα accordion κάρτα).
-  const PROVIDER_COLORS = Object.freeze({
-    vodafone: '#e60000',
-    nova: '#0a2896',
-    cosmote: '#7ac143',
-    wind: '#0067b1',
-    'eon / cosmote tv': '#00bf10',
-    eon: '#069266',
-    q: '#ff8d13',
-  });
-  const DEFAULT_PROVIDER_COLOR = '#fff586';
-
   /*
-   * Τόνοι για την τιμή και τη λωρίδα προπληρωμής, ανά πάροχο.
-   * Ξεχωριστά από το PROVIDER_COLORS: εκεί τα χρώματα είναι φόντο, εδώ γίνονται
-   * κείμενο και χρειάζονται αντίθεση. Το πορτοκαλί της Nova σκουραίνει ελαφρά
-   * ώστε να διαβάζεται πάνω σε ανοιχτό φόντο (WCAG AA).
+   * Τα ανά-πάροχο χρώματα (PROVIDER_COLORS / PRICE_TONES) αφαιρέθηκαν με το
+   * σχέδιο «Γ3»: κάθε κάρτα έχει πλέον την ίδια βαθιά κεφαλίδα και ο πάροχος
+   * δηλώνεται με ετικέτα. Οι αποχρώσεις ζουν στις σταθερές CARD_* παρακάτω,
+   * όπου συνοδεύονται από μετρημένες αντιθέσεις.
    */
-  const PRICE_TONES = Object.freeze({
-    vodafone: Object.freeze({ ink: '#c50000', tint: '#fff2f2', border: '#f6c9c9' }),
-    nova: Object.freeze({ ink: '#c2410c', tint: '#fff6ed', border: '#fbd3ad' }),
-    q: Object.freeze({ ink: '#c2410c', tint: '#fff6ed', border: '#fbd3ad' }),
-    // Το ακριβές κλειδί πρέπει να προηγείται: το "EON / Cosmote TV" περιέχει
-    // και τα δύο ονόματα και αλλιώς θα έπαιρνε τον τόνο της Cosmote.
-    // Το πράσινο του EON, σκουρεμένο ώστε η τιμή να διαβάζεται: το καθαρό
-    // #01e109 έδινε 1,63:1 πάνω στο φόντο της κάρτας (όριο WCAG AA: 4,5:1).
-    'eon / cosmote tv': Object.freeze({ ink: '#0e7a14', tint: '#f2fbf1', border: '#bfe3bc' }),
-    cosmote: Object.freeze({ ink: '#3f6d0f', tint: '#f4faec', border: '#cfe6b4' }),
-    eon: Object.freeze({ ink: '#5c2d91', tint: '#f7f3fd', border: '#ddcdf2' }),
-  });
-  const DEFAULT_PRICE_TONE = Object.freeze({ ink: '#16243d', tint: '#f7f9fc', border: '#e3e8f0' });
-
-  function getPriceTone(offer) {
-    const key = String(offer.provider || '').trim().toLowerCase();
-    if (PRICE_TONES[key]) return PRICE_TONES[key];
-
-    const match = Object.keys(PRICE_TONES).find((name) => key.includes(name));
-    return match ? PRICE_TONES[match] : DEFAULT_PRICE_TONE;
-  }
 
   // Ζητούμενες αντικαταστάσεις κειμένου στα CTA της νέας κάρτας.
   const CTA_TEXT_OVERRIDES = Object.freeze({
@@ -95,14 +62,6 @@
 
   function getCategoryLabel(category) {
     return CATEGORY_LABELS[category] || category || CATEGORY_LABELS.other;
-  }
-
-  function getProviderColor(offer) {
-    const key = String(offer.provider || '').trim().toLowerCase();
-    if (PROVIDER_COLORS[key]) return PROVIDER_COLORS[key];
-
-    const match = Object.keys(PROVIDER_COLORS).find((name) => key.includes(name));
-    return match ? PROVIDER_COLORS[match] : DEFAULT_PROVIDER_COLOR;
   }
 
   function mapCtaText(text) {
@@ -258,75 +217,67 @@
    * στη μεγάλη τιμή — και χανόταν. Τώρα είναι το πρώτο πράγμα που διαβάζεται,
    * σε δική του ζώνη, οπότε δεν ανταγωνίζεται την τιμή.
    */
+  /*
+   * ΚΕΦΑΛΙΔΑ ΚΑΡΤΑΣ — σχέδιο «Γ3».
+   *
+   * Μία σκούρα ζώνη μαζεύει όλα όσα κρίνουν την απόφαση: τίτλος, χαρακτηριστικό,
+   * τιμή και όρος προπληρωμής. Το σώμα από κάτω μένει λευκό, μόνο με τα οφέλη
+   * και τις ενέργειες.
+   *
+   * Γιατί σκούρο και όχι στο χρώμα του παρόχου: με χρωματιστές κεφαλίδες οι
+   * κάρτες διαβάζονταν ως διαφημίσεις Vodafone/Nova. Με μία κοινή απόχρωση —
+   * τη βαθιά του hero — ο κατάλογος ανήκει στον Συνεταιρισμό και ο πάροχος
+   * μένει ως ετικέτα. Κερδίζουμε και ~45% ύψος στο κινητό, γιατί η περιγραφή
+   * και το ξεχωριστό πλαίσιο τιμής καταργούνται.
+   *
+   * Τα χρώματα ΔΕΝ μπαίνουν εδώ ως inline styles. Το αρχείο CSS έχει γενικούς
+   * legacy κανόνες με !important (π.χ. «section article p { color: … }») που
+   * νικούν ένα inline style χωρίς !important — ο όρος προπληρωμής έβγαινε γκρι
+   * πάνω στο σκούρο. Οι αποχρώσεις ζουν στο site.css, σε ένα σημείο, μαζί με τις
+   * μετρημένες αντιθέσεις τους.
+   */
   function renderCardRibbon(offer) {
-    const tone = getPriceTone(offer);
     const ribbon = createElement('div', 'new-premium-ribbon');
-    ribbon.style.color = getProviderColor(offer);
-    ribbon.style.background = tone.tint;
-    ribbon.style.borderBottomColor = tone.border;
 
     const providerLabel = offer.provider || getCategoryLabel(offer.category);
-    const meta = createElement('div', 'new-premium-ribbon-meta');
-    const nameElement = appendTextElement(meta, 'span', 'new-premium-ribbon-name', providerLabel);
-    if (nameElement) nameElement.style.color = tone.ink;
+    const top = createElement('div', 'new-premium-ribbon-meta');
+    appendTextElement(top, 'h3', 'new-premium-title', offer.title || offer.id || 'Προσφορά');
 
-    // Προτιμάμε το σύντομο badge (specs) από το μακροσκελές recommendationBadge.
-    const flag = offer.badge || offer.recommendationBadge;
-    const isDuplicate = normalizeBadgeText(flag) === normalizeBadgeText(providerLabel);
-    if (flag && !isDuplicate) {
-      appendTextElement(meta, 'span', 'new-premium-ribbon-flag', flag);
-    }
+    /*
+     * Η ετικέτα δείχνει το χαρακτηριστικό του πακέτου (π.χ. «300GB κάθε μήνα»),
+     * με τον πάροχο ως εφεδρεία. Ό,τι επαναλαμβάνει τον τίτλο παραλείπεται:
+     * στο «EON + Cosmote TV» και ο πάροχος και το badge λένε το ίδιο πράγμα με
+     * τον τίτλο, και η κάρτα θα το έγραφε δύο φορές στην ίδια γραμμή.
+     */
+    const title = offer.title || offer.id || 'Προσφορά';
+    const isEcho = (text) => !text || normalizeBadgeText(text) === normalizeBadgeText(title);
+    const flag = [offer.badge, offer.recommendationBadge, providerLabel].find((text) => !isEcho(text));
+    appendTextElement(top, 'span', 'new-premium-ribbon-flag', flag);
 
-    ribbon.appendChild(meta);
-    appendTextElement(ribbon, 'h3', 'new-premium-title', offer.title || offer.id || 'Προσφορά');
+    ribbon.appendChild(top);
+    ribbon.appendChild(renderPriceRow(offer));
+
+    // Ο όρος προπληρωμής ανεβαίνει μέσα στην κεφαλίδα, δίπλα στην τιμή που
+    // εξηγεί. Στον πάτο της κάρτας διαβαζόταν σαν ψιλά γράμματα.
+    const { note } = getPricing(offer);
+    appendTextElement(ribbon, 'p', 'new-premium-note-banner', note);
+
+    // Ο πάροχος μένει διαθέσιμος για φίλτρα και tracking χωρίς να καταλαμβάνει
+    // οπτικό χώρο όταν τον λέει ήδη ο τίτλος («Vodafone CU»).
+    ribbon.dataset.provider = providerLabel;
 
     return ribbon;
   }
 
-  // Το σώμα ξεκινά με την περιγραφή· ο τίτλος έχει ήδη μπει στην κεφαλίδα.
-  function renderCardHeader(offer) {
-    const header = createElement('div', 'new-premium-head');
-    appendTextElement(header, 'p', 'new-premium-desc', offer.shortDescription);
+  function renderPriceRow(offer) {
+    const { prefix, amount, unit } = getPricing(offer);
 
-    const { prefix, amount, unit, note } = getPricing(offer);
-    const tone = getPriceTone(offer);
-
-    // Η τιμή μπαίνει σε δικό της χρωματιστό πλαίσιο ώστε να είναι το πρώτο
-    // πράγμα που πιάνει το μάτι σε κάθε κάρτα.
     const priceRow = createElement('div', 'new-premium-price-row');
-    priceRow.style.background = tone.tint;
-    priceRow.style.borderColor = tone.border;
-
     appendTextElement(priceRow, 'span', 'new-premium-price-prefix', prefix);
-    const amountElement = appendTextElement(priceRow, 'span', 'new-premium-price-num', amount);
-    if (amountElement) amountElement.style.color = tone.ink;
+    appendTextElement(priceRow, 'span', 'new-premium-price-num', amount);
     appendTextElement(priceRow, 'span', 'new-premium-price-unit', unit);
-    header.appendChild(priceRow);
 
-    // Όταν η σημείωση δεν προβάλλεται ως λωρίδα, μένει μικρή κάτω από την τιμή.
-    if (!offer.pricing?.highlightNote) {
-      appendTextElement(header, 'p', 'new-premium-price-note', note);
-    }
-
-    return header;
-  }
-
-  /*
-   * Λωρίδα προπληρωμής στον πάτο της κάρτας. Ζητήθηκε για τις προσφορές
-   * κινητής, όπου η μηνιαία τιμή προκύπτει από εφάπαξ ποσό — ο όρος πρέπει να
-   * φαίνεται καθαρά και όχι σε ψιλά γράμματα κάτω από την τιμή.
-   */
-  function renderNoteBanner(offer) {
-    const { note } = getPricing(offer);
-    if (!offer.pricing?.highlightNote || !note) return null;
-
-    const tone = getPriceTone(offer);
-    const banner = createElement('p', 'new-premium-note-banner', note);
-    banner.style.color = tone.ink;
-    banner.style.background = tone.tint;
-    banner.style.borderTopColor = tone.border;
-
-    return banner;
+    return priceRow;
   }
 
   function renderCardActions(offer) {
@@ -340,13 +291,21 @@
     }
 
     if (offer.showSecondaryCta !== false) {
-      // Δευτερεύουσα ενέργεια ως διακριτικό link, ώστε να μην ανταγωνίζεται
-      // οπτικά το βασικό CTA.
-      const secondary = createElement(
-        'button',
-        'offer-secondary-cta new-premium-link',
-        mapCtaText(offer.ctaSecondaryText || 'Δες λεπτομέρειες'),
-      );
+      // Οι λεπτομέρειες γίνονται τετράγωνο εικονίδιο δίπλα στο βασικό κουμπί,
+      // αντί για δεύτερη γραμμή από κάτω: γλιτώνουμε ~40px ανά κάρτα. Το tap σε
+      // ολόκληρη την κάρτα είναι σκόπιμα κλειστό, οπότε αυτό είναι ο μόνος
+      // δρόμος προς τις λεπτομέρειες και πρέπει να παραμείνει ορατός.
+      const label = mapCtaText(offer.ctaSecondaryText || 'Δες λεπτομέρειες');
+      const secondary = createElement('button', 'offer-secondary-cta new-premium-icon-link');
+      const icon = window.createIcon?.('circle-info') || window.createIcon?.('file-lines');
+      if (icon) {
+        icon.setAttribute('aria-hidden', 'true');
+        secondary.appendChild(icon);
+      } else {
+        secondary.textContent = label;
+      }
+      secondary.setAttribute('aria-label', `${label}: ${getCardOfferName(offer)}`);
+      secondary.title = label;
       secondary.type = 'button';
       secondary.dataset.offerDetailsOpen = offer.id || '';
       secondary.dataset.track = 'offer_details_click';
@@ -372,16 +331,12 @@
     card.dataset.wholeCardAction = 'true';
 
     const body = createElement('div', 'new-premium-body');
-    body.appendChild(renderCardHeader(offer));
     body.appendChild(renderBenefits(offer));
 
     const actions = renderCardActions(offer);
     if (actions.childElementCount > 0) body.appendChild(actions);
 
     card.append(renderCardRibbon(offer), body);
-
-    const noteBanner = renderNoteBanner(offer);
-    if (noteBanner) card.appendChild(noteBanner);
 
     return card;
   }
@@ -479,6 +434,64 @@
     });
 }
 
+  /* --- Μετρητής προσφορών στα φίλτρα ------------------------------------
+     Οι αριθμοί βγαίνουν από τις προσφορές που όντως αποδόθηκαν, όχι από
+     χειρόγραφη λίστα: αν προστεθεί ή αποσυρθεί προσφορά στο offers.json, οι
+     μετρητές ακολουθούν μόνοι τους.
+  --------------------------------------------------------------------- */
+  const FILTER_LABELS = Object.freeze({
+    all: 'Όλες', mobile: 'Κινητή', internet: 'Internet', tv: 'TV',
+  });
+
+  function countOffersByCategory(offers) {
+    const counts = new Map([['all', offers.length]]);
+
+    offers.forEach((offer) => {
+      const category = offer.category || 'other';
+      counts.set(category, (counts.get(category) || 0) + 1);
+    });
+
+    return counts;
+  }
+
+  function setFilterCount(button, category, counts) {
+    const total = counts.get(category) || 0;
+    let badge = button.querySelector('.offer-filter-count');
+
+    if (!badge) {
+      badge = createElement('span', 'offer-filter-count');
+      // Ο αριθμός κρύβεται από τους αναγνώστες οθόνης· το πλήρες νόημα
+      // περνά από το aria-label, αλλιώς ακούγεται σκέτο «Κινητή 2».
+      badge.setAttribute('aria-hidden', 'true');
+      button.appendChild(badge);
+    }
+
+    badge.textContent = String(total);
+    button.hidden = total === 0 && category !== 'all';
+
+    const label = FILTER_LABELS[category] || button.dataset.label || '';
+    const noun = total === 1 ? 'προσφορά' : 'προσφορές';
+    button.setAttribute('aria-label', `${label}: ${total} ${noun}`);
+  }
+
+  /*
+   * ΠΡΟΣΟΧΗ στο εύρος: το [data-category-filter] το φοράνε και οι μεγάλες
+   * κάρτες της «Γρήγορης εκκίνησης» («Θέλω προσφορά κινητής» κ.λπ.), που έχουν
+   * ήδη δικό τους περιγραφικό κείμενο και aria-label. Ο μετρητής μπαίνει μόνο
+   * στα μικρά chips: τη μπάρα φίλτρων και το πλαϊνό μενού.
+   */
+  function updateFilterCounts(offers) {
+    const counts = countOffersByCategory(offers);
+
+    document.querySelectorAll('.offer-filter-bar [data-category-filter]').forEach((button) => {
+      setFilterCount(button, button.dataset.categoryFilter, counts);
+    });
+
+    document.querySelectorAll('.premium-menu-chip[data-sidebar-category]').forEach((button) => {
+      setFilterCount(button, button.dataset.sidebarCategory, counts);
+    });
+  }
+
   function renderOffers(container, offers) {
     offersById = new Map(offers.map((offer) => [offer.id, offer]));
 
@@ -500,6 +513,7 @@
     container.appendChild(fragment);
     container.dataset.offerLoadState = 'loaded';
 
+    updateFilterCounts(offers);
     revealRenderedOfferCards(container);
     runPostRenderEnhancements();
 

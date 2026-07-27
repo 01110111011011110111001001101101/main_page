@@ -6,8 +6,8 @@ const PAGE = `<body>
   <header class="site-top-nav top-area-nav"><button data-action="toggle-sidebar">μενού</button></header>
   <main>
     <section id="hero"></section>
-    <section id="choiceHub"></section>
     <section id="offers"><div id="offersContainer"></div></section>
+    <section id="choiceHub"></section>
   </main>
   <div class="top-bar-mini-nav" data-choice-mini-nav hidden>
     <button data-action="toggle-sidebar"><span>Μενού</span></button>
@@ -15,7 +15,7 @@ const PAGE = `<body>
 </body>`;
 
 const HEADER_HEIGHT = 68;
-const CHOICE_HUB_TOP = 600;
+const OFFERS_TOP = 600;
 
 function createNavPage({ mobile = true } = {}) {
   const page = createPage({
@@ -38,7 +38,8 @@ function createNavPage({ mobile = true } = {}) {
   window.requestAnimationFrame = (callback) => { callback(); return 1; };
 
   document.querySelector('.site-top-nav').getBoundingClientRect = () => ({ height: HEADER_HEIGHT, top: 0 });
-  document.getElementById('choiceHub').getBoundingClientRect = () => ({ top: CHOICE_HUB_TOP - scrollY, height: 300 });
+  // Το σημείο ενεργοποίησης είναι πλέον οι προσφορές, όχι η «Γρήγορη εκκίνηση».
+  document.getElementById('offers').getBoundingClientRect = () => ({ top: OFFERS_TOP - scrollY, height: 900 });
   document.querySelector('[data-choice-mini-nav]').getBoundingClientRect = () => ({ height: 62 });
 
   window.eval('initializeChoiceMiniNav();');
@@ -58,7 +59,7 @@ function createNavPage({ mobile = true } = {}) {
   };
 }
 
-test('το mini nav εμφανίζεται μόλις φτάσουμε στη Γρήγορη εκκίνηση', () => {
+test('το mini nav εμφανίζεται μόλις φτάσουμε στις προσφορές', () => {
   const page = createNavPage();
 
   assert.equal(page.miniNavVisible, false);

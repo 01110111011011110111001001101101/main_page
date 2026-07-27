@@ -23,7 +23,15 @@ await fs.writeFile(path.join(cssDirectory, outputName), code);
 const criticalSource = await fs.readFile(path.join(cssDirectory, 'critical.css'));
 const criticalCode = transform({ filename: 'critical.css', code: criticalSource, minify: true }).code.toString();
 const criticalBlock = `<!-- critical-css:start -->\n  <style id="critical-css">${criticalCode}</style>\n  <!-- critical-css:end -->`;
-const appCssBlock = `<!-- app-css:start -->\n  <link rel="preload" href="assets/css/${outputName}" as="style" onload="this.onload=null;this.rel='stylesheet'">\n  <noscript><link rel="stylesheet" href="assets/css/${outputName}"></noscript>\n  <!-- app-css:end -->`;
+/*
+ * Το app-css-ready σηματοδοτεί ότι εφαρμόστηκε το πλήρες stylesheet. Το banner
+ * cookies περιμένει αυτή τη στιγμή για να μπει στο κάδρο (βλ. critical.css):
+ * αν εμφανιζόταν νωρίτερα, θα άλλαζε μέγεθος όταν έφτανε το CSS και θα
+ * χρεωνόταν ως layout shift. Το noscript fallback το δείχνει κανονικά.
+ */
+const cssReadyFlag = "this.onload=null;this.rel='stylesheet';"
+  + "requestAnimationFrame(function(){document.documentElement.classList.add('app-css-ready')})";
+const appCssBlock = `<!-- app-css:start -->\n  <link rel="preload" href="assets/css/${outputName}" as="style" onload="${cssReadyFlag}">\n  <noscript><link rel="stylesheet" href="assets/css/${outputName}"><style>#cookieConsentBanner{transform:none!important;opacity:1!important}</style></noscript>\n  <!-- app-css:end -->`;
 
 let html = await fs.readFile(indexPath, 'utf8');
 html = html.replace(/\s*<link rel="preconnect" href="https:\/\/fonts\.googleapis\.com">/g, '');

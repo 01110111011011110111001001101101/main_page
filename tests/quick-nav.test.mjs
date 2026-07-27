@@ -113,14 +113,12 @@ test('η Γρήγορη εκκίνηση κρύβεται στον υπολογ�
   assert.match(css, /\(width>=768px\)[\s\S]*?#choiceHub[^{]*\{[^}]*display:\s*none/);
 });
 
-test('το mini nav πέφτει στις προσφορές όταν η Γρήγορη εκκίνηση είναι κρυφή', async () => {
+/* Οι προσφορές είναι το σημείο ενεργοποίησης του mini nav, ανεξάρτητα από το
+   πού βρίσκεται η «Γρήγορη εκκίνηση» — που πλέον ζει κάτω από αυτές. */
+test('το mini nav ενεργοποιείται από τις προσφορές', async () => {
   const site = await createSite();
-  const choiceHub = site.document.getElementById('choiceHub');
-
-  // Προσομοιώνουμε desktop: το media query κρύβει την ενότητα.
-  choiceHub.style.display = 'none';
   const offers = site.document.getElementById('offers');
-  offers.getBoundingClientRect = () => ({ top: -10, height: 800 });
+  offers.getBoundingClientRect = () => ({ top: -10, height: 900 });
 
   site.window.dispatchEvent(new site.window.Event('scroll'));
   await settle(60);

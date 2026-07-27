@@ -10,15 +10,7 @@
     'EON και Cosmote TV': 'EON + TV',
   });
   const VALID_OFFER_CATEGORIES = new Set(['all', 'mobile', 'internet', 'tv', 'guide', 'other']);
-  const MOBILE_OFFERS_COLLAPSE_QUERY = typeof window !== 'undefined' && typeof window.matchMedia === 'function'
-    ? window.matchMedia('(max-width: 767px)')
-    : { matches: false };
-
   let offerFilterTouched = false;
-
-  function shouldCollapseOffersOnInitialLoad() {
-    return MOBILE_OFFERS_COLLAPSE_QUERY.matches && window.location.hash !== '#offers';
-  }
 
   function normalizeOfferCategory(category) {
     const normalized = String(category || 'all').trim().toLowerCase();
@@ -320,17 +312,21 @@ function revealOffersPanel(options = {}) {
     return offersPanel;
 }
 
+/*
+ * Οι προσφορές είναι πάντα ορατές.
+ *
+ * Παλιότερα η ενότητα ξεκινούσε με hidden=true στο κινητό και αποκαλυπτόταν
+ * μόνο αν ο χρήστης πατούσε κάρτα κατηγορίας στη «Γρήγορη εκκίνηση». Το ίδιο
+ * έκανε και ένας κανόνας CSS. Όταν έφυγαν οι κάρτες αυτές, δεν έμεινε κανένας
+ * δρόμος να εμφανιστούν — η σελίδα πήγαινε από το hero κατευθείαν στην
+ * «Υποστήριξη» και οι προσφορές δεν υπήρχαν πουθενά.
+ */
 function initializeOffersPanelState() {
     const offersPanel = getOffersPanel();
     if (!offersPanel) return;
 
-    if (shouldCollapseOffersOnInitialLoad()) {
-        offersPanel.hidden = true;
-        offersPanel.classList.remove('is-offers-open');
-        return;
-    }
-
     offersPanel.hidden = false;
+    offersPanel.removeAttribute('hidden');
     offersPanel.classList.add('is-offers-open');
 
     if (window.location.hash === '#offers') {

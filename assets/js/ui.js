@@ -29,6 +29,13 @@
 
     element.setAttribute('aria-label', fullText);
 
+    // ΚΡΙΣΙΜΟ ΓΙΑ ΤΟ CLS: ο τίτλος αποδίδεται πρώτα ολόκληρος και μετά τον
+    // αδειάζουμε για να τον γράψουμε ξανά. Χωρίς κλείδωμα ύψους, το στοιχείο
+    // καταρρέει στο min-height και ξαναμεγαλώνει, σπρώχνοντας δύο φορές όλη τη
+    // σελίδα από κάτω. Κρατάμε το ύψος που είχε ήδη μετρηθεί.
+    const reservedHeight = element.getBoundingClientRect().height;
+    if (reservedHeight > 0) element.style.minHeight = `${reservedHeight}px`;
+
     const text = document.createElement('span');
     text.className = 'typewriter-text';
 
@@ -54,6 +61,9 @@
 
       element.classList.remove('is-typing');
       element.classList.add('is-typed');
+      // Το κλείδωμα φεύγει μόνο αφού γραφτεί όλο το κείμενο, ώστε το τελικό
+      // ύψος να ορίζεται πάλι από το περιεχόμενο (π.χ. σε αλλαγή μεγέθους).
+      element.style.minHeight = '';
     };
 
     window.setTimeout(step, TYPEWRITER_START_MS);
@@ -160,19 +170,16 @@
     document.body.classList.toggle('site-top-nav-hidden', hidden);
   }
 
-  // Στα κινητά: μόλις ο χρήστης φτάσει στη "Γρήγορη εκκίνηση" και συνεχίσει προς
-  // τα κάτω, η πάνω μπάρα κρύβεται και εμφανίζεται το mini nav στον πάτο.
-  // Με scroll προς τα πάνω η μπάρα επανέρχεται αμέσως.
-  // Η "Γρήγορη εκκίνηση" κρύβεται στον υπολογιστή, όπου η πλοήγηση γίνεται από
-  // την πάνω μπάρα. Όταν είναι κρυφή, το σημείο ενεργοποίησης γίνονται οι
-  // προσφορές — αλλιώς ένα στοιχείο με μηδενικό ύψος θα έδινε top === 0 και το
-  // trigger θα χτυπούσε από την πρώτη στιγμή.
+  // Στα κινητά: μόλις ο χρήστης φτάσει στις προσφορές και συνεχίσει προς τα
+  // κάτω, η πάνω μπάρα κρύβεται και εμφανίζεται το mini nav στον πάτο. Με
+  // scroll προς τα πάνω η μπάρα επανέρχεται αμέσως.
+  //
+  // Το σημείο ενεργοποίησης είναι πάντα οι προσφορές. Παλιότερα ήταν η
+  // «Γρήγορη εκκίνηση», αλλά αυτή κατέβηκε κάτω από τις προσφορές — αν έμενε
+  // trigger, το mini nav θα εμφανιζόταν αφού ο χρήστης είχε ήδη προσπεράσει
+  // όλες τις κάρτες, δηλαδή πολύ αργά για να βοηθήσει.
   function getMiniNavTrigger() {
-    const choiceHub = document.getElementById('choiceHub');
-    // getComputedStyle αντί για getClientRects: διαβάζει το media query που
-    // κρύβει την ενότητα, και δουλεύει και εκτός browser (tests σε jsdom).
-    const isVisible = choiceHub && window.getComputedStyle(choiceHub).display !== 'none';
-    return isVisible ? choiceHub : document.getElementById('offers');
+    return document.getElementById('offers');
   }
 
   function initializeChoiceMiniNav() {

@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { createPage, readOffers, settle } from './helpers/load-scripts.mjs';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import { createPage, readOffers, root, settle } from './helpers/load-scripts.mjs';
 
 const CONTAINER = `<body>
   <section id="offers" class="offers-section-catalog is-offers-open">
@@ -94,7 +96,10 @@ test('το δευτερεύον CTA ανοίγει τις λεπτομέρειε
 
   for (const card of cards) {
     const secondary = card.querySelector('.offer-secondary-cta');
-    assert.equal(secondary.textContent.trim(), 'Λεπτομέρειες');
+    // Εικονίδιο αντί για κείμενο: το όνομα το δίνει το aria-label, αλλιώς ο
+    // αναγνώστης οθόνης θα άκουγε έξι φορές «κουμπί» χωρίς προσδιορισμό.
+    assert.match(secondary.getAttribute('aria-label'), /^Λεπτομέρειες: .+/);
+    assert.ok(secondary.querySelector('.icon'), 'λείπει το εικονίδιο');
     assert.equal(secondary.dataset.offerDetailsOpen, card.dataset.offerId);
   }
 });
@@ -115,14 +120,26 @@ test('η προσφορά με href γίνεται σύνδεσμος και ό�
   assert.equal(cta.getAttribute('rel'), 'noopener noreferrer');
 });
 
-test('δεν εμφανίζεται διπλό badge όταν πάροχος και badge ταυτίζονται', async () => {
+test('η ετικέτα δεν επαναλαμβάνει τον τίτλο', async () => {
   const offers = readOffers();
+  offers.offers[0].title = 'EON + Cosmote TV';
   offers.offers[0].provider = 'EON / Cosmote TV';
   offers.offers[0].badge = 'EON + Cosmote TV';
+  delete offers.offers[0].recommendationBadge;
   const { cards } = await renderCards(offers);
   const card = cards.find((one) => one.dataset.offerId === offers.offers[0].id);
 
-  assert.equal(card.querySelector('.new-premium-ribbon-flag'), null);
+  assert.equal(card.querySelector('.new-premium-ribbon-flag'), null, 'δεν γράφεται δύο φορές το ίδιο');
+});
+
+test('η ετικέτα πέφτει στον πάροχο όταν λείπει το badge', async () => {
+  const offers = readOffers();
+  delete offers.offers[0].badge;
+  delete offers.offers[0].recommendationBadge;
+  const { cards } = await renderCards(offers);
+  const card = cards.find((one) => one.dataset.offerId === offers.offers[0].id);
+
+  assert.equal(card.querySelector('.new-premium-ribbon-flag').textContent, offers.offers[0].provider);
 });
 
 test('η κάρτα δεν ενεργοποιεί whole-card click', async () => {
@@ -167,44 +184,73 @@ test('όταν το fetch αποτύχει εμφανίζεται μήνυμα �
   assert.ok(container.querySelector('[data-offers-retry]'));
 });
 
-test('η τιμή παίρνει τον τόνο του παρόχου', async () => {
+/* ΣΧΕΔΙΟ Γ3 — μία βαθιά κεφαλίδα για όλες τις κάρτες, με χρυσή τιμή.
+   Τα χρώματα ζουν στο site.css, όχι σε inline styles: γενικοί legacy κανόνες
+   με !important νικούσαν κάθε inline δήλωση. */
+test('η κεφαλίδα μαζεύει τίτλο, ετικέτα, τιμή και όρο', async () => {
   const { cards } = await renderCards();
-  const tone = (id) => cards.find((card) => card.dataset.offerId === id)
-    .querySelector('.new-premium-price-num').style.color;
+  const card = cards.find((one) => one.dataset.offerId === 'vodafone-cu');
+  const ribbon = card.querySelector('.new-premium-ribbon');
 
-  assert.equal(tone('vodafone-cu'), 'rgb(197, 0, 0)', 'Vodafone: κόκκινο');
-  assert.equal(tone('nova-q'), 'rgb(194, 65, 12)', 'Nova: πορτοκαλί');
-  // Πράσινο EON, όχι το λαδί της Cosmote — σε απόχρωση που περνά WCAG AA.
-  assert.equal(tone('eon-cosmote-tv'), 'rgb(14, 122, 20)', 'EON: πράσινο, όχι της Cosmote');
+  assert.equal(ribbon.querySelector('.new-premium-title').textContent, 'Vodafone CU');
+  assert.equal(ribbon.querySelector('.new-premium-ribbon-flag').textContent, '300GB κάθε μήνα');
+  assert.equal(ribbon.querySelector('.new-premium-price-num').textContent, '8,3€');
+  assert.match(ribbon.querySelector('.new-premium-note-banner').textContent, /100€ προπληρωμή/);
 });
 
-test('οι κάρτες κινητής δείχνουν λωρίδα προπληρωμής στον πάτο', async () => {
+test('ο όρος προπληρωμής ανέβηκε μέσα στην κεφαλίδα', async () => {
   const { cards } = await renderCards();
 
-  for (const id of ['vodafone-cu', 'nova-q']) {
-    const card = cards.find((one) => one.dataset.offerId === id);
-    const banner = card.querySelector('.new-premium-note-banner');
-
-    assert.ok(banner, `λείπει η λωρίδα από ${id}`);
-    assert.match(banner.textContent, /100€ προπληρωμή/);
-    assert.equal(card.lastElementChild, banner, 'η λωρίδα είναι το τελευταίο στοιχείο της κάρτας');
+  for (const card of cards) {
+    const note = card.querySelector('.new-premium-note-banner');
+    assert.ok(note, `λείπει η σημείωση από ${card.dataset.offerId}`);
+    assert.ok(
+      card.querySelector('.new-premium-ribbon').contains(note),
+      `${card.dataset.offerId}: η σημείωση έμεινε εκτός κεφαλίδας`
+    );
   }
 });
 
-test('οι υπόλοιπες κάρτες δεν έχουν λωρίδα, κρατούν μικρή σημείωση', async () => {
+test('η κάρτα δεν κρατά πια ξεχωριστή περιγραφή ούτε λωρίδα στον πάτο', async () => {
   const { cards } = await renderCards();
-  const card = cards.find((one) => one.dataset.offerId === 'eon-cosmote-tv');
 
-  assert.equal(card.querySelector('.new-premium-note-banner'), null);
-  assert.match(card.querySelector('.new-premium-price-note').textContent, /ΦΠΑ/);
+  for (const card of cards) {
+    assert.equal(card.querySelector('.new-premium-desc'), null, 'έμεινε περιγραφή');
+    assert.equal(card.querySelector('.new-premium-price-note'), null, 'έμεινε διπλή σημείωση');
+    assert.equal(card.lastElementChild.className, 'new-premium-body', 'η κάρτα τελειώνει στο σώμα');
+  }
 });
 
-test('η λωρίδα δεν εμφανίζεται χωρίς highlightNote', async () => {
-  const offers = readOffers();
-  offers.offers.forEach((offer) => { delete offer.pricing?.highlightNote; });
-  const { cards } = await renderCards(offers);
+test('όλες οι κάρτες μοιράζονται την ίδια κεφαλίδα', async () => {
+  const html = readFileSync(path.join(root, 'index.html'), 'utf8');
+  const bundle = html.match(/assets\/css\/bundle\.[a-f0-9]{8}\.min\.css/)[0];
+  const css = readFileSync(path.join(root, bundle), 'utf8');
 
-  assert.equal(cards.filter((card) => card.querySelector('.new-premium-note-banner')).length, 0);
+  assert.match(css, /\.new-premium-ribbon\{background:#0b3a45!important\}/, 'η κεφαλίδα δεν είναι το βαθύ teal');
+  assert.match(css, /\.new-premium-price-num\{color:#d6a23a!important\}/, 'η τιμή δεν είναι χρυσή');
+});
+
+/* Οι αποχρώσεις της κεφαλίδας επιλέχθηκαν με μέτρηση. Το τεστ ξαναμετράει,
+   ώστε μια μελλοντική «μικρή» αλλαγή χρώματος να μη σπάσει την αναγνωσιμότητα. */
+test('τα χρώματα της κεφαλίδας περνούν WCAG AA', () => {
+  const channel = (value) => (value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4);
+  const luminance = (hex) => {
+    const [r, g, b] = [1, 3, 5].map((index) => channel(parseInt(hex.slice(index, index + 2), 16) / 255));
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  };
+  const ratio = (a, b) => {
+    const [light, dark] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+    return (light + 0.05) / (dark + 0.05);
+  };
+
+  const header = '#0b3a45';
+  assert.ok(ratio('#ffffff', header) >= 4.5, 'ο τίτλος δεν διαβάζεται');
+  assert.ok(ratio('#d6a23a', header) >= 4.5, 'η χρυσή τιμή δεν διαβάζεται');
+  assert.ok(ratio('#a7d5de', header) >= 4.5, 'η σημείωση δεν διαβάζεται');
+  assert.ok(ratio('#ffffff', '#0e7490') >= 4.5, 'η ετικέτα δεν διαβάζεται');
+
+  // Γιατί η κεφαλίδα δεν μπορεί να γίνει το ανοιχτό teal της μπάρας.
+  assert.ok(ratio('#d6a23a', '#0e7490') < 4.5, 'το χρυσό σε ανοιχτό teal δεν περνά — τεκμηρίωση');
 });
 
 test('ο τίτλος του πακέτου ζει μέσα στην κεφαλίδα, πάνω από την τιμή', async () => {
@@ -217,13 +263,13 @@ test('ο τίτλος του πακέτου ζει μέσα στην κεφαλ�
   assert.ok(card.querySelector('.new-premium-ribbon').contains(title), 'ο τίτλος είναι στην κεφαλίδα');
   assert.equal(card.querySelectorAll('h3').length, 1, 'ένας μόνο τίτλος ανά κάρτα');
 
-  // Σειρά ανάγνωσης: πάροχος → τίτλος → περιγραφή → τιμή.
-  const order = [...card.querySelectorAll('.new-premium-ribbon-name, .new-premium-title, .new-premium-desc, .new-premium-price-num')]
+  // Σειρά ανάγνωσης μέσα στην κεφαλίδα: τίτλος → ετικέτα → τιμή → όρος.
+  const order = [...card.querySelectorAll('.new-premium-title, .new-premium-ribbon-flag, .new-premium-price-num, .new-premium-note-banner')]
     .map((element) => element.className);
   assert.deepEqual(order, [
-    'new-premium-ribbon-name',
     'new-premium-title',
-    'new-premium-desc',
+    'new-premium-ribbon-flag',
     'new-premium-price-num',
+    'new-premium-note-banner',
   ]);
 });
