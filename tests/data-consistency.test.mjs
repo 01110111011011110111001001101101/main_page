@@ -95,7 +95,8 @@ test('το κινητό δεν επιτρέπει οριζόντια μετακ�
   const guard = blocks.find((body) => (
     /touch-action:pan-y/.test(body) &&
     /overscroll-behavior-x:none/.test(body) &&
-    /overflow-x:clip/.test(body)
+    // hidden αντί για clip: το clip κόβει και τα position: fixed παιδιά.
+    /overflow-x:hidden/.test(body)
   ));
 
   assert.ok(guard, `κανένα μπλοκ html/body δεν κλειδώνει την οριζόντια κίνηση:\n${blocks.join('\n')}`);

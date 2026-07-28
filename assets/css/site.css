@@ -7339,22 +7339,26 @@ body.hero-intro-ready .site-main {
 @media (max-width: 767px) {
   /* Στο κινητό η σελίδα κινείται ΜΟΝΟ πάνω-κάτω. Το pan-y λέει στον browser να
      μη δεχτεί οριζόντιο σύρσιμο, το overscroll-behavior-x κόβει το ελαστικό
-     τίναγμα στα άκρα, και το overflow-x: clip δεν αφήνει τίποτα να ξεφύγει
+     τίναγμα στα άκρα, και το overflow-x: hidden δεν αφήνει τίποτα να ξεφύγει
      πλάγια. Δεν υπάρχει πια οριζόντιος scroller μέσα στη σελίδα. */
   html,
   body {
     width: 100% !important;
     max-width: 100% !important;
-    overflow-x: clip !important;
+    /*
+     * hidden, ΟΧΙ clip.
+     *
+     * Το overflow: clip δημιουργεί clip context που κόβει ΚΑΙ τα position: fixed
+     * παιδιά. Όταν το body γίνεται fixed με top: -scrollY για το κλείδωμα
+     * κύλισης, το clip box μετατοπίζεται μαζί του και το mini nav του πάτου
+     * ζωγραφιζόταν στη μέση της οθόνης αντί για κάτω.
+     *
+     * Το overflow-x: hidden σταματά εξίσου την οριζόντια κύλιση, αλλά δεν
+     * κόβει στοιχεία που τοποθετούνται ως προς το viewport.
+     */
+    overflow-x: hidden !important;
     overscroll-behavior-x: none !important;
     touch-action: pan-y !important;
-  }
-
-  @supports not (overflow-x: clip) {
-    html,
-    body {
-      overflow-x: hidden !important;
-    }
   }
 
   *,

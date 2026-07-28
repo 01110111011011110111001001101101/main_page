@@ -33,10 +33,9 @@ async function createSite(offers) {
   };
 }
 
-test('κάθε φίλτρο δείχνει πόσες προσφορές έχει', async () => {
+test('κάθε κατηγορία δείχνει πόσες προσφορές έχει', async () => {
   const site = await createSite();
 
-  assert.equal(site.count('all'), '6');
   assert.equal(site.count('mobile'), '2');
   assert.equal(site.count('internet'), '3');
   assert.equal(site.count('tv'), '1');
@@ -50,12 +49,21 @@ test('τα chips του μενού δείχνουν τους ίδιους αρι
   }
 });
 
+/* Το «Όλες» δεν παίρνει αριθμό: δίπλα στα 2 / 3 / 1 των κατηγοριών, ένα 6
+   διαβάζεται σαν τέταρτη κατηγορία αντί για άθροισμα. */
+test('το «Όλες» δεν δείχνει σύνολο', async () => {
+  const site = await createSite();
+  const all = site.document.querySelector('.offer-filter-bar [data-category-filter="all"]');
+
+  assert.equal(all.querySelector('.offer-filter-count'), null, 'το σύνολο μπερδεύει');
+  assert.equal(all.textContent.trim(), 'Όλες');
+});
+
 test('οι αριθμοί ακολουθούν το offers.json χωρίς χειρόγραφη αλλαγή', async () => {
   const offers = JSON.parse(readFileSync(path.join(root, 'assets/data/offers.json'), 'utf8'));
   offers.offers = offers.offers.filter((offer) => offer.category !== 'internet');
   const site = await createSite(offers);
 
-  assert.equal(site.count('all'), '3');
   assert.equal(site.count('mobile'), '2');
   assert.equal(site.count('tv'), '1');
 });

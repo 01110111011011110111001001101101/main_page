@@ -7,7 +7,7 @@ import { root } from './helpers/load-scripts.mjs';
 
 const FILES = ['config.js', 'scroll-coordinator.js', 'clipboard.js', 'image-preview.js', 'ui.js', 'modals.js', 'offers.js', 'offer-renderer.js', 'tracking.js', 'office-closure.config.js', 'main.js'];
 
-function createSite() {
+function createSite({ mobile = true } = {}) {
   const dom = new JSDOM(readFileSync(path.join(root, 'index.html'), 'utf8'), {
     url: 'https://example.test/',
     runScripts: 'outside-only',
@@ -16,7 +16,7 @@ function createSite() {
 
   const { window } = dom;
   window.matchMedia = (query) => ({
-    matches: /max-width:\s*767px/.test(query),
+    matches: mobile && /max-width:\s*767px/.test(query),
     media: query,
     addEventListener() {}, removeEventListener() {}, addListener() {}, removeListener() {},
   });
@@ -31,6 +31,7 @@ function createSite() {
     document,
     menu: document.getElementById('sidebarMenu'),
     open: () => { document.querySelector('.top-menu-button').dispatchEvent(new window.MouseEvent('click', { bubbles: true })); },
+    click: (element) => { element.dispatchEvent(new window.MouseEvent('click', { bubbles: true })); },
     isOpen: () => !document.getElementById('sidebarMenu').classList.contains('-translate-x-full'),
   };
 }
@@ -39,8 +40,8 @@ const settle = (ms = 60) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // Το main.js δένει τους delegated handlers μέσα σε async init, οπότε πριν από
 // κάθε κλικ πρέπει να έχει ολοκληρωθεί η αρχικοποίηση.
-async function createReadySite() {
-  const site = createSite();
+async function createReadySite(options) {
+  const site = createSite(options);
   await settle(200);
   return site;
 }
@@ -148,4 +149,49 @@ test('τα τρία κουμπιά του μενού έχουν σωστούς �
   assert.match(actions[1].getAttribute('href'), /google\.com\/maps/);
   assert.match(actions[2].getAttribute('href'), /^mailto:/);
   assert.deepEqual(actions.map((a) => a.className), ['phone-green-btn', 'maps-btn', 'email-box']);
+});
+
+/* Στο κινητό το συρτάρι πιάνει σχεδόν όλη την οθόνη και το περιθώριο γύρω του
+   είναι λίγα pixel· ένα άστοχο άγγιγμα το έκλεινε κατά λάθος. */
+test('στο κινητό το tap έξω από το μενού δεν το κλείνει', async () => {
+  const site = await createReadySite({ mobile: true });
+  site.open();
+  await settle(60);
+  assert.equal(site.isOpen(), true, 'το μενού δεν άνοιξε');
+
+  site.click(site.document.getElementById('sidebarOverlay'));
+  await settle(60);
+
+  assert.equal(site.isOpen(), true, 'το μενού έκλεισε από άστοχο άγγιγμα');
+});
+
+test('στον υπολογιστή το κλικ έξω κλείνει, όπως συνηθίζεται', async () => {
+  const site = await createReadySite({ mobile: false });
+  site.open();
+  await settle(60);
+
+  site.click(site.document.getElementById('sidebarOverlay'));
+  await settle(60);
+
+  assert.equal(site.isOpen(), false, 'το κλικ έξω πρέπει να κλείνει στον υπολογιστή');
+});
+
+test('το ✕ και το Escape κλείνουν παντού', async () => {
+  for (const mobile of [true, false]) {
+    const where = mobile ? 'κινητό' : 'υπολογιστή';
+
+    const byButton = await createReadySite({ mobile });
+    byButton.open();
+    await settle(60);
+    byButton.click(byButton.document.querySelector('.premium-menu-close'));
+    await settle(60);
+    assert.equal(byButton.isOpen(), false, `στο ${where} το ✕ δεν έκλεισε το μενού`);
+
+    const byEscape = await createReadySite({ mobile });
+    byEscape.open();
+    await settle(60);
+    byEscape.document.dispatchEvent(new byEscape.window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    await settle(60);
+    assert.equal(byEscape.isOpen(), false, `στο ${where} το Escape δεν έκλεισε το μενού`);
+  }
 });

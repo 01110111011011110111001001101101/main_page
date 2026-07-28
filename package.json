@@ -4,7 +4,7 @@
   "private": true,
   "description": "Static GitHub Pages site for Synetelas offers.",
   "scripts": {
-    "build": "npm run build:images && tailwindcss -i ./assets/css/tailwind.input.css -o ./assets/css/tailwind.css --minify && npm run build:icons && npm run build:css && npm run build:js && npm run build:stamp-assets",
+    "build": "npm run build:images && tailwindcss -i ./assets/css/tailwind.input.css -o ./assets/css/tailwind.css --minify && npm run build:icons && npm run build:css && npm run build:js && npm run build:offers && npm run build:stamp-assets",
     "build:images": "node ./scripts/optimize-images.mjs",
     "build:css": "node ./scripts/build-css-bundle.mjs",
     "build:js": "node ./scripts/build-js-bundle.mjs",
@@ -19,7 +19,8 @@
     "prebuild": "node ./scripts/write-site-version.mjs",
     "test:smoke": "node ./tools/smoke-test.mjs",
     "test": "node --test \"tests/**/*.test.mjs\"",
-    "audit:css": "node ./tools/strip-dead-css.mjs --check"
+    "audit:css": "node ./tools/strip-dead-css.mjs --check",
+    "build:offers": "node ./scripts/prerender-offers.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

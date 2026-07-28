@@ -141,3 +141,38 @@ test('το critical CSS δεν περιγράφει πια το παλιό σή�
   assert.match(critical, /\.top-brand__mark\{/, 'λείπει το νέο σήμα από το πρώτο βάψιμο');
   assert.match(critical, /\.top-guide-cta\{[^}]*display:inline-flex/, 'ο οδηγός εμφανίζεται μόνο μετά το bundle');
 });
+
+/* Οι κάρτες φτιάχνονταν μόνο στον browser μετά από fetch· ώσπου να έρθουν, η
+   ενότητα «Υποστήριξη» καθόταν ψηλά και μετά κατέβαινε απότομα. Ήταν το 0,309
+   του PageSpeed — σχεδόν όλο το CLS της σελίδας. */
+test('οι κάρτες υπάρχουν στο HTML πριν τρέξει JavaScript', () => {
+  const html = readFileSync(path.join(root, 'index.html'), 'utf8');
+  const offers = JSON.parse(readFileSync(path.join(root, 'assets/data/offers.json'), 'utf8')).offers
+    .filter((offer) => offer.active !== false);
+
+  const block = html.match(/<!-- offers:start -->([\s\S]*?)<!-- offers:end -->/);
+  assert.ok(block, 'λείπουν τα markers προαπόδοσης');
+
+  const rendered = [...block[1].matchAll(/data-offer-id="([^"]+)"/g)].map(([, id]) => id);
+  assert.deepEqual(rendered, offers.map((offer) => offer.id), 'το HTML δεν συμφωνεί με το offers.json');
+});
+
+test('το προαποδοθέν markup δεν κουβαλά κατάσταση εκτέλεσης', () => {
+  const html = readFileSync(path.join(root, 'index.html'), 'utf8');
+  const block = html.match(/<!-- offers:start -->([\s\S]*?)<!-- offers:end -->/)[1];
+
+  // Το is-visible και το transition-delay τα βάζει ο browser κατά την αποκάλυψη.
+  assert.doesNotMatch(block, /is-visible/, 'οι κάρτες θα εμφανίζονταν χωρίς το animation');
+  assert.doesNotMatch(block, /style="/, 'inline styles στο HTML — το html-validate τα κόβει');
+});
+
+test('η προαπόδοση τρέχει πριν το stamping στο build', () => {
+  const pkg = JSON.parse(readFileSync(path.join(root, 'package.json'), 'utf8'));
+  const build = pkg.scripts.build;
+
+  assert.ok(build.includes('build:offers'), 'η προαπόδοση δεν είναι στο build');
+  assert.ok(
+    build.indexOf('build:offers') < build.indexOf('build:stamp-assets'),
+    'χωρίς stamping μετά, τα εικονίδια των καρτών μένουν χωρίς version'
+  );
+});

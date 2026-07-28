@@ -458,6 +458,17 @@
     const total = counts.get(category) || 0;
     let badge = button.querySelector('.offer-filter-count');
 
+    /*
+     * Το «Όλες» δεν παίρνει αριθμό. Δίπλα στα 2 / 3 / 1 των κατηγοριών, ένα 6
+     * διαβάζεται σαν τέταρτη κατηγορία αντί για άθροισμα και μπερδεύει.
+     */
+    if (category === 'all') {
+      if (badge) badge.remove();
+      button.removeAttribute('aria-label');
+      button.hidden = false;
+      return;
+    }
+
     if (!badge) {
       badge = createElement('span', 'offer-filter-count');
       // Ο αριθμός κρύβεται από τους αναγνώστες οθόνης· το πλήρες νόημα

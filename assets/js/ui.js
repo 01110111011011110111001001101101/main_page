@@ -603,7 +603,16 @@ if (modalCloseTarget) {
     }
 
     if (event.target.classList.contains('modal-backdrop')) closeModal(event.target.id);
-    if (event.target.id === 'sidebarOverlay') toggleSidebar();
+    /*
+     * Το tap έξω από το μενού το κλείνει μόνο στον υπολογιστή.
+     *
+     * Στο κινητό το συρτάρι πιάνει σχεδόν όλη την οθόνη και το περιθώριο γύρω
+     * του είναι λίγα pixel· ένα άστοχο άγγιγμα με τον αντίχειρα το έκλεινε
+     * κατά λάθος. Η έξοδος γίνεται από το ✕ ή με Escape, που είναι σκόπιμες
+     * ενέργειες. Στον υπολογιστή το κλικ-έξω είναι καθιερωμένο και το ποντίκι
+     * δεν αστοχεί το ίδιο εύκολα.
+     */
+    if (event.target.id === 'sidebarOverlay' && !isMobileNavViewport()) toggleSidebar();
     if (event.target.id === 'imagePreviewModal') {
         closeModal('imagePreviewModal');
     }
@@ -733,97 +742,18 @@ function initializeDocumentDelegates() {
     window.addEventListener('hashchange', openModalFromHash);
 }
 
-/* MOBILE_MODAL_RETURN_TO_OPEN_POSITION */
-function initializeMobileModalReturnPosition() {
-  if (typeof window === 'undefined' || typeof document === 'undefined') return;
-
-  let modalOpenScrollY = 0;
-
-  function isMobile() {
-    return window.innerWidth <= 768;
-  }
-
-  function getCurrentPageScrollY() {
-    const bodyTop = document.body.style.top;
-
-    // Αν το body είναι fixed, η πραγματική θέση βρίσκεται στο top: -1234px
-    if (document.body.style.position === 'fixed' && bodyTop) {
-      const parsedTop = parseInt(bodyTop, 10);
-      if (!Number.isNaN(parsedTop)) {
-        return Math.abs(parsedTop);
-      }
-    }
-
-    return window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
-  }
-
-  function restorePageScrollY(scrollY) {
-    if (!isMobile()) return;
-
-    const html = document.documentElement;
-    const body = document.body;
-    const previousHtmlBehavior = html.style.scrollBehavior;
-    const previousBodyBehavior = body.style.scrollBehavior;
-
-    html.style.scrollBehavior = 'auto';
-    body.style.scrollBehavior = 'auto';
-
-    requestAnimationFrame(function () {
-      window.scrollTo(0, scrollY);
-
-      requestAnimationFrame(function () {
-        window.scrollTo(0, scrollY);
-
-        setTimeout(function () {
-          window.scrollTo(0, scrollY);
-          html.style.scrollBehavior = previousHtmlBehavior || '';
-          body.style.scrollBehavior = previousBodyBehavior || '';
-        }, 120);
-      });
-    });
-  }
-
-  // Πριν ανοίξει modal, αποθηκεύουμε τη θέση της σελίδας
-  document.addEventListener('click', function (event) {
-    const openButton = event.target.closest('[data-modal-target]');
-    const closeButton = event.target.closest('[data-modal-close]');
-
-    if (!openButton || closeButton || !isMobile()) return;
-
-    modalOpenScrollY = getCurrentPageScrollY();
-  }, true);
-
-  // Όταν κλείνει modal, γυρίζουμε στη θέση από όπου άνοιξε
-  document.addEventListener('click', function (event) {
-    const closeButton = event.target.closest('[data-modal-close]');
-    if (!closeButton || !isMobile()) return;
-
-    const targetToOpen = closeButton.getAttribute('data-modal-target');
-
-    // Αν το κουμπί κλείνει ένα modal και ανοίγει άλλο, μη γυρίσεις ακόμα τη σελίδα
-    if (targetToOpen) return;
-
-    const scrollY = modalOpenScrollY || getCurrentPageScrollY();
-
-    setTimeout(function () {
-      restorePageScrollY(scrollY);
-    }, 0);
-  }, true);
-
-  // Και για κλείσιμο με Escape ή backdrop, αν υπάρχει τέτοια λειτουργία.
-  // Μόνο όταν όντως υπάρχει ανοιχτό modal: αλλιώς ένα Escape στη μέση της
-  // σελίδας πεταγόταν στη θέση που είχε ανοίξει κάποιο modal νωρίτερα.
-  document.addEventListener('keydown', function (event) {
-    if (event.key !== 'Escape' || !isMobile()) return;
-    if (!document.querySelector('.modal-backdrop:not(.hidden)')) return;
-
-    const scrollY = modalOpenScrollY || getCurrentPageScrollY();
-
-    setTimeout(function () {
-      restorePageScrollY(scrollY);
-    }, 0);
-  }, true);
-}
+/*
+ * Το initializeMobileModalReturnPosition αφαιρέθηκε.
+ *
+ * Αποθήκευε τη θέση κύλισης πριν ανοίξει modal και την επανέφερε μετά με τρεις
+ * διαδοχικές window.scrollTo (δύο requestAnimationFrame και ένα setTimeout 120ms).
+ * Ήταν μπάλωμα για την κινούμενη επαναφορά που προκαλούσε το
+ * scroll-behavior: smooth — και πρόσθετε δικό του τίναγμα, ενώ έπιανε μόνο τα
+ * modals και όχι το πλαϊνό μενού.
+ *
+ * Η αιτία λύθηκε στο restoreScrollInstantly του modals.js, που επαναφέρει τη
+ * θέση ακαριαία για κάθε επίστρωση.
+ */
 
 let uiInitialized = false;
 
@@ -844,7 +774,6 @@ function initializeUi() {
     initializeDocumentDelegates();
     initializeImagePreviewControls();
     initializeRevealAnimations();
-    initializeMobileModalReturnPosition();
     enhanceIbanWarnings();
 
 }

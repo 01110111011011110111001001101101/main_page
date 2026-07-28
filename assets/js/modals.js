@@ -126,8 +126,26 @@ function unlockPageScrollIfIdle() {
     document.body.removeAttribute('data-scroll-lock-mode');
 
     if (lockMode === 'fixed') {
-        window.scrollTo(0, pageScrollY);
+        restoreScrollInstantly(pageScrollY);
     }
+}
+
+/*
+ * Επαναφορά θέσης ΧΩΡΙΣ κινούμενη κύλιση.
+ *
+ * Στο κινητό το κλείδωμα γίνεται με position: fixed και top: -scrollY. Μόλις
+ * αφαιρεθούν τα στυλ, η σελίδα βρίσκεται στο 0 και πρέπει να γυρίσει αμέσως στη
+ * θέση του χρήστη. Επειδή όμως το html έχει scroll-behavior: smooth, το
+ * window.scrollTo το έκανε με animation: η σελίδα πεταγόταν στην κορυφή και
+ * μετά κατέβαινε ορατά πίσω. Εδώ απενεργοποιούμε προσωρινά το smooth.
+ */
+function restoreScrollInstantly(target) {
+    const html = document.documentElement;
+    const previous = html.style.scrollBehavior;
+
+    html.style.scrollBehavior = 'auto';
+    window.scrollTo(0, target);
+    html.style.scrollBehavior = previous;
 }
 
 
