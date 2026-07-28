@@ -31,6 +31,11 @@
     @font-face{font-family:Inter;src:url("assets/fonts/inter-greek.woff2?v=1be3448e") format("woff2");font-style:normal;font-weight:100 900;font-display:swap;unicode-range:U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF}
     @font-face{font-family:Inter;src:url("assets/fonts/inter-latin.woff2?v=3100e775") format("woff2");font-style:normal;font-weight:100 900;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
     :root{--font-sans:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+
+    /* Το .top-emblem οριζόταν μόνο στο site.css, που αυτή η σελίδα δεν φορτώνει.
+       Χωρίς κανόνα, η εικόνα έπαιρνε το φυσικό της μέγεθος και σκέπαζε την
+       κεφαλίδα. Ζει εδώ ώστε να μην εξαρτάται από άλλο αρχείο. */
+    .top-emblem{flex:0 0 auto;width:44px;height:44px;padding:3px;border-radius:50%;background:#fff;object-fit:contain}
   </style>
 
   <script type="application/ld+json">
@@ -64,7 +69,7 @@
   <header class="bg-[#0f2b5c] text-white shadow-sm">
     <div class="max-w-6xl mx-auto px-4 py-6 flex items-center justify-between gap-4">
       <a href="index.html" class="flex items-center gap-3 no-underline">
-        <img src="assets/images/hero-head.webp" alt="Λογότυπο Π.Κ.Σ.Α.Α." width="320" height="442" class="top-emblem" decoding="async">
+        <img src="assets/images/brand-mark.webp" alt="" width="96" height="96" class="top-emblem" decoding="async">
         <div>
           <div class="font-black text-lg">Π.Κ.Σ.Α.Α.</div>
           <div class="text-xs text-blue-100">Συνεταιρισμός Αστυνομικών Αττικής</div>

@@ -357,6 +357,19 @@
       element.textContent = offer.title || element.textContent;
     });
 
+    /*
+     * Η τιμή έλειπε εντελώς από τα modals, ενώ ο χρήστης έρχεται από κάρτα που
+     * τη γράφει. Γεμίζει από την ίδια πηγή με την κάρτα, ώστε οι δύο να μη
+     * μπορούν να διαφωνήσουν. Το markup κρατά προεπιλογή για την περίπτωση που
+     * το modal ανοίξει χωρίς γνωστή προσφορά.
+     */
+    const amount = offer.pricing?.amount || offer.price;
+    if (amount) {
+      modal.querySelectorAll('[data-modal-offer-price]').forEach((element) => {
+        element.textContent = amount;
+      });
+    }
+
     const docsHost = modal.querySelector('[data-modal-offer-docs]');
     const documents = Array.isArray(offer.documents) ? offer.documents.filter((item) => item?.href) : [];
     if (!docsHost) return true;

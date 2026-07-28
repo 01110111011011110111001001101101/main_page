@@ -13,25 +13,39 @@ const document = new JSDOM(`<body>${markup}</body>`).window.document;
 /* Τα κουμπιά ήταν φωλιασμένα μέσα στον τίτλο και εμφανίζονταν πριν από το
    κείμενο που κατεβάζουν και αντιγράφουν. */
 test('η Υπεύθυνη Δήλωση διαβάζεται με σειρά: τίτλος, κείμενο, ενέργειες', () => {
-  const box = document.querySelector('.vodafone-declaration-box');
-  const order = [...box.children].map((child) => child.className || child.tagName);
+  const section = document.querySelector('#vodafoneDeclarationTitle').closest('section');
+  const order = [...section.children].map((child) => child.className || child.tagName);
 
-  assert.equal(order[0], 'vodafone-declaration-title');
-  assert.equal(order[1], 'P', 'το κείμενο της δήλωσης πρέπει να έρχεται δεύτερο');
-  assert.equal(order[2], 'vodafone-declaration-actions');
+  assert.deepEqual(order.slice(0, 3), [
+    'vodafone-section-title',
+    'vodafone-declaration-box',
+    'vodafone-declaration-actions',
+  ]);
 });
 
-test('τα κουμπιά δεν είναι μέσα στον τίτλο', () => {
-  const title = document.querySelector('.vodafone-declaration-title');
+test('τα κουμπιά δεν είναι μέσα στο κείμενο της δήλωσης', () => {
+  const box = document.querySelector('.vodafone-declaration-box');
 
-  assert.equal(title.querySelector('a, button'), null, 'ο τίτλος περιέχει ενέργειες');
+  assert.equal(box.querySelector('a, button'), null, 'το έντυπο περιέχει ενέργειες');
+});
+
+/* Οι τελείες αντικαταστάθηκαν από πεδία με υπογράμμιση, ώστε να φαίνεται ότι
+   συμπληρώνονται. */
+test('το έντυπο δείχνει τα κενά ως πεδία', () => {
+  const box = document.querySelector('.vodafone-declaration-box');
+
+  assert.equal(box.querySelectorAll('.vodafone-blank').length, 2, 'δύο πεδία προς συμπλήρωση');
+  assert.doesNotMatch(box.textContent, /\.{6,}/, 'έμειναν σειρές τελειών');
+  assert.ok(box.querySelector('.vodafone-declaration-tag'), 'λείπει η ένδειξη «προς συμπλήρωση»');
 });
 
 test('το κουμπί αντιγραφής παίρνει ακριβώς το κείμενο που φαίνεται', () => {
   const copy = document.querySelector('.vodafone-declaration-actions [data-copy-text]');
-  const quote = document.querySelector('.vodafone-declaration-box p:not(.vodafone-declaration-title)');
+  const quote = document.querySelector('.vodafone-declaration-text');
 
-  const clean = (text) => text.replace(/[«»\s]+/g, ' ').trim();
+  // Στην οθόνη τα κενά είναι υπογραμμίσεις· στο πρόχειρο μένουν τελείες, ώστε
+  // να συμπληρωθούν με το χέρι. Συγκρίνουμε τα λόγια, όχι τα κενά.
+  const clean = (text) => text.replace(/[«».]+/g, ' ').replace(/\s+/g, ' ').trim();
   assert.equal(clean(copy.dataset.copyText), clean(quote.textContent));
 });
 
@@ -75,4 +89,73 @@ test('κάθε κλάση του modal έχει στυλ στο τελικό CSS
   });
 
   assert.deepEqual(missing, [], 'κλάσεις χωρίς στυλ σπάνε τη διάταξη σιωπηλά');
+});
+
+/* Οι μπάρες ταχύτητας πρέπει να είναι ανάλογες των Mbps, αλλιώς η εικόνα λέει
+   ψέματα. Το ADSL είναι 24 από 300, δηλαδή 8%. */
+test('οι μπάρες ταχύτητας είναι ανάλογες των Mbps', () => {
+  const rows = [...document.querySelectorAll('.vodafone-speed')];
+  assert.equal(rows.length, 3, 'τρία πακέτα');
+
+  const speeds = rows.map((row) => Number(row.querySelector('.vodafone-speed__note').textContent.match(/(\d+)\s*Mbps/)[1]));
+  const widths = rows.map((row) => Number(row.querySelector('.vodafone-speed__track span').getAttribute('style').match(/width:\s*(\d+)%/)[1]));
+  const top = Math.max(...speeds);
+
+  speeds.forEach((speed, index) => {
+    const expected = Math.round((speed / top) * 100);
+    assert.ok(
+      Math.abs(widths[index] - expected) <= 1,
+      `${speed} Mbps → μπάρα ${widths[index]}% αντί για ${expected}%`
+    );
+  });
+});
+
+/* Το ADSL κοστίζει όσο και το FTTH 100 με το ένα τέταρτο της ταχύτητας. Η
+   σχεδίαση πρέπει να το δείχνει, όχι να τα παρουσιάζει ισότιμα. */
+test('το πακέτο με την καλύτερη αξία ξεχωρίζει', () => {
+  const best = document.querySelector('.vodafone-speed--best');
+  const muted = document.querySelector('.vodafone-speed--muted');
+
+  assert.ok(best, 'κανένα πακέτο δεν προτείνεται');
+  assert.match(best.querySelector('.vodafone-speed__name').textContent, /FTTH 100/);
+  assert.ok(best.querySelector('.vodafone-speed__flag'), 'λείπει η ένδειξη');
+  assert.match(muted.querySelector('.vodafone-speed__name').textContent, /ADSL/, 'το ADSL δεν υποβαθμίζεται');
+});
+
+/* Ζητήθηκε ρητά: η τιμή δηλώνει ότι είναι τελική, με ΦΠΑ. */
+test('κάθε τιμή δηλώνει ότι είναι τελική με ΦΠΑ', () => {
+  const text = document.body.textContent.replace(/\s+/g, ' ');
+
+  assert.match(text, /Τελική τιμή με ΦΠΑ/, 'λείπει από την κεφαλίδα');
+  assert.match(text, /Όλες οι τιμές είναι τελικές, με ΦΠΑ/, 'λείπει από τα πακέτα');
+  assert.match(text, /Τελική τιμή με ΦΠΑ, τον μήνα/, 'λείπει από τη σύνοψη');
+});
+
+test('τα δικαιολογητικά διαβάζονται ως ακολουθία', () => {
+  const steps = [...document.querySelectorAll('.vodafone-steps li')];
+
+  assert.equal(steps.length, 3);
+  assert.deepEqual(steps.map((step) => step.querySelector('.vodafone-steps__num').textContent), ['1', '2', '3']);
+});
+
+test('στον υπολογιστή η σύνοψη μένει κολλημένη', () => {
+  const desktop = bundle.split('@media (width>=48rem)').slice(1).join('');
+
+  assert.match(desktop, /vodafone-fixed-aside\{[^}]*position:sticky/, 'η σύνοψη δεν ακολουθεί');
+  assert.match(desktop, /vodafone-fixed-body\{[^}]*grid-template-columns:minmax\(0,1fr\) 17rem/, 'λείπουν οι δύο στήλες');
+});
+
+/* Τα modals φορτώνονται κατά την εκτέλεση από το assets/modals/, ενώ το CSS
+   ζει στο hashed bundle. Αν ανέβει το ένα χωρίς το άλλο, τα πεδία της δήλωσης
+   ήταν άδεια <span> χωρίς border — εξαφανίζονταν εντελώς. Το <u> με nbsp
+   φαίνεται ακόμη και με μηδέν CSS. */
+test('τα πεδία της δήλωσης φαίνονται και χωρίς CSS', () => {
+  const blanks = [...document.querySelectorAll('.vodafone-blank')];
+
+  assert.equal(blanks.length, 2);
+  for (const blank of blanks) {
+    assert.equal(blank.tagName, 'U', 'το <u> υπογραμμίζει από μόνο του');
+    assert.ok(blank.textContent.trim().length >= 0 && blank.textContent.length >= 8, 'χωρίς πλάτος το πεδίο εξαφανίζεται');
+    assert.ok(blank.getAttribute('aria-label'), 'ο αναγνώστης οθόνης πρέπει να ξέρει ότι είναι κενό');
+  }
 });

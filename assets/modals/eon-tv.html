@@ -1,85 +1,117 @@
 <div id="novaEonModal" class="hidden fixed inset-0 z-[70] modal-backdrop flex items-center justify-center p-4">
-    <div class="bg-white w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-
-    <div class="bg-slate-900 p-4 md:p-5 flex justify-between items-center text-white shrink-0">
-        <h3 class="font-bold text-lg md:text-xl flex items-center gap-2">
-            <svg class="icon text-blue-400" data-icon="tv" aria-hidden="true"><use href="assets/icons/icons.svg?v=01d88846#icon-tv"></use></svg>
-            Διαδικασία Ενεργοποίησης EON TV
-        </h3>
-        <button type="button" data-modal-close="novaEonModal" class="liquid-close text-white hover:text-blue-300 text-2xl" aria-label="Κλείσιμο προσφοράς EON TV">&times;</button>
-    </div>
-
-    <div class="overflow-y-auto p-4 md:p-8 bg-white grow custom-scroll">
-        <div class="space-y-8 relative">
-            <div class="absolute left-6 md:left-8 top-4 bottom-4 w-0.5 bg-gradient-to-b from-blue-200 via-blue-100 to-transparent"></div>
-
-            <div class="relative flex gap-4 md:gap-6 group">
-                <div class="flex h-12 w-12 md:h-16 md:w-16 shrink-0 items-center justify-center rounded-full bg-white border-4 border-blue-100 text-blue-600 shadow-sm z-10">
-                    <svg class="icon text-lg md:text-xl" data-icon="file-signature" aria-hidden="true"><use href="assets/icons/icons.svg?v=01d88846#icon-file-signature"></use></svg>
-                </div>
-                <div class="bg-white p-4 md:p-6 rounded-2xl border border-slate-100 shadow-sm w-full">
-                    <h4 class="font-bold text-slate-800 text-base md:text-lg mb-3">1. Συμπλήρωση Αίτησης</h4>
-                    <p class="text-sm text-slate-600 mb-3">Η αίτηση πρέπει να συμπληρωθεί πλήρως.</p>
-                    <div class="bg-blue-50 p-3 rounded-lg border border-blue-100 flex gap-3 items-start">
-                        <svg class="icon text-blue-600 mt-1" data-icon="signature" aria-hidden="true"><use href="assets/icons/icons.svg?v=01d88846#icon-signature"></use></svg>
-                        <p class="text-xs text-blue-900 leading-relaxed">
-                            <strong>Ψηφιακή Υπογραφή:</strong> Η αίτηση υπογράφεται υποχρεωτικά μέσω <strong>GOV.gr</strong>.
-                        </p>
-                    </div>
-                </div>
+    <div class="nova-modal bg-white w-full max-w-5xl rounded-3xl shadow-2xl overflow-hidden relative max-h-[90vh] overflow-y-auto custom-scroll">
+        <div class="nova-sticky-header">
+            <div class="nova-sticky-badge">
+                <svg class="icon" data-icon="tv" aria-hidden="true"><use href="assets/icons/icons.svg?v=5b542ef0#icon-tv"></use></svg>
+                <span>Τηλεοπτικό πακέτο</span>
             </div>
 
-            <div class="relative flex gap-4 md:gap-6 group">
-                <div class="flex h-12 w-12 md:h-16 md:w-16 shrink-0 items-center justify-center rounded-full bg-slate-800 border-4 border-slate-200 text-white shadow-sm z-10">
-                    <svg class="icon text-lg md:text-xl" data-icon="folder-open" aria-hidden="true"><use href="assets/icons/icons.svg?v=01d88846#icon-folder-open"></use></svg>
-                </div>
-                <div class="bg-slate-50 p-4 md:p-6 rounded-2xl border border-slate-200 shadow-sm w-full">
-                    <h4 class="font-bold text-slate-900 text-base md:text-lg mb-4">2. Απαραίτητα Έγγραφα</h4>
-                    <ul class="space-y-3">
-                        <li class="flex items-start gap-3 text-sm text-slate-700">
-                            <svg class="icon text-green-500 mt-1" data-icon="check" aria-hidden="true"><use href="assets/icons/icons.svg?v=01d88846#icon-check"></use></svg>
-                            <span><strong>Ταυτότητα:</strong> Μπρος-πίσω, ευκρινής.</span>
-                        </li>
-                        <li class="flex items-start gap-3 text-sm text-slate-700">
-                            <svg class="icon text-green-500 mt-1" data-icon="check" aria-hidden="true"><use href="assets/icons/icons.svg?v=01d88846#icon-check"></use></svg>
-                            <span><strong>Απόδειξη Διεύθυνσης:</strong> Τελευταίος λογαριασμός σταθερής ή ΔΕΚΟ.</span>
-                        </li>
-                    </ul>
+            <button
+                type="button"
+                data-modal-close="novaEonModal"
+                class="liquid-close nova-sticky-close"
+                aria-label="Κλείσιμο προσφοράς EON TV">
+                ✕
+            </button>
+        </div>
 
-                    <div class="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
-                        <h5 class="text-xs font-bold text-amber-800 uppercase mb-1">Για περιοχές χωρίς αριθμό/διεύθυνση:</h5>
-                        <p class="text-[10px] text-amber-700">:
-                            <br>• Συντεταγμένες GPS σημείου εγκατάστασης.
-                            <br>• Screenshot από Google Maps με Pin Location.
-                        </p>
-                    </div>
-                </div>
+        <div class="nova-hero">
+            <div class="nova-hero-copy">
+                <h3 data-modal-offer-title>EON + Cosmote TV</h3>
+                <p>Αθλητικό θέαμα, ταινίες και σειρές σε ένα πακέτο, με δύο πάγια δώρο.</p>
             </div>
 
-            <div class="relative flex gap-4 md:gap-6 group">
-                <div class="flex h-12 w-12 md:h-16 md:w-16 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white shadow-sm z-10">
-                    <svg class="icon text-lg md:text-xl" data-icon="paper-plane" aria-hidden="true"><use href="assets/icons/icons.svg?v=01d88846#icon-paper-plane"></use></svg>
-                </div>
-                <div class="bg-white p-4 md:p-6 rounded-2xl border border-slate-100 shadow-sm w-full text-center">
-                    <h4 class="font-bold text-slate-800 text-base md:text-lg mb-2">3. Αποστολή</h4>
-                    <a href="mailto:synetelas2011@gmail.com" class="modal-send-email" data-track="email_click" data-label="eon_modal_send">
-                        <svg class="icon" data-icon="envelope-circle-check" aria-hidden="true"><use href="assets/icons/icons.svg?v=01d88846#icon-envelope-circle-check"></use></svg>
-                        <span>synetelas2011@gmail.com</span>
-                    </a>
-                </div>
+            <div class="nova-price-box">
+                <strong class="nova-price-amount" data-modal-offer-price>20,90€</strong>
+                <span class="nova-price-unit">τον μήνα</span>
+                <span class="nova-price-vat">Τελική τιμή με ΦΠΑ</span>
             </div>
         </div>
 
-         <div class="sticky bottom-0 bg-white/95 backdrop-blur-md pt-4 pb-4 border-t border-slate-200 mt-8 z-20">
-        <div class="text-center mb-4">
-            <p class="text-xs font-bold text-slate-500 uppercase tracking-wide">
-                <svg class="icon text-blue-500 animate-bounce mr-1" data-icon="circle-down" aria-hidden="true"><use href="assets/icons/icons.svg?v=01d88846#icon-circle-down"></use></svg>
-                Κατεβάστε την αίτηση:
-            </p>
-        </div>
+        <div class="nova-body">
+            <div class="nova-main">
 
-        <div class="modal-offer-docs" data-modal-offer-docs></div>
+                <section class="nova-section" aria-labelledby="eonFlowTitle">
+                    <h4 id="eonFlowTitle" class="nova-section-title">Πώς γίνεται</h4>
+
+                    <ol class="nova-steps">
+                        <li>
+                            <span class="nova-steps__num">1</span>
+                            <p>Κατεβάζετε την αίτηση και τη συμπληρώνετε πλήρως.</p>
+                        </li>
+                        <li>
+                            <span class="nova-steps__num">2</span>
+                            <p>Μαζεύετε ταυτότητα και απόδειξη της διεύθυνσης εγκατάστασης.</p>
+                        </li>
+                        <li>
+                            <span class="nova-steps__num">3</span>
+                            <p>Στέλνετε τα πάντα με ένα email στον Συνεταιρισμό.</p>
+                        </li>
+                    </ol>
+
+                    <div class="nova-alert">
+                        <svg class="icon" data-icon="signature" aria-hidden="true"><use href="assets/icons/icons.svg?v=5b542ef0#icon-signature"></use></svg>
+                        <p><strong>Η αίτηση υπογράφεται μόνο ψηφιακά, μέσω gov.gr.</strong> Χρειάζονται οι κωδικοί TaxisNet σας.</p>
                     </div>
+                </section>
+
+                <section class="nova-section" aria-labelledby="eonDocsTitle">
+                    <h4 id="eonDocsTitle" class="nova-section-title">Έντυπα αίτησης</h4>
+                    <div class="modal-offer-docs" data-modal-offer-docs></div>
+                </section>
+
+                <section class="nova-section" aria-labelledby="eonProofTitle">
+                    <h4 id="eonProofTitle" class="nova-section-title">Δικαιολογητικά</h4>
+
+                    <div class="nova-need">
+                        <svg class="icon" data-icon="id-card" aria-hidden="true"><use href="assets/icons/icons.svg?v=5b542ef0#icon-id-card"></use></svg>
+                        <p>Αστυνομική ταυτότητα, μπρος και πίσω, καθαρή και ευανάγνωστη.</p>
+                    </div>
+
+                    <p class="nova-question">Τι ισχύει στη διεύθυνση εγκατάστασης;</p>
+
+                    <div class="nova-cases">
+                        <div class="nova-case">
+                            <span class="nova-case__tag">Η διεύθυνση έχει αριθμό</span>
+                            <p class="nova-case__text">Στείλτε τον τελευταίο λογαριασμό σταθερής τηλεφωνίας ή ΔΕΚΟ, με πλήρη στοιχεία.</p>
+                        </div>
+
+                        <div class="nova-case nova-case--blocked">
+                            <span class="nova-case__tag">Περιοχή χωρίς αριθμό ή διεύθυνση</span>
+                            <p class="nova-case__text">Στείλτε συντεταγμένες GPS του σημείου εγκατάστασης και screenshot από Google Maps με pin.</p>
+                            <p class="nova-case__warning">
+                                <svg class="icon" data-icon="triangle-exclamation" aria-hidden="true"><use href="assets/icons/icons.svg?v=5b542ef0#icon-triangle-exclamation"></use></svg>
+                                Χωρίς σαφή ταυτοποίηση τοποθεσίας η αίτηση δεν προχωρά.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <aside class="nova-aside" aria-label="Σύνοψη προσφοράς">
+                <div class="nova-summary">
+                    <span class="nova-summary__label" data-modal-offer-title>EON + Cosmote TV</span>
+                    <strong class="nova-summary__price" data-modal-offer-price>20,90€</strong>
+                    <span class="nova-summary__vat">Τελική τιμή με ΦΠΑ, τον μήνα</span>
+
+                    <div class="nova-contact-actions">
+                        <a href="tel:2105245210" data-track="phone_click" data-label="eon_modal_office">
+                            <svg class="icon" data-icon="phone" aria-hidden="true"><use href="assets/icons/icons.svg?v=5b542ef0#icon-phone"></use></svg>
+                            <span>210&nbsp;524&nbsp;5210</span>
+                        </a>
+
+                        <a href="tel:6985177202" data-track="phone_click" data-label="eon_modal_mobile">
+                            <svg class="icon" data-icon="mobile-screen" aria-hidden="true"><use href="assets/icons/icons.svg?v=5b542ef0#icon-mobile-screen"></use></svg>
+                            <span>698&nbsp;517&nbsp;7202</span>
+                        </a>
+
+                        <a href="mailto:synetelas2011@gmail.com" class="modal-send-email" data-track="email_click" data-label="eon_modal_send">
+                            <svg class="icon" data-icon="envelope-circle-check" aria-hidden="true"><use href="assets/icons/icons.svg?v=5b542ef0#icon-envelope-circle-check"></use></svg>
+                            <span>Αποστολή δικαιολογητικών</span>
+                        </a>
+                    </div>
+                </div>
+            </aside>
+        </div>
     </div>
-    </div>
-    </div>
+</div>

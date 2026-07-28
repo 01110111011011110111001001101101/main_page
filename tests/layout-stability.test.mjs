@@ -86,11 +86,32 @@ test('οι εικόνες δεν είναι μεγαλύτερες από ό,τ�
   assert.match(hero, /sizes="\(max-width: 767px\) 64px/, 'το sizes δεν δηλώνει το πραγματικό πλάτος');
 });
 
-test('το preload του hero διαλέγει αρχείο ανά οθόνη', () => {
+/* Το preload πρέπει να διαλέγει ΜΕ ΤΟΝ ΙΔΙΟ τρόπο που διαλέγει το <img>. Με
+   media() κατέβαζε το 160w ενώ το img ζητούσε το 256w, και ο browser
+   προειδοποιούσε «preloaded but not used». */
+test('το preload του hero διαλέγει όπως ακριβώς το img', () => {
+  const html = readFileSync(path.join(root, 'index.html'), 'utf8');
+  const preload = html.match(/<link rel="preload" as="image"[\s\S]*?>/)[0];
+  const image = html.match(/<img[^>]*police-hero__logo[\s\S]*?>/)[0];
+
+  const strip = (value) => value.replace(/\?v=[a-f0-9]+/g, '').replace(/\s+/g, ' ').trim();
+  const attribute = (source, name) => strip(source.match(new RegExp(`${name}="([^"]*)"`))[1]);
+
+  assert.equal(attribute(preload, 'imagesrcset'), attribute(image, 'srcset'), 'διαφορετικά srcset');
+  assert.equal(attribute(preload, 'imagesizes'), attribute(image, 'sizes'), 'διαφορετικά sizes');
+  assert.doesNotMatch(preload, /\bmedia=/, 'το media αγνοεί το sizes και διαλέγει άλλο αρχείο');
+});
+
+/* Οι κάρτες προαποδίδονται στο HTML, οπότε το offers.json δεν χρειάζεται για το
+   πρώτο βάψιμο. Το preload as=fetch απαιτεί και ταίριασμα credentials με το
+   fetch(), που εδώ δεν γίνεται — καταγραφόταν ως αχρησιμοποίητο. */
+test('δεν προφορτώνεται τίποτα που δεν χρησιμοποιείται αμέσως', () => {
   const html = readFileSync(path.join(root, 'index.html'), 'utf8');
 
-  assert.match(html, /preload[^>]*hero-head-160\.webp[^>]*media="\(max-width: 767px\)"/, 'το κινητό δεν προφορτώνει το μικρό');
-  assert.match(html, /preload[^>]*hero-head\.webp[^>]*media="\(min-width: 768px\)"/, 'ο υπολογιστής δεν προφορτώνει το μεγάλο');
+  assert.doesNotMatch(html, /rel="preload"[^>]*offers\.json/, 'το offers.json δεν χρειάζεται preload πια');
+
+  const preloads = html.match(/<link rel="preload"[\s\S]*?>/g) || [];
+  assert.ok(preloads.length <= 3, `${preloads.length} preloads — κάθε ένα ανταγωνίζεται τα υπόλοιπα`);
 });
 
 /* Ο κανόνας για το μέγεθος του εμβλήματος έχανε σε specificity και το 64px δεν

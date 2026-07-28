@@ -1,8 +1,8 @@
 <div id="vodafoneFixedModal" class="hidden fixed inset-0 z-[110] modal-backdrop flex items-center justify-center p-4">
-      <div class="vodafone-fixed-modal bg-white w-full max-w-5xl rounded-3xl shadow-2xl overflow-hidden animate-[fadeIn_0.3s_ease-out] relative max-h-[90vh] overflow-y-auto custom-scroll">
+      <div class="vodafone-fixed-modal bg-white w-full max-w-5xl rounded-3xl shadow-2xl overflow-hidden relative max-h-[90vh] overflow-y-auto custom-scroll">
         <div class="vodafone-sticky-header">
           <div class="vodafone-sticky-badge">
-            <svg class="icon" data-icon="wifi" aria-hidden="true"><use href="assets/icons/icons.svg?v=01d88846#icon-wifi"></use></svg>
+            <svg class="icon" data-icon="wifi" aria-hidden="true"><use href="assets/icons/icons.svg?v=5b542ef0#icon-wifi"></use></svg>
             <span>Αποκλειστική Προσφορά Vodafone</span>
           </div>
 
@@ -14,136 +14,140 @@
             ✕
           </button>
         </div>
+
         <div class="vodafone-fixed-hero">
-          <div class="vodafone-fixed-hero-glow vodafone-fixed-hero-glow-one"></div>
-          <div class="vodafone-fixed-hero-glow vodafone-fixed-hero-glow-two"></div>
+          <div class="vodafone-hero-copy">
+            <h3>Σταθερή Τηλεφωνία &amp; Internet</h3>
+            <p>
+              Προγράμματα ADSL/FTTC και FTTH (οπτική ίνα μέχρι το σπίτι), με δωρεάν router,
+              εγκατάσταση και ενεργοποίηση.
+            </p>
+          </div>
 
-          <div class="relative z-10 grid gap-6 md:grid-cols-[1.25fr_0.75fr] items-center">
-            <div>
-
-
-              <h3 class="text-white font-black text-3xl md:text-5xl leading-[0.95] tracking-tight">
-                Σταθερή Τηλεφωνία<br>
-                <span class="text-red-100">&amp; Internet</span>
-              </h3>
-
-              <p class="text-red-100 text-sm md:text-base mt-4 max-w-xl leading-relaxed font-semibold">
-                Προγράμματα ADSL/FTTC και FTTH (οπτική ίνα μέχρι το σπίτι), με δωρεάν router,
-                εγκατάσταση και ενεργοποίηση.
-              </p>
-            </div>
-
-            <div class="vodafone-fixed-price-box">
-              <span class="text-xs font-black uppercase tracking-[0.25em] text-red-100">από</span>
-              <div class="text-6xl font-black text-white leading-none mt-1">16,00€</div>
-              <div class="text-sm font-bold text-red-100 mt-2">με ΦΠΑ / μήνα</div>
-              <div class="mt-4 inline-flex rounded-full bg-white/15 border border-white/20 px-4 py-2 text-xs font-black text-white">
-                2 μήνες δωρεάν στα FTTH πακέτα
-              </div>
-            </div>
+          <div class="vodafone-fixed-price-box">
+            <span class="vodafone-price-prefix">από</span>
+            <strong class="vodafone-price-amount">16,00€</strong>
+            <span class="vodafone-price-unit">τον μήνα</span>
+            <span class="vodafone-price-vat">Τελική τιμή με ΦΠΑ</span>
           </div>
         </div>
 
-        <div class="p-6 md:p-8 space-y-7 bg-slate-50">
+        <!-- Στον υπολογιστή το περιεχόμενο κυλά αριστερά και η σύνοψη μένει
+             κολλημένη δεξιά. Στο κινητό γίνεται μία στήλη. -->
+        <div class="vodafone-fixed-body">
+          <div class="vodafone-fixed-main">
 
-          <div class="grid gap-4 md:grid-cols-3">
-            <article class="vodafone-plan-card">
-              <div class="vodafone-plan-top">
-                <span>Πακέτο</span>
-                <strong>ADSL / FTTC</strong>
+            <!--
+              ΚΛΙΜΑΚΑ ΤΑΧΥΤΗΤΑΣ
+
+              Πριν, τα τρία πακέτα ήταν ισότιμες κάρτες και η διαφορά τους έπρεπε
+              να υπολογιστεί από τον χρήστη. Το ADSL κοστίζει όσο και το FTTH 100
+              με το ένα τέταρτο της ταχύτητας. Οι μπάρες είναι ανάλογες των Mbps,
+              οπότε η διαφορά φαίνεται αντί να διαβάζεται.
+            -->
+            <section class="vodafone-section" aria-labelledby="vodafonePlansTitle">
+              <h4 id="vodafonePlansTitle" class="vodafone-section-title">Πακέτα και ταχύτητες</h4>
+
+              <ul class="vodafone-speed-list">
+                <li class="vodafone-speed vodafone-speed--muted">
+                  <div class="vodafone-speed__head">
+                    <span class="vodafone-speed__name">ADSL / FTTC</span>
+                    <span class="vodafone-speed__price">16,00€</span>
+                  </div>
+                  <div class="vodafone-speed__track"><span style="width:8%"></span></div>
+                  <p class="vodafone-speed__note">έως 24 Mbps · μόνο αν δεν υπάρχει οπτική ίνα στη διεύθυνση</p>
+                </li>
+
+                <li class="vodafone-speed vodafone-speed--best">
+                  <span class="vodafone-speed__flag">Καλύτερη αξία</span>
+                  <div class="vodafone-speed__head">
+                    <span class="vodafone-speed__name">FTTH 100 Mbps</span>
+                    <span class="vodafone-speed__price">16,00€</span>
+                  </div>
+                  <div class="vodafone-speed__track"><span style="width:33%"></span></div>
+                  <p class="vodafone-speed__note">έως 100 Mbps · ίδια τιμή με το ADSL, 2 μήνες δωρεάν</p>
+                </li>
+
+                <li class="vodafone-speed">
+                  <div class="vodafone-speed__head">
+                    <span class="vodafone-speed__name">FTTH 300 Mbps</span>
+                    <span class="vodafone-speed__price">18,00€</span>
+                  </div>
+                  <div class="vodafone-speed__track"><span style="width:100%"></span></div>
+                  <p class="vodafone-speed__note">έως 300 Mbps · 2 μήνες δωρεάν</p>
+                </li>
+              </ul>
+
+              <p class="vodafone-section-foot">Όλες οι τιμές είναι τελικές, με ΦΠΑ, ανά μήνα.</p>
+            </section>
+
+            <section class="vodafone-section" aria-labelledby="vodafoneBenefitsTitle">
+              <h4 id="vodafoneBenefitsTitle" class="vodafone-section-title">Τι περιλαμβάνεται</h4>
+
+              <div class="vodafone-benefits-grid">
+                <div class="vodafone-benefit">
+                  <svg class="icon" data-icon="phone-flip" aria-hidden="true"><use href="assets/icons/icons.svg?v=5b542ef0#icon-phone-flip"></use></svg>
+                  <div>
+                    <strong>Κλήσεις</strong>
+                    <span>Απεριόριστες κλήσεις σε σταθερά &amp; 300 λεπτά προς κινητά.</span>
+                  </div>
+                </div>
+
+                <div class="vodafone-benefit">
+                  <svg class="icon" data-icon="screwdriver-wrench" aria-hidden="true"><use href="assets/icons/icons.svg?v=5b542ef0#icon-screwdriver-wrench"></use></svg>
+                  <div>
+                    <strong>Εγκατάσταση</strong>
+                    <span>Δωρεάν εγκατάσταση και ενεργοποίηση.</span>
+                  </div>
+                </div>
+
+                <div class="vodafone-benefit">
+                  <svg class="icon" data-icon="wifi" aria-hidden="true"><use href="assets/icons/icons.svg?v=5b542ef0#icon-wifi"></use></svg>
+                  <div>
+                    <strong>Router Wi-Fi</strong>
+                    <span>Δωρεάν router Wi-Fi για τη σύνδεσή σας.</span>
+                  </div>
+                </div>
               </div>
-              <h4>Σταθερή + Internet</h4>
-              <p>έως 24 Mbps</p>
-              <div class="vodafone-plan-price">16,00€</div>
-              <div class="vodafone-plan-note">με ΦΠΑ / μήνα</div>
-            </article>
+            </section>
 
-            <article class="vodafone-plan-card vodafone-plan-featured">
-              <div class="vodafone-plan-ribbon">2 μήνες δωρεάν</div>
-              <div class="vodafone-plan-top">
-                <span>Πακέτο</span>
-                <strong>FTTH 100 Mbps</strong>
+            <!-- Τα τρία δικαιολογητικά ως ακολουθία με συνεχή γραμμή, όπως η
+                 ενότητα «Πώς γίνεται η διαδικασία» της αρχικής. -->
+            <section class="vodafone-section" aria-labelledby="vodafoneDocsTitle">
+              <h4 id="vodafoneDocsTitle" class="vodafone-section-title">Απαραίτητα δικαιολογητικά</h4>
+
+              <ol class="vodafone-steps">
+                <li>
+                  <span class="vodafone-steps__num">1</span>
+                  <p>Πρόσφατος λογαριασμός σταθερής από τον τρέχοντα πάροχο, τελευταίων 3 μηνών, όλες οι σελίδες.</p>
+                </li>
+                <li>
+                  <span class="vodafone-steps__num">2</span>
+                  <p>Φωτογραφία αστυνομικής ταυτότητας, μπρος και πίσω, καθαρή και ευανάγνωστη.</p>
+                </li>
+                <li>
+                  <span class="vodafone-steps__num">3</span>
+                  <p>Υπεύθυνη Δήλωση εξουσιοδότησης, συμπληρωμένη όπως παρακάτω.</p>
+                </li>
+              </ol>
+            </section>
+
+            <!-- Η δήλωση σαν έντυπο: μονόχωρη γραμματοσειρά και υπογραμμίσεις
+                 στη θέση των τελειών, ώστε να φαίνεται ότι συμπληρώνεται. -->
+            <section class="vodafone-section" aria-labelledby="vodafoneDeclarationTitle">
+              <h4 id="vodafoneDeclarationTitle" class="vodafone-section-title">Κείμενο Υπεύθυνης Δήλωσης</h4>
+
+              <div class="vodafone-declaration-box">
+                <span class="vodafone-declaration-tag">Προς συμπλήρωση</span>
+
+                <p class="vodafone-declaration-text">
+                  Εξουσιοδοτώ την <strong>South Attica</strong> όπως προβεί σε όλες τις απαραίτητες ενέργειες
+                  αντί εμού για την ενεργοποίηση της σταθερής μου γραμμής με αριθμό τηλεφώνου
+                  <u class="vodafone-blank" aria-label="κενό προς συμπλήρωση">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+                  στη Vodafone, στην προσφορά
+                  <u class="vodafone-blank" aria-label="κενό προς συμπλήρωση">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+                </p>
               </div>
-              <h4>Σταθερή + Internet</h4>
-              <p>έως 100 Mbps</p>
-              <div class="vodafone-plan-price">16,00€</div>
-              <div class="vodafone-plan-note">με ΦΠΑ / μήνα</div>
-            </article>
-
-            <article class="vodafone-plan-card vodafone-plan-featured">
-              <div class="vodafone-plan-ribbon">2 μήνες δωρεάν</div>
-              <div class="vodafone-plan-top">
-                <span>Πακέτο</span>
-                <strong>FTTH 300 Mbps</strong>
-              </div>
-              <h4>Σταθερή + Internet</h4>
-              <p>έως 300 Mbps</p>
-              <div class="vodafone-plan-price">18,00€</div>
-              <div class="vodafone-plan-note">με ΦΠΑ / μήνα</div>
-            </article>
-          </div>
-
-          <div class="vodafone-benefits-grid">
-            <div class="vodafone-benefit">
-              <svg class="icon" data-icon="phone-flip" aria-hidden="true"><use href="assets/icons/icons.svg?v=01d88846#icon-phone-flip"></use></svg>
-              <div>
-                <strong>Κλήσεις</strong>
-                <span>Απεριόριστες κλήσεις σε σταθερά &amp; 300 λεπτά προς κινητά.</span>
-              </div>
-            </div>
-
-            <div class="vodafone-benefit">
-              <svg class="icon" data-icon="screwdriver-wrench" aria-hidden="true"><use href="assets/icons/icons.svg?v=01d88846#icon-screwdriver-wrench"></use></svg>
-              <div>
-                <strong>Εγκατάσταση</strong>
-                <span>Δωρεάν εγκατάσταση και ενεργοποίηση.</span>
-              </div>
-            </div>
-
-            <div class="vodafone-benefit">
-              <svg class="icon" data-icon="wifi" aria-hidden="true"><use href="assets/icons/icons.svg?v=01d88846#icon-wifi"></use></svg>
-              <div>
-                <strong>Router Wi-Fi</strong>
-                <span>Δωρεάν router Wi-Fi για τη σύνδεσή σας.</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="vodafone-docs-box">
-            <div class="vodafone-docs-title">
-              <svg class="icon" data-icon="file-signature" aria-hidden="true"><use href="assets/icons/icons.svg?v=01d88846#icon-file-signature"></use></svg>
-              <span>Απαραίτητα δικαιολογητικά</span>
-            </div>
-
-            <div class="grid gap-3 md:grid-cols-3 mt-4">
-              <div class="vodafone-doc-item">
-                <span>1</span>
-                <p>Πρόσφατος λογαριασμός σταθερής από τον τρέχοντα πάροχο, τελευταίων 3 μηνών, όλες οι σελίδες.</p>
-              </div>
-
-              <div class="vodafone-doc-item">
-                <span>2</span>
-                <p>Φωτογραφία αστυνομικής ταυτότητας, μπρος και πίσω, καθαρή και ευανάγνωστη.</p>
-              </div>
-
-              <div class="vodafone-doc-item">
-                <span>3</span>
-                <p>Υπεύθυνη Δήλωση εξουσιοδότησης. Στο πεδίο <strong>«Προς»</strong> γράφεις <strong>South Attica</strong>.</p>
-              </div>
-            </div>
-
-            <div class="vodafone-declaration-box">
-              <!-- Τα κουμπιά ήταν φωλιασμένα ΜΕΣΑ στον τίτλο και εμφανίζονταν
-                   πριν από το κείμενο που κατεβάζουν και αντιγράφουν. Τώρα ο
-                   τίτλος είναι τίτλος, ακολουθεί το κείμενο, και οι ενέργειες
-                   έρχονται τελευταίες. -->
-              <p class="vodafone-declaration-title">Κείμενο Υπεύθυνης Δήλωσης</p>
-
-              <p>
-                «Εξουσιοδοτώ την <strong>South Attica</strong> όπως προβεί σε όλες τις απαραίτητες ενέργειες
-                αντί εμού για την ενεργοποίηση της σταθερής μου γραμμής με αριθμό τηλεφώνου
-                ................................ στη Vodafone, στην προσφορά ................................»
-              </p>
 
               <div class="vodafone-declaration-actions">
                 <a
@@ -151,43 +155,50 @@
                   download
                   data-track="pdf_download"
                   data-label="ypefthini-dilosi-vodafone-statheri.pdf">
-                  <svg class="icon" data-icon="file-arrow-down" aria-hidden="true"><use href="assets/icons/icons.svg?v=01d88846#icon-file-arrow-down"></use></svg>
-                  <span>Κατέβασε Υπεύθυνη Δήλωση</span>
+                  <svg class="icon" data-icon="file-arrow-down" aria-hidden="true"><use href="assets/icons/icons.svg?v=5b542ef0#icon-file-arrow-down"></use></svg>
+                  <span>Κατέβασε το έντυπο</span>
                 </a>
 
                 <button
                   type="button"
                   data-copy-text="Εξουσιοδοτώ την South Attica όπως προβεί σε όλες τις απαραίτητες ενέργειες αντί εμού για την ενεργοποίηση της σταθερής μου γραμμής με αριθμό τηλεφώνου ................................ στη Vodafone, στην προσφορά ................................">
-                  <svg class="icon" data-icon="copy" aria-hidden="true"><use href="assets/icons/icons.svg?v=01d88846#icon-copy"></use></svg>
+                  <svg class="icon" data-icon="copy" aria-hidden="true"><use href="assets/icons/icons.svg?v=5b542ef0#icon-copy"></use></svg>
                   <span>Αντιγραφή κειμένου</span>
                   <span class="copy-msg opacity-0">Αντιγράφηκε!</span>
                 </button>
               </div>
 
               <div class="vodafone-declaration-note">
-                <svg class="icon" data-icon="circle-info" aria-hidden="true"><use href="assets/icons/icons.svg?v=01d88846#icon-circle-info"></use></svg>
+                <svg class="icon" data-icon="circle-info" aria-hidden="true"><use href="assets/icons/icons.svg?v=5b542ef0#icon-circle-info"></use></svg>
                 Η Υπεύθυνη Δήλωση μπορεί να γίνει ηλεκτρονικά μέσω gov.gr ή με γνήσιο υπογραφής μέσω ΚΕΠ.
               </div>
+            </section>
+          </div>
+
+          <aside class="vodafone-fixed-aside" aria-label="Σύνοψη προσφοράς">
+            <div class="vodafone-summary">
+              <span class="vodafone-summary__label">Vodafone Σταθερή &amp; Internet</span>
+              <strong class="vodafone-summary__price">16,00€</strong>
+              <span class="vodafone-summary__vat">Τελική τιμή με ΦΠΑ, τον μήνα</span>
+
+              <div class="vodafone-contact-actions">
+                <a href="tel:2105245210" data-track="phone_click" data-label="vodafone_modal_office">
+                  <svg class="icon" data-icon="phone" aria-hidden="true"><use href="assets/icons/icons.svg?v=5b542ef0#icon-phone"></use></svg>
+                  <span>210&nbsp;524&nbsp;5210</span>
+                </a>
+
+                <a href="tel:6985177202" data-track="phone_click" data-label="vodafone_modal_mobile">
+                  <svg class="icon" data-icon="mobile-screen" aria-hidden="true"><use href="assets/icons/icons.svg?v=5b542ef0#icon-mobile-screen"></use></svg>
+                  <span>698&nbsp;517&nbsp;7202</span>
+                </a>
+
+                <a href="mailto:synetelas2011@gmail.com" class="modal-send-email" data-track="email_click" data-label="vodafone_modal_send">
+                  <svg class="icon" data-icon="envelope-circle-check" aria-hidden="true"><use href="assets/icons/icons.svg?v=5b542ef0#icon-envelope-circle-check"></use></svg>
+                  <span>Αποστολή δικαιολογητικών</span>
+                </a>
+              </div>
             </div>
-          </div>
-
-          <div class="vodafone-contact-actions">
-            <a href="tel:2105245210">
-              <svg class="icon" data-icon="phone" aria-hidden="true"><use href="assets/icons/icons.svg?v=01d88846#icon-phone"></use></svg>
-              <span>210&nbsp;524&nbsp;5210</span>
-            </a>
-
-            <a href="tel:6985177202">
-              <svg class="icon" data-icon="mobile-screen" aria-hidden="true"><use href="assets/icons/icons.svg?v=01d88846#icon-mobile-screen"></use></svg>
-              <span>6985177202</span>
-            </a>
-
-            <a href="mailto:synetelas2011@gmail.com">
-              <svg class="icon" data-icon="envelope" aria-hidden="true"><use href="assets/icons/icons.svg?v=01d88846#icon-envelope"></use></svg>
-              <span>Αποστολή email</span>
-            </a>
-          </div>
-
+          </aside>
         </div>
       </div>
     </div>

@@ -1007,28 +1007,8 @@ summary:focus-visible,
     pointer-events: none;
 }
 
-.vodafone-fixed-hero-glow {
-    position: absolute;
-    border-radius: 9999px;
-    filter: blur(70px);
-    pointer-events: none;
-}
 
-.vodafone-fixed-hero-glow-one {
-    width: 16rem;
-    height: 16rem;
-    right: -5rem;
-    top: -5rem;
-    background: rgba(255,255,255,0.20);
-}
 
-.vodafone-fixed-hero-glow-two {
-    width: 18rem;
-    height: 18rem;
-    left: -6rem;
-    bottom: -8rem;
-    background: rgba(15,23,42,0.45);
-}
 
 .vodafone-fixed-price-box {
     border-radius: 2rem;
@@ -1040,87 +1020,15 @@ summary:focus-visible,
     text-align: center;
 }
 
-.vodafone-plan-card {
-    position: relative;
-    overflow: hidden;
-    border-radius: 1.75rem;
-    padding: 1.25rem;
-    background: #ffffff;
-    border: 1px solid rgba(226, 232, 240, 1);
-    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
-    text-align: center;
-}
 
-.vodafone-plan-card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    height: 5px;
-    background: linear-gradient(90deg, #dc2626, #991b1b);
-}
 
-.vodafone-plan-featured {
-    border-color: rgba(220, 38, 38, 0.28);
-    box-shadow: 0 24px 55px rgba(220, 38, 38, 0.12);
-}
 
-.vodafone-plan-ribbon {
-    display: inline-flex;
-    margin-bottom: 0.8rem;
-    border-radius: 9999px;
-    padding: 0.35rem 0.7rem;
-    background: #dc2626;
-    color: #ffffff;
-    font-size: 0.68rem;
-    font-weight: 950;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-}
 
-.vodafone-plan-top span {
-    display: block;
-    color: #991b1b;
-    font-size: 0.68rem;
-    font-weight: 950;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-}
 
-.vodafone-plan-top strong {
-    display: block;
-    color: #0f172a;
-    font-size: 0.98rem;
-    font-weight: 950;
-    margin-top: 0.25rem;
-}
 
-.vodafone-plan-card h4 {
-    margin-top: 0.9rem;
-    font-weight: 950;
-    color: #111827;
-}
 
-.vodafone-plan-card p {
-    margin-top: 0.2rem;
-    color: #64748b;
-    font-size: 0.9rem;
-}
 
-.vodafone-plan-price {
-    margin-top: 1rem;
-    color: #dc2626;
-    font-size: 2.6rem;
-    line-height: 1;
-    font-weight: 950;
-    letter-spacing: -0.05em;
-}
 
-.vodafone-plan-note {
-    margin-top: 0.35rem;
-    color: #64748b;
-    font-size: 0.75rem;
-    font-weight: 800;
-}
 
 .vodafone-benefits-grid {
     display: grid;
@@ -1169,52 +1077,11 @@ summary:focus-visible,
     margin-top: 0.2rem;
 }
 
-.vodafone-docs-box {
-    border-radius: 2rem;
-    border: 1px solid #fed7aa;
-    background: linear-gradient(135deg, #fffbeb, #ffffff);
-    padding: 1.25rem;
-}
 
-.vodafone-docs-title {
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-    color: #7c2d12;
-    font-weight: 950;
-    font-size: 1.05rem;
-}
 
-.vodafone-docs-title .icon {
-    color: #dc2626;
-}
 
-.vodafone-doc-item {
-    border-radius: 1.25rem;
-    background: rgba(255,255,255,0.82);
-    border: 1px solid rgba(251, 191, 36, 0.28);
-    padding: 1rem;
-}
 
-.vodafone-doc-item span {
-    display: inline-flex;
-    width: 1.75rem;
-    height: 1.75rem;
-    align-items: center;
-    justify-content: center;
-    border-radius: 9999px;
-    background: #dc2626;
-    color: white;
-    font-weight: 950;
-    margin-bottom: 0.55rem;
-}
 
-.vodafone-doc-item p {
-    color: #475569;
-    font-size: 0.86rem;
-    line-height: 1.5;
-    font-weight: 650;
-}
 
 .vodafone-declaration-box {
     margin-top: 1rem;
@@ -1290,9 +1157,6 @@ summary:focus-visible,
         padding: 1.15rem;
     }
 
-    .vodafone-plan-price {
-        font-size: 2.25rem;
-    }
 }
 
 /* --- VODAFONE MODAL STICKY HEADER --- */
@@ -1393,10 +1257,10 @@ summary:focus-visible,
     justify-content: space-between;
     gap: 1rem;
     padding: 0.85rem 1rem;
-    background: linear-gradient(135deg, rgba(0, 87, 255, 0.96), rgba(249, 115, 22, 0.94));
-    border-bottom: 1px solid rgba(255, 255, 255, 0.20);
-    backdrop-filter: blur(16px);
-    box-shadow: 0 14px 35px rgba(15, 23, 42, 0.22);
+    /* Βαθύ teal, ίδιο με τις κάρτες. Το παλιό μπλε-πορτοκαλί gradient ανήκε
+       σε άλλη γλώσσα σχεδίασης. */
+    background: #0b3a45;
+    border-bottom: 1px solid rgba(167, 213, 222, 0.25);
     flex-shrink: 0;
 }
 
@@ -7422,9 +7286,6 @@ body.hero-intro-ready .site-main {
     padding: 1.05rem 0.9rem !important;
   }
 
-  #vodafoneFixedModal .vodafone-fixed-hero-glow {
-    display: none !important;
-  }
 
   #vodafoneFixedModal .relative.z-10.grid {
     display: grid !important;
@@ -7471,36 +7332,14 @@ body.hero-intro-ready .site-main {
     grid-template-columns: minmax(0, 1fr) !important;
   }
 
-  #vodafoneFixedModal .vodafone-plan-card,
-  #vodafoneFixedModal .vodafone-benefit,
-  #vodafoneFixedModal .vodafone-docs-box,
-  #vodafoneFixedModal .vodafone-doc-item,
-  #vodafoneFixedModal .vodafone-declaration-box,
-  #vodafoneFixedModal .vodafone-contact-actions a {
-    width: 100% !important;
-    max-width: 100% !important;
-  }
 
   #vodafoneFixedModal .vodafone-benefit {
     gap: 0.75rem !important;
     padding: 0.85rem !important;
   }
 
-  #vodafoneFixedModal .vodafone-docs-box,
-  #vodafoneFixedModal .vodafone-declaration-box {
-    border-radius: 1.25rem !important;
-    padding: 0.85rem !important;
-  }
 
   #vodafoneFixedModal .vodafone-declaration-box p,
-  #vodafoneFixedModal .vodafone-doc-item p,
-  #vodafoneFixedModal .vodafone-benefit span,
-  #vodafoneFixedModal [data-copy-text],
-  #vodafoneFixedModal a,
-  #vodafoneFixedModal button {
-    overflow-wrap: anywhere;
-    word-break: normal;
-  }
 
   #vodafoneFixedModal [data-copy-text],
   #vodafoneFixedModal .vodafone-declaration-box a {
@@ -10465,111 +10304,22 @@ body.hero-intro-ready .police-hero .police-hero__logo {
    έγχρωμη ετικέτα στην κορυφή.
    ========================================================= */
 @media (max-width: 767px) {
-  #vodafoneFixedModal .vodafone-plan-card {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) auto !important;
-    grid-template-areas:
-      "tag   tag"
-      "name  price"
-      "speed price" !important;
-    align-items: center;
-    gap: 0.15rem 0.75rem !important;
-    padding: 0.9rem 0.95rem !important;
-    border-radius: 1rem !important;
-    text-align: left !important;
-    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.07) !important;
-  }
 
-  #vodafoneFixedModal .vodafone-plan-card::before {
-    height: 3px;
-  }
 
   /* Η ετικέτα του πακέτου είναι η μόνη πραγματική διαφορά — μπροστά. */
-  #vodafoneFixedModal .vodafone-plan-top {
-    grid-area: tag;
-    display: flex !important;
-    align-items: baseline;
-    gap: 0.45rem;
-    margin-bottom: 0.35rem;
-  }
 
-  #vodafoneFixedModal .vodafone-plan-top span {
-    display: inline !important;
-    font-size: 0.6rem !important;
-    letter-spacing: 0.12em !important;
-  }
 
-  #vodafoneFixedModal .vodafone-plan-top strong {
-    display: inline-block !important;
-    margin-top: 0 !important;
-    padding: 0.18rem 0.5rem;
-    border-radius: 999px;
-    background: #fee2e2;
-    color: #991b1b !important;
-    font-size: 0.78rem !important;
-  }
 
-  #vodafoneFixedModal .vodafone-plan-card h4 {
-    grid-area: name;
-    margin-top: 0 !important;
-    font-size: 0.95rem !important;
-  }
 
-  #vodafoneFixedModal .vodafone-plan-card p {
-    grid-area: speed;
-    margin-top: 0 !important;
-    font-size: 0.82rem !important;
-  }
 
-  #vodafoneFixedModal .vodafone-plan-price {
-    grid-area: price;
-    align-self: center;
-    margin-top: 0 !important;
-    font-size: 1.7rem !important;
-    text-align: right;
-  }
 
-  #vodafoneFixedModal .vodafone-plan-note {
-    display: none !important;
-  }
 
   /* Η κορδέλα γίνεται μικρό σήμα πάνω δεξιά αντί για μπλοκ. */
-  #vodafoneFixedModal .vodafone-plan-ribbon {
-    position: absolute;
-    top: 0.55rem;
-    right: 0.6rem;
-    margin: 0 !important;
-    padding: 0.2rem 0.45rem !important;
-    font-size: 0.58rem !important;
-    letter-spacing: 0.04em !important;
-  }
 
   /* --- Δικαιολογητικά: αριθμός δίπλα στο κείμενο, όχι από πάνω. --- */
-  #vodafoneFixedModal .vodafone-doc-item {
-    display: grid !important;
-    grid-template-columns: auto minmax(0, 1fr) !important;
-    align-items: start;
-    gap: 0.65rem !important;
-    padding: 0.8rem !important;
-    border-radius: 0.9rem !important;
-    background: #ffffff !important;
-  }
 
-  #vodafoneFixedModal .vodafone-doc-item span {
-    margin-bottom: 0 !important;
-    width: 1.6rem !important;
-    height: 1.6rem !important;
-    font-size: 0.82rem;
-  }
 
-  #vodafoneFixedModal .vodafone-doc-item p {
-    font-size: 0.86rem !important;
-    line-height: 1.45 !important;
-  }
 
-  #vodafoneFixedModal .vodafone-docs-title {
-    font-size: 0.95rem;
-  }
 
   /* Τα δύο κουμπιά της Υπεύθυνης Δήλωσης το ένα κάτω από το άλλο. */
   #vodafoneFixedModal .vodafone-declaration-box .flex {
@@ -11416,9 +11166,6 @@ body.hero-intro-ready .police-hero .police-hero__logo {
 }
 
 #vodafoneFixedModal .vodafone-fixed-hero::after,
-#vodafoneFixedModal .vodafone-fixed-hero-glow {
-  display: none !important;
-}
 
 #vodafoneFixedModal .vodafone-sticky-header {
   background: #0b3a45 !important;
@@ -11446,41 +11193,17 @@ body.hero-intro-ready .police-hero .police-hero__logo {
   color: #a7d5de !important;
 }
 
-#vodafoneFixedModal .vodafone-plan-card::before {
-  background: #0e7490 !important;
-}
 
-#vodafoneFixedModal .vodafone-plan-price {
-  color: #0b3a45 !important;
-}
 
-#vodafoneFixedModal .vodafone-plan-featured {
-  border-color: rgba(14, 116, 144, 0.35) !important;
-  box-shadow: 0 18px 40px rgba(11, 58, 69, 0.12) !important;
-}
 
-#vodafoneFixedModal .vodafone-plan-ribbon {
-  background: #0e7490 !important;
-  color: #ffffff !important;
-}
 
 #vodafoneFixedModal .vodafone-benefit .icon {
   background: #e1f5ee !important;
   color: #0e7490 !important;
 }
 
-#vodafoneFixedModal .vodafone-docs-box,
-#vodafoneFixedModal .vodafone-declaration-box {
-  border-color: #cfe0e5 !important;
-}
 
 /* Ο τίτλος, το κείμενο και οι ενέργειες της Υπεύθυνης Δήλωσης, με σειρά. */
-.vodafone-declaration-title {
-  margin: 0 0 0.5rem;
-  color: #0b3a45;
-  font-size: 0.88rem;
-  font-weight: 900;
-}
 
 .vodafone-declaration-actions {
   display: grid;
@@ -11645,4 +11368,791 @@ body.hero-intro-ready .police-hero .police-hero__logo {
 .premium-menu-brand img {
   aspect-ratio: 1 / 1;
   object-fit: contain;
+}
+
+/* =========================================================
+   MODAL VODAFONE ΣΤΑΘΕΡΗ & INTERNET — ΝΕΑ ΣΧΕΔΙΑΣΗ
+
+   Τέσσερις αλλαγές, όλες με περιεχόμενο που ήδη υπήρχε:
+   1. Τα πακέτα γίνονται κλίμακα ταχύτητας — οι μπάρες είναι ανάλογες των Mbps,
+      οπότε φαίνεται ότι το ADSL κοστίζει όσο το FTTH 100 με το ένα τέταρτο της
+      ταχύτητας. Πριν ήταν τρεις ισότιμες κάρτες.
+   2. Τα δικαιολογητικά γίνονται ακολουθία με συνεχή γραμμή.
+   3. Η Υπεύθυνη Δήλωση γίνεται έντυπο: μονόχωρη γραφή και υπογραμμίσεις στη
+      θέση των τελειών, ώστε να φαίνεται ότι συμπληρώνεται.
+   4. Στον υπολογιστή δύο στήλες, με τη σύνοψη κολλημένη δεξιά.
+   ========================================================= */
+#vodafoneFixedModal .vodafone-fixed-hero {
+  display: grid;
+  gap: 1rem;
+  padding: 1.2rem 1.1rem;
+  background: #0b3a45 !important;
+}
+
+#vodafoneFixedModal .vodafone-hero-copy h3 {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(1.35rem, 5vw, 1.9rem);
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+#vodafoneFixedModal .vodafone-hero-copy p {
+  margin: 0.55rem 0 0;
+  color: #a7d5de;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+#vodafoneFixedModal .vodafone-fixed-price-box {
+  display: grid;
+  justify-items: start;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(167, 213, 222, 0.3) !important;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.07) !important;
+}
+
+#vodafoneFixedModal .vodafone-price-prefix {
+  color: #a7d5de;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+#vodafoneFixedModal .vodafone-price-amount {
+  color: #d6a23a;
+  font-size: 2.2rem;
+  font-weight: 900;
+  line-height: 1.05;
+}
+
+#vodafoneFixedModal .vodafone-price-unit {
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+/* Ζητήθηκε ρητά: η τιμή δηλώνει ότι είναι τελική, με ΦΠΑ. */
+#vodafoneFixedModal .vodafone-price-vat,
+#vodafoneFixedModal .vodafone-summary__vat {
+  margin-top: 0.3rem;
+  color: #a7d5de;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+#vodafoneFixedModal .vodafone-fixed-body {
+  display: grid;
+  gap: 1.1rem;
+  padding: 1.1rem;
+  background: #f6f9fb;
+}
+
+#vodafoneFixedModal .vodafone-section {
+  padding: 1rem 1.1rem;
+  border: 1px solid #e2ecf0;
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+#vodafoneFixedModal .vodafone-section + .vodafone-section {
+  margin-top: 0.9rem;
+}
+
+/* Η στήλη που κυλά. Χωρίς min-width: 0 μια μακριά λέξη μέσα στη δήλωση
+   φουσκώνει τη στήλη και σπρώχνει τη σύνοψη εκτός πλάτους. */
+#vodafoneFixedModal .vodafone-fixed-main {
+  min-width: 0;
+}
+
+#vodafoneFixedModal .vodafone-section-title {
+  margin: 0 0 0.85rem;
+  color: #58708f;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+#vodafoneFixedModal .vodafone-section-foot {
+  margin: 0.85rem 0 0;
+  color: #58708f;
+  font-size: 0.78rem;
+}
+
+/* --- Κλίμακα ταχύτητας ------------------------------------------------- */
+#vodafoneFixedModal .vodafone-speed-list {
+  display: grid;
+  gap: 0.85rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#vodafoneFixedModal .vodafone-speed {
+  position: relative;
+}
+
+#vodafoneFixedModal .vodafone-speed--muted {
+  opacity: 0.62;
+}
+
+#vodafoneFixedModal .vodafone-speed--best {
+  padding: 0.75rem 0.85rem;
+  border: 2px solid #0e7490;
+  border-radius: 14px;
+}
+
+#vodafoneFixedModal .vodafone-speed__flag {
+  display: inline-block;
+  margin-bottom: 0.45rem;
+  padding: 0.18rem 0.55rem;
+  border-radius: 999px;
+  background: #0b3a45;
+  color: #d6a23a;
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+#vodafoneFixedModal .vodafone-speed__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.4rem;
+}
+
+#vodafoneFixedModal .vodafone-speed__name {
+  color: #10233f;
+  font-size: 0.95rem;
+  font-weight: 900;
+}
+
+#vodafoneFixedModal .vodafone-speed__price {
+  color: #0b3a45;
+  font-size: 1.25rem;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Το μήκος της μπάρας είναι ανάλογο των Mbps: 24 / 100 / 300. */
+#vodafoneFixedModal .vodafone-speed__track {
+  overflow: hidden;
+  height: 10px;
+  border-radius: 999px;
+  background: #e6eef2;
+}
+
+#vodafoneFixedModal .vodafone-speed__track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #0e7490;
+}
+
+#vodafoneFixedModal .vodafone-speed--muted .vodafone-speed__track span {
+  background: #94a3b8;
+}
+
+#vodafoneFixedModal .vodafone-speed:last-child .vodafone-speed__track span {
+  background: #0b3a45;
+}
+
+#vodafoneFixedModal .vodafone-speed__note {
+  margin: 0.4rem 0 0;
+  color: #58708f;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+/* --- Δικαιολογητικά ως ακολουθία --------------------------------------- */
+#vodafoneFixedModal .vodafone-steps {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#vodafoneFixedModal .vodafone-steps li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0 0.85rem;
+  padding-bottom: 1rem;
+}
+
+#vodafoneFixedModal .vodafone-steps li:last-child {
+  padding-bottom: 0;
+}
+
+#vodafoneFixedModal .vodafone-steps__num {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #0b3a45;
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+/* Η γραμμή που ενώνει τα βήματα. */
+#vodafoneFixedModal .vodafone-steps li:not(:last-child) .vodafone-steps__num::after {
+  content: "";
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  width: 2px;
+  height: calc(100% + 1rem - 28px);
+  background: #cfe0e5;
+  transform: translateX(-50%);
+}
+
+#vodafoneFixedModal .vodafone-steps p {
+  margin: 0;
+  padding-top: 0.25rem;
+  color: #10233f;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+/* --- Η δήλωση σαν έντυπο ----------------------------------------------- */
+#vodafoneFixedModal .vodafone-declaration-box {
+  padding: 0.9rem 1rem;
+  border: 0 !important;
+  border-left: 3px solid #ba7517 !important;
+  border-radius: 0;
+  background: #fdf6e8;
+}
+
+#vodafoneFixedModal .vodafone-declaration-tag {
+  display: block;
+  margin-bottom: 0.55rem;
+  color: #633806;
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+#vodafoneFixedModal .vodafone-declaration-text {
+  margin: 0;
+  color: #412402;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.82rem;
+  font-style: normal;
+  line-height: 2;
+}
+
+#vodafoneFixedModal .vodafone-declaration-text strong {
+  padding: 0.05rem 0.35rem;
+  border-radius: 4px;
+  background: #efa532;
+  color: #412402;
+}
+
+/* Υπογράμμιση αντί για σειρές τελειών: δείχνει ότι είναι πεδίο. */
+#vodafoneFixedModal .vodafone-blank {
+  display: inline-block;
+  min-width: 8rem;
+  border-bottom: 2px solid #ba7517;
+  /* Το <u> φέρνει υπογράμμιση από τον browser ώστε το πεδίο να φαίνεται και
+     χωρίς αυτό το αρχείο. Εδώ την αντικαθιστούμε με καθαρή γραμμή. */
+  text-decoration: none;
+  vertical-align: baseline;
+}
+
+#vodafoneFixedModal .vodafone-declaration-note {
+  margin-top: 0.85rem;
+}
+
+/* --- Σύνοψη ------------------------------------------------------------ */
+#vodafoneFixedModal .vodafone-summary {
+  display: grid;
+  justify-items: start;
+  padding: 1rem 1.1rem;
+  border: 1px solid #e2ecf0;
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+#vodafoneFixedModal .vodafone-summary__label {
+  color: #58708f;
+  font-size: 0.74rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+#vodafoneFixedModal .vodafone-summary__price {
+  margin-top: 0.3rem;
+  color: #0b3a45;
+  font-size: 1.9rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+#vodafoneFixedModal .vodafone-summary__vat {
+  color: #58708f;
+}
+
+#vodafoneFixedModal .vodafone-summary .vodafone-contact-actions {
+  display: grid;
+  gap: 0.5rem;
+  width: 100%;
+  margin-top: 0.9rem;
+}
+
+#vodafoneFixedModal .vodafone-summary .vodafone-contact-actions a:not(.modal-send-email) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 44px;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid #cfe0e5;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #0b3a45;
+  font-size: 0.86rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+@media (min-width: 768px) {
+  #vodafoneFixedModal .vodafone-fixed-hero {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    padding: 1.6rem 1.5rem;
+  }
+
+  #vodafoneFixedModal .vodafone-fixed-body {
+    grid-template-columns: minmax(0, 1fr) 17rem;
+    align-items: start;
+    padding: 1.4rem 1.5rem 1.6rem;
+  }
+
+  /* Η σύνοψη ακολουθεί τον χρήστη καθώς διαβάζει. */
+  #vodafoneFixedModal .vodafone-fixed-aside {
+    position: sticky;
+    top: 1rem;
+  }
+}
+
+/* =========================================================
+   MODALS NOVA & EON — ΙΔΙΑ ΓΛΩΣΣΑ ΜΕ ΤΟ VODAFONE
+
+   Τέσσερις αλλαγές, με περιεχόμενο που ήδη υπήρχε:
+   1. Μπαίνει τιμή. Τα modals δεν ανέφεραν καθόλου ποσό, ενώ ο χρήστης
+      ερχόταν από κάρτα που έγραφε 17,90€ / 20,90€.
+   2. Τα τρία βήματα γίνονται ακολουθία με συνεχή γραμμή, αντί για τρεις
+      ισότιμες κάρτες γεμάτες λεπτομέρειες.
+   3. Οι περιπτώσεις διεύθυνσης γίνονται ερώτηση με απαντήσεις σε πρώτο
+      πρόσωπο. Πριν λέγονταν «ΠΕΡΙΠΤΩΣΗ Α / Β / Γ» και ο χρήστης έπρεπε να
+      διαβάσει και τις τρεις για να βρει ποια τον αφορά.
+   4. Στον υπολογιστή δύο στήλες, με τη σύνοψη κολλημένη δεξιά.
+   ========================================================= */
+/* Το φόντο του πλαισίου ταιριάζει με το σώμα, ώστε σε κοντό περιεχόμενο να
+   μη μένει λευκή λωρίδα κάτω από τη σύνοψη. */
+#novaLinePhone .nova-modal,
+#novaEonModal .nova-modal {
+  background: #f6f9fb !important;
+}
+
+#novaLinePhone .nova-hero,
+#novaEonModal .nova-hero {
+  display: grid;
+  gap: 1rem;
+  padding: 1.2rem 1.1rem;
+  background: #0b3a45 !important;
+}
+
+#novaLinePhone .nova-hero-copy h3,
+#novaEonModal .nova-hero-copy h3 {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(1.35rem, 5vw, 1.9rem);
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+#novaLinePhone .nova-hero-copy p,
+#novaEonModal .nova-hero-copy p {
+  margin: 0.55rem 0 0;
+  color: #a7d5de;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+#novaLinePhone .nova-price-box,
+#novaEonModal .nova-price-box {
+  display: grid;
+  justify-items: start;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(167, 213, 222, 0.3) !important;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.07) !important;
+}
+
+#novaLinePhone .nova-price-amount,
+#novaEonModal .nova-price-amount {
+  color: #d6a23a;
+  font-size: 2.2rem;
+  font-weight: 900;
+  line-height: 1.05;
+}
+
+#novaLinePhone .nova-price-unit,
+#novaEonModal .nova-price-unit {
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+/* Ζητήθηκε ρητά: η τιμή δηλώνει ότι είναι τελική, με ΦΠΑ. */
+#novaLinePhone .nova-price-vat,
+#novaEonModal .nova-price-vat,
+#novaLinePhone .nova-summary__vat,
+#novaEonModal .nova-summary__vat {
+  margin-top: 0.3rem;
+  color: #a7d5de;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+#novaLinePhone .nova-body,
+#novaEonModal .nova-body {
+  display: grid;
+  gap: 1.1rem;
+  padding: 1.1rem;
+  background: #f6f9fb;
+}
+
+/* Χωρίς min-width: 0 μια μακριά λέξη φουσκώνει τη στήλη και σπρώχνει τη
+   σύνοψη εκτός πλάτους. */
+#novaLinePhone .nova-main,
+#novaEonModal .nova-main {
+  min-width: 0;
+}
+
+#novaLinePhone .nova-section,
+#novaEonModal .nova-section {
+  padding: 1rem 1.1rem;
+  border: 1px solid #e2ecf0;
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+#novaLinePhone .nova-section + .nova-section,
+#novaEonModal .nova-section + .nova-section {
+  margin-top: 0.9rem;
+}
+
+#novaLinePhone .nova-section-title,
+#novaEonModal .nova-section-title {
+  margin: 0 0 0.85rem;
+  color: #58708f;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+/* --- Τα βήματα ως ακολουθία -------------------------------------------- */
+#novaLinePhone .nova-steps,
+#novaEonModal .nova-steps {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#novaLinePhone .nova-steps li,
+#novaEonModal .nova-steps li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0 0.85rem;
+  padding-bottom: 1rem;
+}
+
+#novaLinePhone .nova-steps li:last-child,
+#novaEonModal .nova-steps li:last-child {
+  padding-bottom: 0;
+}
+
+#novaLinePhone .nova-steps__num,
+#novaEonModal .nova-steps__num {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #0b3a45;
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+/* Η γραμμή που ενώνει τα βήματα. */
+#novaLinePhone .nova-steps li:not(:last-child) .nova-steps__num::after,
+#novaEonModal .nova-steps li:not(:last-child) .nova-steps__num::after {
+  content: "";
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  width: 2px;
+  height: calc(100% + 1rem - 28px);
+  background: #cfe0e5;
+  transform: translateX(-50%);
+}
+
+#novaLinePhone .nova-steps p,
+#novaEonModal .nova-steps p {
+  margin: 0;
+  padding-top: 0.25rem;
+  color: #10233f;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+/* --- Ο όρος του gov.gr, έξω από τη λίστα ------------------------------- */
+#novaLinePhone .nova-alert,
+#novaEonModal .nova-alert {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.7rem;
+  margin-top: 1rem;
+  padding: 0.8rem 0.95rem;
+  border-left: 3px solid #ba7517;
+  background: #fdf6e8;
+}
+
+#novaLinePhone .nova-alert .icon,
+#novaEonModal .nova-alert .icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-top: 0.15rem;
+  color: #8a5510;
+}
+
+#novaLinePhone .nova-alert p,
+#novaEonModal .nova-alert p {
+  margin: 0;
+  color: #412402;
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+#novaLinePhone .nova-alert strong,
+#novaEonModal .nova-alert strong {
+  color: #412402;
+  font-weight: 900;
+}
+
+/* --- Ταυτότητα και οι περιπτώσεις διεύθυνσης --------------------------- */
+#novaLinePhone .nova-need,
+#novaEonModal .nova-need {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid #e2ecf0;
+  border-radius: 12px;
+  background: #f6f9fb;
+}
+
+#novaLinePhone .nova-need .icon,
+#novaEonModal .nova-need .icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  color: #0e7490;
+}
+
+#novaLinePhone .nova-need p,
+#novaEonModal .nova-need p {
+  margin: 0;
+  color: #10233f;
+  font-size: 0.86rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+#novaLinePhone .nova-question,
+#novaEonModal .nova-question {
+  margin: 1.1rem 0 0.75rem;
+  color: #10233f;
+  font-size: 0.98rem;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+#novaLinePhone .nova-cases,
+#novaEonModal .nova-cases {
+  display: grid;
+  gap: 0.7rem;
+}
+
+#novaLinePhone .nova-case,
+#novaEonModal .nova-case {
+  padding: 0.85rem 0.95rem;
+  border: 1px solid #cfe0e5;
+  border-left: 4px solid #0e7490;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+#novaLinePhone .nova-case__tag,
+#novaEonModal .nova-case__tag {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: #0b3a45;
+  font-size: 0.9rem;
+  font-weight: 900;
+  line-height: 1.3;
+}
+
+#novaLinePhone .nova-case__text,
+#novaEonModal .nova-case__text {
+  margin: 0;
+  color: #58708f;
+  font-size: 0.83rem;
+  line-height: 1.5;
+}
+
+/* Η μόνη περίπτωση με πραγματικό ρίσκο: χωρίς GPS η αίτηση σταματά. */
+#novaLinePhone .nova-case--blocked,
+#novaEonModal .nova-case--blocked {
+  border-color: #f0c6c6;
+  border-left-color: #b91c1c;
+  background: #fef4f4;
+}
+
+#novaLinePhone .nova-case--blocked .nova-case__tag,
+#novaEonModal .nova-case--blocked .nova-case__tag {
+  color: #7f1d1d;
+}
+
+#novaLinePhone .nova-case--blocked .nova-case__text,
+#novaEonModal .nova-case--blocked .nova-case__text {
+  color: #8a3b3b;
+}
+
+#novaLinePhone .nova-case__warning,
+#novaEonModal .nova-case__warning {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0.6rem 0 0;
+  color: #7f1d1d;
+  font-size: 0.79rem;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+#novaLinePhone .nova-case__warning .icon,
+#novaEonModal .nova-case__warning .icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+/* --- Σύνοψη ------------------------------------------------------------ */
+#novaLinePhone .nova-summary,
+#novaEonModal .nova-summary {
+  display: grid;
+  justify-items: start;
+  padding: 1rem 1.1rem;
+  border: 1px solid #e2ecf0;
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+#novaLinePhone .nova-summary__label,
+#novaEonModal .nova-summary__label {
+  color: #58708f;
+  font-size: 0.74rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+#novaLinePhone .nova-summary__price,
+#novaEonModal .nova-summary__price {
+  margin-top: 0.3rem;
+  color: #0b3a45;
+  font-size: 1.9rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+#novaLinePhone .nova-summary .nova-summary__vat,
+#novaEonModal .nova-summary .nova-summary__vat {
+  color: #58708f;
+}
+
+#novaLinePhone .nova-contact-actions,
+#novaEonModal .nova-contact-actions {
+  display: grid;
+  gap: 0.5rem;
+  width: 100%;
+  margin-top: 0.9rem;
+}
+
+#novaLinePhone .nova-contact-actions a:not(.modal-send-email),
+#novaEonModal .nova-contact-actions a:not(.modal-send-email) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 44px;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid #cfe0e5;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #0b3a45;
+  font-size: 0.86rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+@media (min-width: 768px) {
+  #novaLinePhone .nova-hero,
+  #novaEonModal .nova-hero {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    padding: 1.6rem 1.5rem;
+  }
+
+  #novaLinePhone .nova-body,
+  #novaEonModal .nova-body {
+    grid-template-columns: minmax(0, 1fr) 17rem;
+    align-items: start;
+    padding: 1.4rem 1.5rem 1.6rem;
+  }
+
+  /* Η σύνοψη ακολουθεί τον χρήστη καθώς διαβάζει. */
+  #novaLinePhone .nova-aside,
+  #novaEonModal .nova-aside {
+    position: sticky;
+    top: 1rem;
+  }
+
+  /* Οι δύο πρώτες περιπτώσεις είναι ισότιμες και χωρούν δίπλα δίπλα· η
+     μπλοκαριστική πιάνει όλο το πλάτος για να μη χαθεί. */
+  #novaLinePhone .nova-cases {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  #novaLinePhone .nova-case--blocked {
+    grid-column: 1 / -1;
+  }
 }
