@@ -449,7 +449,7 @@ summary:focus-visible,
     border: 1px solid var(--border);
     background: #ffffff;
     color: var(--text-muted);
-    padding: 0.45rem 0.55rem 0.45rem 0.8rem;
+    padding: 0.45rem 0.8rem;
     font-size: 0.82rem;
     font-weight: 900;
 }
@@ -460,28 +460,6 @@ summary:focus-visible,
     border-color: var(--primary);
 }
 
-/* Πόσες προσφορές έχει κάθε κατηγορία. Ο αριθμός γεμίζει από το offer-renderer
-   με βάση τις προσφορές που αποδόθηκαν, ώστε να μη μένει ποτέ ξεπερασμένος. */
-.offer-filter-count {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 1.35rem;
-    height: 1.35rem;
-    padding: 0 0.32rem;
-    border-radius: 999px;
-    background: var(--surface-soft, #eef2f7);
-    color: var(--text-muted);
-    font-size: 0.72rem;
-    font-weight: 900;
-    font-variant-numeric: tabular-nums;
-    line-height: 1;
-}
-
-.offer-filter-bar button.is-active .offer-filter-count {
-    background: rgba(255, 255, 255, 0.22);
-    color: #ffffff;
-}
 
 .offer-grid {
     display: grid;
@@ -10141,27 +10119,6 @@ body.hero-intro-ready .police-hero .police-hero__logo {
   color: #1f5fcc;
 }
 
-/* Στα chips του μενού ο αριθμός πάει στη γωνία: το chip είναι στήλη με
-   εικονίδιο και ετικέτα, οπότε μια τρίτη σειρά θα το ψήλωνε άσκοπα. */
-.premium-menu-chip {
-  position: relative;
-}
-
-.premium-menu-chip .offer-filter-count {
-  position: absolute;
-  top: 0.28rem;
-  right: 0.28rem;
-  min-width: 1.15rem;
-  height: 1.15rem;
-  background: #eef2f7;
-  color: #1f5fcc;
-  font-size: 0.66rem;
-}
-
-.premium-menu-chip.is-active .offer-filter-count {
-  background: #1f5fcc;
-  color: #ffffff;
-}
 
 .premium-menu-chip:hover {
   border-color: #1f5fcc;

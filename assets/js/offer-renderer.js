@@ -434,75 +434,6 @@
     });
 }
 
-  /* --- Μετρητής προσφορών στα φίλτρα ------------------------------------
-     Οι αριθμοί βγαίνουν από τις προσφορές που όντως αποδόθηκαν, όχι από
-     χειρόγραφη λίστα: αν προστεθεί ή αποσυρθεί προσφορά στο offers.json, οι
-     μετρητές ακολουθούν μόνοι τους.
-  --------------------------------------------------------------------- */
-  const FILTER_LABELS = Object.freeze({
-    all: 'Όλες', mobile: 'Κινητή', internet: 'Internet', tv: 'TV',
-  });
-
-  function countOffersByCategory(offers) {
-    const counts = new Map([['all', offers.length]]);
-
-    offers.forEach((offer) => {
-      const category = offer.category || 'other';
-      counts.set(category, (counts.get(category) || 0) + 1);
-    });
-
-    return counts;
-  }
-
-  function setFilterCount(button, category, counts) {
-    const total = counts.get(category) || 0;
-    let badge = button.querySelector('.offer-filter-count');
-
-    /*
-     * Το «Όλες» δεν παίρνει αριθμό. Δίπλα στα 2 / 3 / 1 των κατηγοριών, ένα 6
-     * διαβάζεται σαν τέταρτη κατηγορία αντί για άθροισμα και μπερδεύει.
-     */
-    if (category === 'all') {
-      if (badge) badge.remove();
-      button.removeAttribute('aria-label');
-      button.hidden = false;
-      return;
-    }
-
-    if (!badge) {
-      badge = createElement('span', 'offer-filter-count');
-      // Ο αριθμός κρύβεται από τους αναγνώστες οθόνης· το πλήρες νόημα
-      // περνά από το aria-label, αλλιώς ακούγεται σκέτο «Κινητή 2».
-      badge.setAttribute('aria-hidden', 'true');
-      button.appendChild(badge);
-    }
-
-    badge.textContent = String(total);
-    button.hidden = total === 0 && category !== 'all';
-
-    const label = FILTER_LABELS[category] || button.dataset.label || '';
-    const noun = total === 1 ? 'προσφορά' : 'προσφορές';
-    button.setAttribute('aria-label', `${label}: ${total} ${noun}`);
-  }
-
-  /*
-   * ΠΡΟΣΟΧΗ στο εύρος: το [data-category-filter] το φοράνε και οι μεγάλες
-   * κάρτες της «Γρήγορης εκκίνησης» («Θέλω προσφορά κινητής» κ.λπ.), που έχουν
-   * ήδη δικό τους περιγραφικό κείμενο και aria-label. Ο μετρητής μπαίνει μόνο
-   * στα μικρά chips: τη μπάρα φίλτρων και το πλαϊνό μενού.
-   */
-  function updateFilterCounts(offers) {
-    const counts = countOffersByCategory(offers);
-
-    document.querySelectorAll('.offer-filter-bar [data-category-filter]').forEach((button) => {
-      setFilterCount(button, button.dataset.categoryFilter, counts);
-    });
-
-    document.querySelectorAll('.premium-menu-chip[data-sidebar-category]').forEach((button) => {
-      setFilterCount(button, button.dataset.sidebarCategory, counts);
-    });
-  }
-
   function renderOffers(container, offers) {
     offersById = new Map(offers.map((offer) => [offer.id, offer]));
 
@@ -524,7 +455,6 @@
     container.appendChild(fragment);
     container.dataset.offerLoadState = 'loaded';
 
-    updateFilterCounts(offers);
     revealRenderedOfferCards(container);
     runPostRenderEnhancements();
 
