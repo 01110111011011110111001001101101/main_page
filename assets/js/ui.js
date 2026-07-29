@@ -353,11 +353,45 @@ function initializeHeroIntroNavigation() {
 /* =========================================
    4. COOKIE CONSENT
    ========================================= */
+/*
+ * Δείχνει στον χρήστη τι έχει ήδη επιλέξει. Χωρίς αυτό, το modal cookies έλεγε
+ * «μπορείτε να αλλάξετε την επιλογή σας» χωρίς ποτέ να φανερώνει ποια είναι.
+ */
+function syncCookieConsentUi(state) {
+    const label = {
+        accepted: 'Τρέχουσα επιλογή: αποδοχή στατιστικών',
+        rejected: 'Τρέχουσα επιλογή: μόνο απαραίτητα cookies',
+        pending: 'Δεν έχετε επιλέξει ακόμα.',
+    }[state] || 'Δεν έχετε επιλέξει ακόμα.';
+
+    document.querySelectorAll('[data-consent-state]').forEach((element) => {
+        element.dataset.consentState = state;
+        element.textContent = label;
+    });
+
+    document.querySelectorAll('#cookiesModal [data-cookie-consent]').forEach((button) => {
+        const isActive = (button.dataset.cookieConsent === 'accept' && state === 'accepted') ||
+            (button.dataset.cookieConsent === 'reject' && state === 'rejected');
+        button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+}
+
+function readStoredCookieConsent() {
+    try {
+        const stored = localStorage.getItem('cookieConsent');
+        return stored === 'accepted' || stored === 'rejected' ? stored : 'pending';
+    } catch (_error) {
+        return 'pending';
+    }
+}
+
 function handleCookieConsent(action) {
     if (action !== 'accept' && action !== 'reject') return;
 
+    // Το banner μπορεί να λείπει (π.χ. άλλη σελίδα ή ήδη κλεισμένο). Παλιότερα
+    // γινόταν early return εδώ, οπότε τα κουμπιά μέσα στο modal cookies δεν
+    // έκαναν απολύτως τίποτα αφού ο χρήστης είχε κλείσει το banner.
     const banner = document.getElementById('cookieConsentBanner');
-    if (!banner) return;
 
     if (action === 'accept') {
         // Το localStorage πετάει σε private mode ή με μπλοκαρισμένα cookies.
@@ -391,22 +425,39 @@ function handleCookieConsent(action) {
         } catch (_error) {
             console.warn('Η προτίμηση cookies δεν αποθηκεύτηκε: το localStorage δεν είναι διαθέσιμο.');
         }
-        
+
+        // Η ανάκληση πρέπει να σταματάει όντως τη συλλογή. Αν ο χρήστης είχε
+        // αποδεχτεί νωρίτερα, το gtag.js ήταν ήδη φορτωμένο και τα _ga cookies
+        // γραμμένα — και τα δύο καθαρίζονται εδώ.
+        if (typeof window.disableAllTracking === 'function') {
+            window.disableAllTracking();
+        }
+
         if (typeof showToast === 'function') {
             showToast('Τα cookies απορρίφθηκαν', 'info');
         }
     }
 
-    // ΑΥΤΟΣ Ο ΚΩΔΙΚΑΣ ΤΩΡΑ ΘΑ ΕΚΤΕΛΕΙΤΑΙ ΠΑΝΤΑ ΚΑΙ ΤΟ BANNER ΘΑ ΚΛΕΙΝΕΙ
-    banner.style.opacity = '0';
-    banner.style.transform = 'translateY(100%)';
-    document.documentElement.dataset.cookieConsent = action === 'accept' ? 'accepted' : 'rejected';
-    banner.dataset.cookieClosing = 'true';
-    
-    setTimeout(() => {
-        banner.classList.add('hidden');
-        banner.removeAttribute('data-cookie-closing');
-    }, 180);
+    const state = action === 'accept' ? 'accepted' : 'rejected';
+
+    // Το banner κρύβεται με το data-cookie-consent του <html>. Αν το γυρίσουμε
+    // πριν προλάβει το transition, το display:none κόβει το animation στη μέση
+    // και το banner εξαφανίζεται απότομα — γι' αυτό μπαίνει μετά το fade out.
+    if (banner) {
+        banner.style.opacity = '0';
+        banner.style.transform = 'translateY(100%)';
+        banner.dataset.cookieClosing = 'true';
+
+        setTimeout(() => {
+            banner.classList.add('hidden');
+            banner.removeAttribute('data-cookie-closing');
+            document.documentElement.dataset.cookieConsent = state;
+        }, 180);
+    } else {
+        document.documentElement.dataset.cookieConsent = state;
+    }
+
+    syncCookieConsentUi(state);
 
     // ΑΣΦΑΛΕΙΑ: Κλείσιμο του modal αν είναι ανοιχτό
     const cookiesModal = document.getElementById('cookiesModal');
@@ -644,18 +695,10 @@ function handleDocumentKeydown(event) {
 }
 
 function initializeCookieConsentState() {
-    let consent;
-    try {
-        consent = localStorage.getItem('cookieConsent');
-    } catch (_error) {
-        consent = null;
-    }
+    const consent = readStoredCookieConsent();
+    document.documentElement.dataset.cookieConsent = consent;
 
-    if (!consent) {
-        document.documentElement.dataset.cookieConsent = 'pending';
-    } else if (consent === 'accepted') {
-        document.documentElement.dataset.cookieConsent = 'accepted';
-        
+    if (consent === 'accepted') {
         // ΕΛΕΓΧΟΣ ΑΣΦΑΛΕΙΑΣ: Εκτέλεση μόνο αν το script tracking είναι όντως διαθέσιμο
         if (typeof window.loadAllTracking === 'function') {
             window.loadAllTracking();
@@ -663,8 +706,14 @@ function initializeCookieConsentState() {
             console.warn('Το tracking script δεν έχει φορτωθεί ακόμα ή έχει αποκλειστεί.');
         }
     } else if (consent === 'rejected') {
-        document.documentElement.dataset.cookieConsent = 'rejected';
+        // Επιβεβαιώνει το ga-disable σε κάθε φόρτωση, ώστε ένα τρίτο script ή
+        // ένα cookie που επέζησε να μην ξαναρχίσει τη συλλογή σιωπηλά.
+        if (typeof window.disableAllTracking === 'function') {
+            window.disableAllTracking();
+        }
     }
+
+    syncCookieConsentUi(consent);
 }
 
 function initializeImagePreviewControls() {

@@ -8,6 +8,7 @@ import { root } from './helpers/load-scripts.mjs';
 const markup = readFileSync(path.join(root, 'assets/modals/vodafone-fixed.html'), 'utf8');
 const index = readFileSync(path.join(root, 'index.html'), 'utf8');
 const bundle = readFileSync(path.join(root, index.match(/assets\/css\/bundle\.[a-f0-9]{8}\.min\.css/)[0]), 'utf8');
+const source = readFileSync(path.join(root, 'assets/css/site.css'), 'utf8');
 const document = new JSDOM(`<body>${markup}</body>`).window.document;
 
 /* Τα κουμπιά ήταν φωλιασμένα μέσα στον τίτλο και εμφανίζονταν πριν από το
@@ -128,7 +129,6 @@ test('κάθε τιμή δηλώνει ότι είναι τελική με ΦΠ�
 
   assert.match(text, /Τελική τιμή με ΦΠΑ/, 'λείπει από την κεφαλίδα');
   assert.match(text, /Όλες οι τιμές είναι τελικές, με ΦΠΑ/, 'λείπει από τα πακέτα');
-  assert.match(text, /Τελική τιμή με ΦΠΑ, τον μήνα/, 'λείπει από τη σύνοψη');
 });
 
 test('τα δικαιολογητικά διαβάζονται ως ακολουθία', () => {
@@ -138,11 +138,13 @@ test('τα δικαιολογητικά διαβάζονται ως ακολου
   assert.deepEqual(steps.map((step) => step.querySelector('.vodafone-steps__num').textContent), ['1', '2', '3']);
 });
 
-test('στον υπολογιστή η σύνοψη μένει κολλημένη', () => {
-  const desktop = bundle.split('@media (width>=48rem)').slice(1).join('');
+/* Το πλαϊνό κουτί σύνοψης αφαιρέθηκε: επαναλάμβανε την τιμή της κεφαλίδας και
+   στο κινητό ξεχείλιζε εκτός οθόνης. Το modal μένει μονόστηλο. */
+test('δεν έμεινε πλαϊνή σύνοψη ούτε στο markup ούτε στο CSS', () => {
+  const document = new JSDOM(`<body>${markup}</body>`).window.document;
 
-  assert.match(desktop, /vodafone-fixed-aside\{[^}]*position:sticky/, 'η σύνοψη δεν ακολουθεί');
-  assert.match(desktop, /vodafone-fixed-body\{[^}]*grid-template-columns:minmax\(0,1fr\) 17rem/, 'λείπουν οι δύο στήλες');
+  assert.equal(document.querySelector('.vodafone-fixed-aside, .vodafone-summary'), null, 'η σύνοψη υπάρχει ακόμα');
+  assert.doesNotMatch(source, /vodafone-fixed-aside|vodafone-summary|vodafone-contact-actions/, 'έμειναν ορφανοί κανόνες');
 });
 
 /* Τα modals φορτώνονται κατά την εκτέλεση από το assets/modals/, ενώ το CSS

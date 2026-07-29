@@ -60,9 +60,27 @@ function loadAllTracking() {
         window.dataLayer.push(arguments);
     };
 
+    // Αν ο χρήστης είχε απορρίψει νωρίτερα μέσα στην ίδια περίοδο, το
+    // ga-disable-* έμενε true και το GA δεν ξεκινούσε ποτέ ξανά μετά από νέα
+    // αποδοχή. Καθαρίζεται εδώ, πριν φορτώσει το script.
+    window[`ga-disable-${GA_MEASUREMENT_ID}`] = false;
+
+    // Consent Mode v2: δηλώνουμε ρητά denied ως προεπιλογή και το ανεβάζουμε σε
+    // granted αμέσως μετά. Χωρίς αυτό, το gtag.js γράφει _ga cookies από το
+    // πρώτο hit ανεξάρτητα από το τι επέλεξε ο χρήστης.
+    window.gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        wait_for_update: 500,
+    });
+    window.gtag('consent', 'update', { analytics_storage: 'granted' });
+
     const script = document.createElement('script');
     script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
     script.async = true;
+    script.dataset.analyticsScript = 'true';
     document.head.appendChild(script);
 
     window.gtag('js', new Date());
@@ -85,6 +103,99 @@ function hasAnalyticsConsent() {
     } catch (_) {
         return false;
     }
+}
+
+/*
+ * Τα cookies του GA (_ga, _ga_<ID>, _gid, _gat*) γράφονται στο κύριο domain και
+ * σε path '/'. Σβήνονται μόνο αν η διαγραφή στοχεύσει τον ίδιο συνδυασμό
+ * domain/path με τον οποίο γράφτηκαν, γι' αυτό δοκιμάζουμε όλες τις εκδοχές.
+ */
+function getAnalyticsCookieNames() {
+    try {
+        return document.cookie
+            .split(';')
+            .map((entry) => entry.split('=')[0].trim())
+            .filter((name) => /^(_ga|_gid|_gat|_gac_)/.test(name));
+    } catch (_) {
+        return [];
+    }
+}
+
+function deleteAnalyticsCookies() {
+    const hostname = window.location.hostname || '';
+    const parts = hostname.split('.');
+    const domains = [undefined, hostname, `.${hostname}`];
+
+    if (parts.length > 2) {
+        const baseDomain = parts.slice(-2).join('.');
+        domains.push(baseDomain, `.${baseDomain}`);
+    }
+
+    getAnalyticsCookieNames().forEach((name) => {
+        domains.forEach((domain) => {
+            const domainPart = domain ? `; domain=${domain}` : '';
+            try {
+                document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/${domainPart}`;
+            } catch (_) {
+                /* Το cookie store μπορεί να είναι μπλοκαρισμένο· δεν σπάει τη ροή. */
+            }
+        });
+    });
+}
+
+/*
+ * Η ανάκληση συγκατάθεσης πρέπει να είναι το ίδιο αποτελεσματική με τη χορήγηση.
+ * Μέχρι τώρα το reject έγραφε μόνο localStorage: το gtag.js έμενε φορτωμένο,
+ * τα _ga cookies έμεναν στον browser και το GA συνέχιζε τα δικά του αυτόματα
+ * hits. Εδώ κόβεται η συλλογή στη ρίζα της.
+ */
+function disableAllTracking() {
+    window[`ga-disable-${GA_MEASUREMENT_ID}`] = true;
+
+    if (typeof window.gtag === 'function') {
+        window.gtag('consent', 'update', {
+            ad_storage: 'denied',
+            ad_user_data: 'denied',
+            ad_personalization: 'denied',
+            analytics_storage: 'denied',
+        });
+    }
+
+    deleteAnalyticsCookies();
+
+    behaviorAnalyticsState.sectionObserver?.disconnect();
+    behaviorAnalyticsState.modalObserver?.disconnect();
+    behaviorAnalyticsState.sectionObserver = null;
+    behaviorAnalyticsState.modalObserver = null;
+    behaviorAnalyticsState.visibleSectionStarts.clear();
+    behaviorAnalyticsState.modalStarts.clear();
+    behaviorAnalyticsState.seenSections.clear();
+    behaviorAnalyticsState.sentScrollDepths.clear();
+
+    if (behaviorAnalyticsState.activeIntervalId) {
+        window.clearInterval(behaviorAnalyticsState.activeIntervalId);
+        behaviorAnalyticsState.activeIntervalId = null;
+    }
+    behaviorAnalyticsState.initialized = false;
+
+    offerCardObserver?.disconnect();
+    offerCardObserver = undefined;
+    offerCardViewStarts.clear();
+    offerCardViewed.clear();
+    // Το offerCardVisibility είναι WeakMap: δεν καθαρίζεται, αλλά οι εγγραφές
+    // του φεύγουν μόνες τους μόλις χαθούν οι αναφορές στις κάρτες.
+    trackedOfferCards = [];
+    Object.keys(activeOfferViews).forEach((modalId) => delete activeOfferViews[modalId]);
+
+    trackingFeaturesScheduled = false;
+    window.trackingLoaded = false;
+
+    try {
+        sessionStorage.removeItem('pksaaAnalyticsSessionId');
+    } catch (_) {
+        /* Χωρίς sessionStorage δεν υπάρχει τίποτα να καθαριστεί. */
+    }
+    behaviorAnalyticsState.sessionId = '';
 }
 
 function trackEvent(eventName, params = {}, legacyLabel, legacyParams = {}) {
@@ -932,6 +1043,8 @@ window.App = window.App || {};
 window.App.tracking = {
     init: initializeTracking,
     loadAll: loadAllTracking,
+    disableAll: disableAllTracking,
+    hasConsent: hasAnalyticsConsent,
     trackEvent,
     trackLinkClick,
     getOfferName,
@@ -952,3 +1065,4 @@ window.App.tracking = {
 
 window.trackEvent = trackEvent;
 window.loadAllTracking = loadAllTracking;
+window.disableAllTracking = disableAllTracking;

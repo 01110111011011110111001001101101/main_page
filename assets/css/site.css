@@ -1108,45 +1108,6 @@ summary:focus-visible,
     font-weight: 900;
 }
 
-.vodafone-contact-actions {
-    display: grid;
-    gap: 0.75rem;
-}
-
-@media (min-width: 768px) {
-    .vodafone-contact-actions {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-}
-
-.vodafone-contact-actions a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.55rem;
-    border-radius: 1.25rem;
-    padding: 1rem;
-    color: #ffffff;
-    font-weight: 950;
-    transition: transform 0.2s ease, filter 0.2s ease;
-}
-
-.vodafone-contact-actions a:nth-child(1) {
-    background: #dc2626;
-}
-
-.vodafone-contact-actions a:nth-child(2) {
-    background: #111827;
-}
-
-.vodafone-contact-actions a:nth-child(3) {
-    background: #2563eb;
-}
-
-.vodafone-contact-actions a:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.05);
-}
 
 @media (max-width: 640px) {
     .vodafone-fixed-hero {
@@ -11435,8 +11396,7 @@ body.hero-intro-ready .police-hero .police-hero__logo {
 }
 
 /* Ζητήθηκε ρητά: η τιμή δηλώνει ότι είναι τελική, με ΦΠΑ. */
-#vodafoneFixedModal .vodafone-price-vat,
-#vodafoneFixedModal .vodafone-summary__vat {
+#vodafoneFixedModal .vodafone-price-vat {
   margin-top: 0.3rem;
   color: #a7d5de;
   font-size: 0.74rem;
@@ -11673,58 +11633,6 @@ body.hero-intro-ready .police-hero .police-hero__logo {
   margin-top: 0.85rem;
 }
 
-/* --- Σύνοψη ------------------------------------------------------------ */
-#vodafoneFixedModal .vodafone-summary {
-  display: grid;
-  justify-items: start;
-  padding: 1rem 1.1rem;
-  border: 1px solid #e2ecf0;
-  border-radius: 16px;
-  background: #ffffff;
-}
-
-#vodafoneFixedModal .vodafone-summary__label {
-  color: #58708f;
-  font-size: 0.74rem;
-  font-weight: 900;
-  text-transform: uppercase;
-}
-
-#vodafoneFixedModal .vodafone-summary__price {
-  margin-top: 0.3rem;
-  color: #0b3a45;
-  font-size: 1.9rem;
-  font-weight: 900;
-  line-height: 1;
-}
-
-#vodafoneFixedModal .vodafone-summary__vat {
-  color: #58708f;
-}
-
-#vodafoneFixedModal .vodafone-summary .vodafone-contact-actions {
-  display: grid;
-  gap: 0.5rem;
-  width: 100%;
-  margin-top: 0.9rem;
-}
-
-#vodafoneFixedModal .vodafone-summary .vodafone-contact-actions a:not(.modal-send-email) {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.45rem;
-  min-height: 44px;
-  padding: 0.55rem 0.8rem;
-  border: 1px solid #cfe0e5;
-  border-radius: 12px;
-  background: #ffffff;
-  color: #0b3a45;
-  font-size: 0.86rem;
-  font-weight: 800;
-  text-decoration: none;
-}
-
 @media (min-width: 768px) {
   #vodafoneFixedModal .vodafone-fixed-hero {
     grid-template-columns: minmax(0, 1fr) auto;
@@ -11733,15 +11641,7 @@ body.hero-intro-ready .police-hero .police-hero__logo {
   }
 
   #vodafoneFixedModal .vodafone-fixed-body {
-    grid-template-columns: minmax(0, 1fr) 17rem;
-    align-items: start;
     padding: 1.4rem 1.5rem 1.6rem;
-  }
-
-  /* Η σύνοψη ακολουθεί τον χρήστη καθώς διαβάζει. */
-  #vodafoneFixedModal .vodafone-fixed-aside {
-    position: sticky;
-    top: 1rem;
   }
 }
 
@@ -11817,9 +11717,7 @@ body.hero-intro-ready .police-hero .police-hero__logo {
 
 /* Ζητήθηκε ρητά: η τιμή δηλώνει ότι είναι τελική, με ΦΠΑ. */
 #novaLinePhone .nova-price-vat,
-#novaEonModal .nova-price-vat,
-#novaLinePhone .nova-summary__vat,
-#novaEonModal .nova-summary__vat {
+#novaEonModal .nova-price-vat {
   margin-top: 0.3rem;
   color: #a7d5de;
   font-size: 0.74rem;
@@ -12066,64 +11964,6 @@ body.hero-intro-ready .police-hero .police-hero__logo {
   flex-shrink: 0;
 }
 
-/* --- Σύνοψη ------------------------------------------------------------ */
-#novaLinePhone .nova-summary,
-#novaEonModal .nova-summary {
-  display: grid;
-  justify-items: start;
-  padding: 1rem 1.1rem;
-  border: 1px solid #e2ecf0;
-  border-radius: 16px;
-  background: #ffffff;
-}
-
-#novaLinePhone .nova-summary__label,
-#novaEonModal .nova-summary__label {
-  color: #58708f;
-  font-size: 0.74rem;
-  font-weight: 900;
-  text-transform: uppercase;
-}
-
-#novaLinePhone .nova-summary__price,
-#novaEonModal .nova-summary__price {
-  margin-top: 0.3rem;
-  color: #0b3a45;
-  font-size: 1.9rem;
-  font-weight: 900;
-  line-height: 1;
-}
-
-#novaLinePhone .nova-summary .nova-summary__vat,
-#novaEonModal .nova-summary .nova-summary__vat {
-  color: #58708f;
-}
-
-#novaLinePhone .nova-contact-actions,
-#novaEonModal .nova-contact-actions {
-  display: grid;
-  gap: 0.5rem;
-  width: 100%;
-  margin-top: 0.9rem;
-}
-
-#novaLinePhone .nova-contact-actions a:not(.modal-send-email),
-#novaEonModal .nova-contact-actions a:not(.modal-send-email) {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.45rem;
-  min-height: 44px;
-  padding: 0.55rem 0.8rem;
-  border: 1px solid #cfe0e5;
-  border-radius: 12px;
-  background: #ffffff;
-  color: #0b3a45;
-  font-size: 0.86rem;
-  font-weight: 800;
-  text-decoration: none;
-}
-
 @media (min-width: 768px) {
   #novaLinePhone .nova-hero,
   #novaEonModal .nova-hero {
@@ -12134,16 +11974,7 @@ body.hero-intro-ready .police-hero .police-hero__logo {
 
   #novaLinePhone .nova-body,
   #novaEonModal .nova-body {
-    grid-template-columns: minmax(0, 1fr) 17rem;
-    align-items: start;
     padding: 1.4rem 1.5rem 1.6rem;
-  }
-
-  /* Η σύνοψη ακολουθεί τον χρήστη καθώς διαβάζει. */
-  #novaLinePhone .nova-aside,
-  #novaEonModal .nova-aside {
-    position: sticky;
-    top: 1rem;
   }
 
   /* Οι δύο πρώτες περιπτώσεις είναι ισότιμες και χωρούν δίπλα δίπλα· η

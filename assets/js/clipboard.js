@@ -11,7 +11,7 @@ function createIcon(name, className = '') {
     svg.setAttribute('class', ['icon', className].filter(Boolean).join(' '));
     svg.dataset.icon = name;
     svg.setAttribute('aria-hidden', 'true');
-    use.setAttribute('href', `assets/icons/icons.svg?v=5b542ef0#icon-${name}`);
+    use.setAttribute('href', `assets/icons/icons.svg?v=da0d255a#icon-${name}`);
     svg.appendChild(use);
     return svg;
 }
@@ -70,13 +70,13 @@ function copyToClipboard(text, element) {
         if (msg) { msg.classList.remove('opacity-0'); msg.classList.add('opacity-100'); }
         if (icon) {
             icon.dataset.icon = 'check';
-            icon.querySelector('use')?.setAttribute('href', 'assets/icons/icons.svg?v=5b542ef0#icon-check');
+            icon.querySelector('use')?.setAttribute('href', 'assets/icons/icons.svg?v=da0d255a#icon-check');
         }
         setTimeout(() => {
             if (msg) { msg.classList.remove('opacity-100'); msg.classList.add('opacity-0'); }
             if (icon) {
                 icon.dataset.icon = 'copy';
-                icon.querySelector('use')?.setAttribute('href', 'assets/icons/icons.svg?v=5b542ef0#icon-copy');
+                icon.querySelector('use')?.setAttribute('href', 'assets/icons/icons.svg?v=da0d255a#icon-copy');
             }
         }, 2000);
     }).catch(() => showToast('Η αντιγραφή απέτυχε', 'error'));

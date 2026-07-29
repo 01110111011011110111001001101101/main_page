@@ -29,7 +29,7 @@ for (const [id, file] of Object.entries(MODALS)) {
     const document = parse(file);
     const slots = [...document.querySelectorAll('[data-modal-offer-price]')];
 
-    assert.ok(slots.length >= 2, 'η τιμή λείπει από κεφαλίδα ή σύνοψη');
+    assert.ok(slots.length >= 1, 'η τιμή λείπει από την κεφαλίδα');
 
     // Η προεπιλογή του markup πρέπει να συμφωνεί με τα δεδομένα, γιατί φαίνεται
     // αν το modal ανοίξει με απευθείας σύνδεσμο, χωρίς γνωστή προσφορά.
@@ -45,7 +45,6 @@ for (const [id, file] of Object.entries(MODALS)) {
     const text = parse(file).body.textContent.replace(/\s+/g, ' ');
 
     assert.match(text, /Τελική τιμή με ΦΠΑ/, 'λείπει από την κεφαλίδα');
-    assert.match(text, /Τελική τιμή με ΦΠΑ, τον μήνα/, 'λείπει από τη σύνοψη');
   });
 
   test(`${id}: τα βήματα διαβάζονται ως ακολουθία`, () => {
@@ -92,7 +91,6 @@ for (const [id, file] of Object.entries(MODALS)) {
     const document = parse(file);
 
     assert.ok(document.querySelector('[data-modal-offer-docs]'), 'χάθηκε η υποδοχή των εντύπων');
-    assert.ok(document.querySelector('a.modal-send-email[href^="mailto:"]'), 'χάθηκε η αποστολή');
     assert.ok(document.querySelector(`[data-modal-close="${id}"]`), 'χάθηκε το κλείσιμο');
   });
 
@@ -134,11 +132,14 @@ test('τα modals μοιράζονται τη γλώσσα των καρτών',
     'η τιμή δεν είναι χρυσή');
 });
 
-test('στον υπολογιστή η σύνοψη μένει κολλημένη', () => {
-  const desktop = source.split('@media (min-width: 768px)').slice(1).join('');
+/* Το πλαϊνό κουτί σύνοψης αφαιρέθηκε: επαναλάμβανε την τιμή της κεφαλίδας και
+   στο κινητό ξεχείλιζε εκτός οθόνης. Τα modals μένουν μονόστηλα. */
+test('δεν έμεινε πλαϊνή σύνοψη ούτε στο markup ούτε στο CSS', () => {
+  for (const file of Object.values(MODALS)) {
+    assert.equal(parse(file).querySelector('.nova-aside, .nova-summary'), null, `${file}: η σύνοψη υπάρχει ακόμα`);
+  }
 
-  assert.match(desktop, /#novaLinePhone \.nova-aside,\s*\n\s*#novaEonModal \.nova-aside \{[^}]*position: sticky/, 'η σύνοψη δεν ακολουθεί');
-  assert.match(desktop, /#novaLinePhone \.nova-body,\s*\n\s*#novaEonModal \.nova-body \{[^}]*grid-template-columns: minmax\(0, 1fr\) 17rem/, 'λείπουν οι δύο στήλες');
+  assert.doesNotMatch(source, /nova-aside|nova-summary|nova-contact-actions/, 'έμειναν ορφανοί κανόνες');
 });
 
 /* Ο renderer γεμίζει τίτλο, έντυπα και τώρα τιμή. Αν λείψει το αγκίστρι, το
