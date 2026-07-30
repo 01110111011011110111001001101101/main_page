@@ -349,6 +349,53 @@
    * αντίγραφα του ίδιου fragment 144 γραμμών, το modal γεμίζει από το
    * offers.json: αρκεί να αλλάξει ο πίνακας documents της κάθε προσφοράς.
    */
+  /*
+   * Κάθε έντυπο έχει δύο ενέργειες. Παλιότερα ήταν ένα μόνο <a download>, οπότε
+   * ο χρήστης ήταν αναγκασμένος να κατεβάσει το PDF για να δει αν είναι αυτό που
+   * ψάχνει — στο κινητό αυτό σημαίνει έξοδο από τη σελίδα. Το πλακάκι ανοίγει
+   * τώρα τον ενσωματωμένο viewer (assets/js/pdf-preview.js), και η λήψη μένει
+   * διαθέσιμη από ξεχωριστό σύνδεσμο κάτω από την ετικέτα.
+   */
+  function getDocumentFileName(documentItem) {
+    return documentItem.href.split('/').pop();
+  }
+
+  function createDocumentTile(documentItem, offer) {
+    const fileName = getDocumentFileName(documentItem);
+    const label = documentItem.title || fileName;
+
+    const group = createElement('div', 'modal-offer-doc-group');
+
+    const preview = createElement('button', 'modal-offer-doc');
+    preview.type = 'button';
+    preview.dataset.pdfUrl = documentItem.href;
+    preview.dataset.pdfTitle = label;
+    preview.dataset.track = 'pdf_preview';
+    preview.dataset.label = fileName;
+    preview.dataset.offer = getCardOfferName(offer);
+    preview.setAttribute('aria-label', `Προβολή: ${label}`);
+
+    const iconWrap = createElement('span', 'modal-offer-doc__icon');
+    const icon = window.createIcon?.('file-pdf');
+    if (icon) iconWrap.appendChild(icon);
+    preview.appendChild(iconWrap);
+
+    appendTextElement(preview, 'span', 'modal-offer-doc__label', label);
+    appendTextElement(preview, 'span', 'modal-offer-doc__hint', 'Προβολή');
+    group.appendChild(preview);
+
+    const download = createElement('a', 'modal-offer-doc__download', 'Λήψη');
+    download.href = documentItem.href;
+    download.download = '';
+    download.dataset.track = 'pdf_download';
+    download.dataset.label = fileName;
+    download.dataset.offer = getCardOfferName(offer);
+    download.setAttribute('aria-label', `Λήψη: ${label}`);
+    group.appendChild(download);
+
+    return group;
+  }
+
   function fillModalForOffer(modal, offerId) {
     const offer = offersById.get(offerId);
     if (!modal || !offer) return false;
@@ -383,20 +430,7 @@
     docsHost.textContent = '';
 
     documents.forEach((item) => {
-      const link = createElement('a', 'modal-offer-doc');
-      link.href = item.href;
-      link.download = '';
-      link.dataset.track = 'pdf_download';
-      link.dataset.label = item.href.split('/').pop();
-      link.dataset.offer = getCardOfferName(offer);
-
-      const iconWrap = createElement('span', 'modal-offer-doc__icon');
-      const icon = window.createIcon?.('file-pdf');
-      if (icon) iconWrap.appendChild(icon);
-      link.appendChild(iconWrap);
-
-      appendTextElement(link, 'span', 'modal-offer-doc__label', item.title || item.href.split('/').pop());
-      docsHost.appendChild(link);
+      docsHost.appendChild(createDocumentTile(item, offer));
     });
 
     return true;
@@ -646,13 +680,35 @@
     appendTextElement(section, 'h3', '', 'Τι χρειάζεσαι');
     const list = createElement('div', 'offer-details-documents');
     documents.forEach((documentItem) => {
-      const link = createElement('a', 'offer-details-document', documentItem.title || documentItem.href);
-      link.href = documentItem.href;
-      link.download = '';
-      link.dataset.track = 'pdf_download';
-      link.dataset.label = documentItem.href.split('/').pop();
-      link.dataset.offer = getCardOfferName(offer);
-      list.appendChild(link);
+      const fileName = getDocumentFileName(documentItem);
+      const label = documentItem.title || fileName;
+
+      const row = createElement('div', 'offer-details-document');
+
+      const preview = createElement('button', 'offer-details-document__open');
+      preview.type = 'button';
+      preview.dataset.pdfUrl = documentItem.href;
+      preview.dataset.pdfTitle = label;
+      preview.dataset.track = 'pdf_preview';
+      preview.dataset.label = fileName;
+      preview.dataset.offer = getCardOfferName(offer);
+
+      const icon = window.createIcon?.('file-pdf');
+      if (icon) preview.appendChild(icon);
+      appendTextElement(preview, 'span', 'offer-details-document__label', label);
+      appendTextElement(preview, 'span', 'offer-details-document__hint', 'Προβολή');
+      row.appendChild(preview);
+
+      const download = createElement('a', 'offer-details-document__download', 'Λήψη');
+      download.href = documentItem.href;
+      download.download = '';
+      download.dataset.track = 'pdf_download';
+      download.dataset.label = fileName;
+      download.dataset.offer = getCardOfferName(offer);
+      download.setAttribute('aria-label', `Λήψη: ${label}`);
+      row.appendChild(download);
+
+      list.appendChild(row);
     });
     section.appendChild(list);
     parent.appendChild(section);

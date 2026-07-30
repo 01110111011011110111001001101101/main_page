@@ -172,6 +172,13 @@ const lazyModalPromises = new Map();
 // στο πρώτο paint — έρχονται μαζί με το fragment του modal, παράλληλα.
 const lazyModalScripts = Object.freeze({
     activationGuideModal: ['wizard', 'pdfPreview'],
+    // Τα modals προσφορών δείχνουν έντυπα με κουμπί «Προβολή». Ο viewer έρχεται
+    // μαζί με το fragment, ώστε το πρώτο πάτημα να ανοίγει ακαριαία αντί να
+    // περιμένει το script.
+    novaEonModal: ['pdfPreview'],
+    novaLinePhone: ['pdfPreview'],
+    internetChoiceModal: ['pdfPreview'],
+    vodafoneFixedModal: ['pdfPreview'],
 });
 
 function loadModalScripts(modalId) {

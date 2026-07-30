@@ -466,6 +466,37 @@ function handleCookieConsent(action) {
     }
 }
 
+/*
+ * Το pdf-preview.js είναι lazy script. Αν ο χρήστης πατήσει «Προβολή» πριν
+ * φορτώσει, το φορτώνουμε επιτόπου και μετά ανοίγουμε. Σε αποτυχία (offline,
+ * μπλοκαρισμένο CDN) ανοίγει το PDF σε νέα καρτέλα, ώστε να μη μένει το πάτημα
+ * χωρίς αποτέλεσμα.
+ */
+async function openPdfPreviewFor(trigger) {
+    const url = trigger.dataset.pdfUrl;
+    if (!url) return;
+
+    const options = { url, title: trigger.dataset.pdfTitle || '' };
+
+    if (window.App?.pdfPreview?.open) {
+        window.App.pdfPreview.open(options);
+        return;
+    }
+
+    try {
+        await window.App?.loadLazyScript?.('pdfPreview');
+    } catch (_error) {
+        console.warn('Ο viewer PDF δεν φορτώθηκε.');
+    }
+
+    if (window.App?.pdfPreview?.open) {
+        window.App.pdfPreview.open(options);
+        return;
+    }
+
+    window.open(url, '_blank', 'noopener');
+}
+
 function handleDocumentClick(event) {
 
     const stopTarget = event.target.closest('[data-stop-click]');
@@ -517,6 +548,24 @@ function handleDocumentClick(event) {
     if (cookieTarget) {
         event.preventDefault();
         handleCookieConsent(cookieTarget.dataset.cookieConsent);
+        return;
+    }
+
+    /*
+     * Ο viewer PDF ήταν προσβάσιμος μόνο μέσα από τον οδηγό ενεργοποίησης, γιατί
+     * τον χειριζόταν αποκλειστικά το wizard.js. Τα έντυπα των προσφορών έμεναν
+     * απλά <a download>. Ο handler ζει τώρα εδώ, ώστε κάθε [data-pdf-url] σε
+     * οποιοδήποτε modal να ανοίγει την προεπισκόπηση. Το wizard.js κρατά τον
+     * δικό του (με stopImmediatePropagation) και προηγείται όσο ο οδηγός είναι
+     * ανοιχτός — δεν συγκρούονται.
+     */
+    const pdfPreviewTarget = event.target.closest('[data-pdf-url]');
+    if (pdfPreviewTarget) {
+        event.preventDefault();
+        // Χωρίς αυτό, ο handler του wizard.js θα άνοιγε τον viewer δεύτερη φορά
+        // για το ίδιο πάτημα όσο ο οδηγός είναι φορτωμένος.
+        event.stopImmediatePropagation();
+        openPdfPreviewFor(pdfPreviewTarget);
         return;
     }
 

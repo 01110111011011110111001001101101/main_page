@@ -38,9 +38,21 @@ async function createSite({ modal = 'nova-line-phone.html' } = {}) {
       document.querySelector(`[data-offer-id="${offerId}"] .offer-primary-cta`)
         .dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
     },
-    docs: () => [...document.querySelectorAll('#novaLinePhone .modal-offer-doc')]
-      .map((link) => ({ title: link.textContent.trim(), href: link.getAttribute('href') })),
+    docs: () => readDocumentTiles(document, '#novaLinePhone'),
   };
+}
+
+/*
+ * Κάθε έντυπο είναι πλέον ζευγάρι: κουμπί «Προβολή» με data-pdf-url (ανοίγει τον
+ * ενσωματωμένο viewer) και σύνδεσμος «Λήψη» με download. Ο τίτλος διαβάζεται από
+ * την ετικέτα, όχι από όλο το textContent του πλακιδίου, γιατί το πλακίδιο
+ * περιέχει και το badge «Προβολή».
+ */
+function readDocumentTiles(document, modalSelector) {
+  return [...document.querySelectorAll(`${modalSelector} .modal-offer-doc-group`)].map((group) => ({
+    title: group.querySelector('.modal-offer-doc__label').textContent.trim(),
+    href: group.querySelector('.modal-offer-doc__download').getAttribute('href'),
+  }));
 }
 
 test('οι δύο προσφορές Nova δείχνουν στο ίδιο modal', async () => {
@@ -99,15 +111,20 @@ test('το περιεχόμενο αντικαθίσταται όταν ανοί
   assert.notDeepEqual(first, second);
 });
 
-test('τα έντυπα κατεβαίνουν και καταγράφονται', async () => {
+test('τα έντυπα προβάλλονται στη σελίδα και παράλληλα κατεβαίνουν', async () => {
   const site = await createSite();
   site.openFrom('nova-5g-internet');
   await settle(60);
 
-  const link = site.document.querySelector('#novaLinePhone .modal-offer-doc');
-  assert.ok(link.hasAttribute('download'));
-  assert.equal(link.dataset.track, 'pdf_download');
-  assert.match(link.dataset.label, /\.pdf$/);
+  const preview = site.document.querySelector('#novaLinePhone .modal-offer-doc');
+  assert.equal(preview.tagName.toLowerCase(), 'button');
+  assert.match(preview.dataset.pdfUrl, /\.pdf$/);
+  assert.equal(preview.dataset.track, 'pdf_preview');
+
+  const download = site.document.querySelector('#novaLinePhone .modal-offer-doc__download');
+  assert.ok(download.hasAttribute('download'));
+  assert.equal(download.dataset.track, 'pdf_download');
+  assert.match(download.dataset.label, /\.pdf$/);
 });
 
 test('το EON TV παίρνει κι αυτό τα έντυπά του από τα δεδομένα', async () => {
@@ -115,10 +132,7 @@ test('το EON TV παίρνει κι αυτό τα έντυπά του από �
   site.openFrom('eon-cosmote-tv');
   await settle(60);
 
-  const docs = [...site.document.querySelectorAll('#novaEonModal .modal-offer-doc')]
-    .map((link) => ({ title: link.textContent.trim(), href: link.getAttribute('href') }));
-
-  assert.deepEqual(docs, [
+  assert.deepEqual(readDocumentTiles(site.document, '#novaEonModal'), [
     { title: 'Αίτηση EON TV', href: 'assets/docs/eon-tv-aitisi.pdf' },
     { title: 'Παράδειγμα συμπλήρωσης', href: 'assets/docs/eon-tv-paradeigma.pdf' },
   ]);

@@ -165,6 +165,227 @@ html[data-cookie-consent="rejected"] #cookieConsentBanner[data-cookie-closing="t
   display: block;
 }
 
+/* ==========================================
+   COOKIE CONSENT — κάρτα συγκατάθεσης
+   ==========================================
+   ΤΑ ΔΥΟ ΚΟΥΜΠΙΑ ΕΙΝΑΙ ΣΚΟΠΙΜΑ ΙΣΟΤΙΜΑ: ίδιο ύψος, ίδιο πλάτος, ίδιο
+   font-size, ίδιο font-weight, ίδιο border-radius, ίδια αντίθεση. Η ανάκληση /
+   άρνηση της συγκατάθεσης πρέπει να είναι εξίσου εύκολη με τη χορήγηση
+   (GDPR άρθ. 7 §3 και EDPB Guidelines 03/2022 για τα deceptive design
+   patterns). Μη μικραίνεις, μη γκριζάρεις και μη κρύβεις το «Μόνο απαραίτητα»:
+   είναι ο βασικός λόγος προστίμων σε cookie banners.
+   ========================================== */
+.cookie-consent {
+  position: fixed;
+  z-index: 200;
+  right: 1rem;
+  bottom: 1rem;
+  width: min(27rem, calc(100% - 2rem));
+  padding: 1.15rem 1.15rem 0.95rem;
+  overflow: hidden;
+  border: 1px solid #cfe6ec;
+  border-radius: 26px;
+  background:
+    radial-gradient(125% 95% at 100% 0%, #e8f7fa 0%, rgba(232, 247, 250, 0) 58%),
+    linear-gradient(180deg, #ffffff 0%, #fbfeff 100%);
+  box-shadow:
+    0 24px 60px -18px rgba(7, 26, 47, 0.38),
+    0 2px 8px rgba(7, 26, 47, 0.06);
+}
+
+/* Λεπτή χρωματική ακμή στην κορυφή, στα χρώματα της ταυτότητας. */
+.cookie-consent::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: linear-gradient(90deg, #0e7490 0%, #38bdf8 55%, #d6a23a 100%);
+}
+
+.cookie-consent__head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.8rem;
+  align-items: start;
+}
+
+.cookie-consent__badge {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 16px;
+  background: linear-gradient(150deg, #0e7490, #0b3a45);
+  color: #ffffff;
+  box-shadow: 0 8px 18px -6px rgba(14, 116, 144, 0.65);
+}
+
+.cookie-consent__badge .icon {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+.cookie-consent__title {
+  margin: 0;
+  color: #071a33;
+  font-size: 1.05rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.cookie-consent__text {
+  margin: 0.3rem 0 0;
+  color: #5f6f86;
+  font-size: 0.86rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.cookie-consent__facts {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cookie-consent__facts li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.5rem;
+  align-items: start;
+  color: #0b3a45;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.cookie-consent__facts li::before {
+  content: "\2713";
+  color: #0e7490;
+  font-weight: 900;
+  line-height: 1.4;
+}
+
+.cookie-consent__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.55rem;
+}
+
+/* Το ίδιο ζευγάρι κουμπιών χρησιμοποιείται και μέσα στο #cookiesModal, όπου δεν
+   χρειάζεται το πάνω κενό της κάρτας. */
+.cookie-consent > .cookie-consent__actions {
+  margin-top: 1.05rem;
+}
+
+.cookie-consent__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 3rem;
+  padding: 0.7rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.92rem;
+  font-weight: 800;
+  line-height: 1.15;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.12s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cookie-consent__btn:active {
+  transform: scale(0.97);
+}
+
+.cookie-consent__btn:focus-visible {
+  outline: 3px solid #0e7490;
+  outline-offset: 2px;
+}
+
+.cookie-consent__btn--accept {
+  border: 2px solid #0e7490;
+  background: linear-gradient(160deg, #0e7490, #0b3a45);
+  color: #ffffff;
+  box-shadow: 0 12px 24px -12px rgba(14, 116, 144, 0.75);
+}
+
+.cookie-consent__btn--accept:hover {
+  background: linear-gradient(160deg, #0b6178, #082b34);
+}
+
+.cookie-consent__btn--reject {
+  border: 2px solid #0e7490;
+  background: #ffffff;
+  color: #0b3a45;
+}
+
+.cookie-consent__btn--reject:hover {
+  background: #e8f7fa;
+}
+
+.cookie-consent__more {
+  display: block;
+  width: 100%;
+  margin-top: 0.6rem;
+  padding: 0.4rem;
+  border: 0;
+  background: transparent;
+  color: #5f6f86;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.cookie-consent__more:hover {
+  color: #0e7490;
+}
+
+@media (max-width: 767px) {
+  .cookie-consent {
+    right: 0.75rem;
+    left: 0.75rem;
+    bottom: 0.75rem;
+    width: auto;
+    padding: 1rem 1rem 0.85rem;
+    border-radius: 22px;
+  }
+
+  .cookie-consent__badge {
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 14px;
+  }
+
+  .cookie-consent__badge .icon {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+
+  .cookie-consent__title {
+    font-size: 1rem;
+  }
+
+  .cookie-consent__text {
+    font-size: 0.82rem;
+  }
+
+  .cookie-consent__facts li {
+    font-size: 0.78rem;
+  }
+
+  /* Στο κινητό στοιβάζονται, αλλά παραμένουν πανομοιότυπα σε μέγεθος και βάρος. */
+  .cookie-consent__actions {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+}
+
 :root {
     --primary: #071a33;
     --primary-strong: #06152a;
@@ -2895,51 +3116,10 @@ body.scroll-locked {
     border-radius: 16px;
   }
 
-  #cookieConsentBanner {
-    left: 0.75rem !important;
-    right: 0.75rem !important;
-    bottom: 0.75rem !important;
-    padding: 1rem !important;
-    border-radius: 24px !important;
-  }
-
-  #cookieConsentBanner > div:first-child {
-    gap: 0.75rem !important;
-    margin-bottom: 0.85rem !important;
-  }
-
-  #cookieConsentBanner .bg-blue-100 {
-    padding: 0.8rem !important;
-  }
-
-  #cookieConsentBanner .bg-blue-100 .icon {
-    font-size: 1rem !important;
-  }
-
-  #cookieConsentBanner h4 {
-    font-size: 1.1rem !important;
-    line-height: 1.15 !important;
-  }
-
-  #cookieConsentBanner p {
-    margin-top: 0.35rem !important;
-    font-size: 0.84rem !important;
-    line-height: 1.45 !important;
-  }
-
-  #cookieConsentBanner [data-cookie-consent="accept"] {
-    min-height: 3rem;
-    padding-top: 0.9rem !important;
-    padding-bottom: 0.9rem !important;
-    font-size: 0.98rem !important;
-  }
-
-  #cookieConsentBanner [data-cookie-consent="reject"] {
-    padding-top: 0.7rem !important;
-    padding-bottom: 0.7rem !important;
-    font-size: 0.85rem !important;
-    line-height: 1.3 !important;
-  }
+  /* Τα παλιά overrides του banner έφυγαν: έδεναν με τη markup των Tailwind
+     utilities (.bg-blue-100, > div:first-child) που δεν υπάρχει πια, και έκαναν
+     το κουμπί άρνησης μικρότερο από το κουμπί αποδοχής. Το component ορίζεται
+     τώρα στο .cookie-consent, με το δικό του mobile breakpoint. */
 
 }
 
@@ -10375,15 +10555,67 @@ body.hero-intro-ready .police-hero .police-hero__logo {
   display: none;
 }
 
+/* Πλακάκι εντύπου = «Προβολή», με ξεχωριστό σύνδεσμο «Λήψη» από κάτω. */
+.modal-offer-doc-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  width: 8rem;
+}
+
 .modal-offer-doc {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  width: 8rem;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
   text-align: center;
   text-decoration: none;
+  cursor: pointer;
   transition: transform 0.14s ease;
+}
+
+.modal-offer-doc:focus-visible,
+.modal-offer-doc__download:focus-visible {
+  outline: 3px solid #0e7490;
+  outline-offset: 3px;
+  border-radius: 12px;
+}
+
+.modal-offer-doc__hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: #e8f7fa;
+  color: #0b6178;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.modal-offer-doc:hover .modal-offer-doc__hint {
+  background: #0e7490;
+  color: #ffffff;
+}
+
+.modal-offer-doc__download {
+  min-height: 32px;
+  padding: 0.2rem 0.5rem;
+  color: #64748b;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.modal-offer-doc__download:hover {
+  color: #0e7490;
 }
 
 .modal-offer-doc:hover {
@@ -10430,7 +10662,7 @@ body.hero-intro-ready .police-hero .police-hero__logo {
     gap: 1rem;
   }
 
-  .modal-offer-doc {
+  .modal-offer-doc-group {
     width: 6.5rem;
   }
 
@@ -11047,16 +11279,82 @@ body.hero-intro-ready .police-hero .police-hero__logo {
 
 .offer-details-document {
   display: flex;
-  align-items: center;
+  align-items: stretch;
+  gap: 0.5rem;
   min-height: 44px;
-  padding: 0.6rem 0.75rem;
+  padding: 0.35rem 0.5rem 0.35rem 0.75rem;
   border: 1px solid #cfe0e5;
   border-radius: 12px;
   background: #ffffff;
   color: #0b3a45;
   font-size: 0.86rem;
   font-weight: 800;
+}
+
+/* Το πάτημα στη γραμμή ανοίγει την προεπισκόπηση· η λήψη είναι δεύτερη επιλογή. */
+.offer-details-document__open {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  padding: 0.25rem 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.offer-details-document__open .icon {
+  flex: 0 0 auto;
+  width: 1.05rem;
+  height: 1.05rem;
+  color: #dc2626;
+}
+
+.offer-details-document__label {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.offer-details-document__hint {
+  flex: 0 0 auto;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: #e8f7fa;
+  color: #0b6178;
+  font-size: 0.66rem;
+  font-weight: 800;
+}
+
+.offer-details-document__open:hover .offer-details-document__hint {
+  background: #0e7490;
+  color: #ffffff;
+}
+
+.offer-details-document__download {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  padding: 0 0.6rem;
+  border-left: 1px solid #e2eef1;
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 800;
   text-decoration: none;
+}
+
+.offer-details-document__download:hover {
+  color: #0e7490;
+}
+
+.offer-details-document__open:focus-visible,
+.offer-details-document__download:focus-visible {
+  outline: 3px solid #0e7490;
+  outline-offset: 2px;
+  border-radius: 8px;
 }
 
 .offer-details-plans {
