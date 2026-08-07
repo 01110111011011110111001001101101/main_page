@@ -11,9 +11,9 @@
 (function () {
   const officeClosureConfig = Object.freeze({
     mode: 'date',
-    startDate: '2026-08-07',
-    endDate: '2026-08-08',
-    returnDateText: '09/08/2026',
+    startDate: '2026-08-13',
+    endDate: '2026-08-23',
+    returnDateText: '24/08/2026',
     title: 'Θερινή άδεια γραφείου',
     message: 'Το γραφείο του Συνεταιρισμού είναι κλειστό λόγω θερινής άδειας. Θα είμαστε ξανά διαθέσιμοι από [returnDateText]. Για γραπτό αίτημα, μπορείτε να στείλετε email.',
     showAutoNotice: true,

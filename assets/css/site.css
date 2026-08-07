@@ -12272,3 +12272,48 @@ body.hero-intro-ready .police-hero .police-hero__logo {
     grid-column: 1 / -1;
   }
 }
+
+/* =========================================================
+   ΚΕΦΑΛΙΔΑ ΚΑΡΤΑΣ — ΠΛΗΡΕΣ ΠΛΑΤΟΣ ΣΕ ΚΑΘΕ ΑΝΑΛΥΣΗ
+
+   Στον υπολογιστή η σκούρα ζώνη σταματούσε στη μέση της κάρτας:
+   legacy κανόνες με !important επιβάλλουν στην κάρτα grid με δύο
+   στήλες (minmax(0,1fr) auto) και align-items: start, οπότε η
+   κορδέλα συρρικνωνόταν στο πλάτος του περιεχομένου της αντί να
+   φτάνει τέρμα δεξιά. Ο διορθωτικός κανόνας υπήρχε μόνο μέσα σε
+   @media (max-width: 767px) και μόνο με πρόγονο .offers-section-catalog.
+
+   Εδώ κλειδώνει, χωρίς breakpoint και χωρίς εξάρτηση από πρόγονο:
+   η κάρτα μένει flex στήλη με stretch, και κορδέλα/σώμα πιάνουν
+   όλο το πλάτος. Ισχύει για ΟΛΕΣ τις κάρτες προσφορών.
+   ========================================================= */
+#offersContainer > .new-premium-card[data-offer-card],
+.offers-section-catalog #offersContainer > .new-premium-card[data-offer-card] {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-items: stretch !important;
+  grid-template-columns: none !important;
+  grid-template-areas: none !important;
+}
+
+#offersContainer > .new-premium-card[data-offer-card] > .new-premium-ribbon,
+#offersContainer > .new-premium-card[data-offer-card] > .new-premium-body,
+.offers-section-catalog #offersContainer > .new-premium-card[data-offer-card] > .new-premium-ribbon,
+.offers-section-catalog #offersContainer > .new-premium-card[data-offer-card] > .new-premium-body {
+  width: 100% !important;
+  max-width: 100% !important;
+  align-self: stretch !important;
+  justify-self: stretch !important;
+  grid-column: 1 / -1 !important;
+  box-sizing: border-box !important;
+}
+
+/* Η γραμμή τίτλου/ετικέτας μέσα στην κορδέλα ακολουθεί το ίδιο πλάτος,
+   ώστε η ετικέτα («300GB κάθε μήνα») να κάθεται τέρμα δεξιά. */
+#offersContainer > .new-premium-card[data-offer-card] .new-premium-ribbon-meta,
+#offersContainer > .new-premium-card[data-offer-card] .new-premium-price-row,
+#offersContainer > .new-premium-card[data-offer-card] .new-premium-note-banner {
+  width: 100% !important;
+  max-width: 100% !important;
+}
