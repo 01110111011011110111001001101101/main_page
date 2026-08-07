@@ -58,7 +58,11 @@ test('το πλακάκι εντύπου ανοίγει προεπισκόπησ
   const preview = modal.querySelector('[data-pdf-url]');
   assert.ok(preview, 'πρέπει να υπάρχει κουμπί με data-pdf-url');
   assert.equal(preview.tagName.toLowerCase(), 'button', 'η προβολή δεν πρέπει να είναι κατέβασμα');
-  assert.equal(preview.dataset.pdfUrl, offer.documents[0].href);
+  // Η προβολή δείχνει το συμπληρωμένο υπόδειγμα όταν υπάρχει, ενώ η λήψη
+  // μένει πάντα στο κενό έντυπο.
+  const doc = offer.documents[0];
+  assert.equal(preview.dataset.pdfUrl, doc.previewHref || doc.href);
+  assert.equal(preview.dataset.pdfDownloadUrl, doc.href);
   assert.equal(preview.dataset.track, 'pdf_preview');
 
   const download = modal.querySelector('.modal-offer-doc__download');
@@ -83,8 +87,9 @@ test('το πάτημα «Προβολή» καλεί τον viewer με το σ
   await settle(50);
 
   assert.equal(opened.length, 1, 'ο viewer πρέπει να ανοίξει μία φορά');
-  assert.equal(opened[0].url, offer.documents[0].href);
-  assert.equal(opened[0].title, offer.documents[0].title);
+  const doc = offer.documents[0];
+  assert.equal(opened[0].url, doc.previewHref || doc.href);
+  assert.ok(opened[0].title.startsWith(doc.title));
 });
 
 test('χωρίς τον viewer το PDF ανοίγει σε νέα καρτέλα', async (t) => {
@@ -105,5 +110,6 @@ test('χωρίς τον viewer το PDF ανοίγει σε νέα καρτέλ�
   modal.querySelector('[data-pdf-url]').click();
   await settle(80);
 
-  assert.deepEqual(openedUrls, [offer.documents[0].href]);
+  const doc = offer.documents[0];
+  assert.deepEqual(openedUrls, [doc.previewHref || doc.href]);
 });

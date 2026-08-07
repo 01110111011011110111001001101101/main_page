@@ -34,6 +34,7 @@
             title: 'Υπεύθυνη Δήλωση',
             detail: 'Συμπλήρωση και επικύρωση υπογραφής μέσω gov.gr ή ΚΕΠ.',
             href: 'assets/docs/ypefthini_dilosi_Vodafone.pdf',
+            previewHref: 'assets/docs/ypefthini_dilosi_Vodafone_paradeigma.pdf',
           }),
           Object.freeze({
             title: 'Χρήση προσωπικών δεδομένων',
@@ -283,11 +284,20 @@
         actions.className = 'activation-checklist__actions';
 
         if (doc.href) {
+          /*
+           * Όταν υπάρχει previewHref, η προεπισκόπηση δείχνει το συμπληρωμένο
+           * υπόδειγμα — ο χρήστης βλέπει πώς μπαίνουν τα στοιχεία πριν πιάσει
+           * στυλό. Η λήψη μένει πάντα στο κενό έντυπο (doc.href).
+           */
           const previewButton = document.createElement('button');
           previewButton.type = 'button';
-          previewButton.dataset.pdfUrl = doc.href;
-          previewButton.dataset.pdfTitle = doc.title || doc.href.split('/').pop();
-          previewButton.textContent = 'Προεπισκόπηση';
+          previewButton.dataset.pdfUrl = doc.previewHref || doc.href;
+          previewButton.dataset.pdfDownloadUrl = doc.href;
+          const baseTitle = doc.title || doc.href.split('/').pop();
+          previewButton.dataset.pdfTitle = doc.previewHref
+            ? `${baseTitle} — συμπληρωμένο υπόδειγμα`
+            : baseTitle;
+          previewButton.textContent = doc.previewHref ? 'Δες υπόδειγμα' : 'Προεπισκόπηση';
           actions.appendChild(previewButton);
         } else if (doc.previewSrc) {
           const previewButton = document.createElement('button');

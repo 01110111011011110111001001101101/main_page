@@ -368,8 +368,11 @@
 
     const preview = createElement('button', 'modal-offer-doc');
     preview.type = 'button';
-    preview.dataset.pdfUrl = documentItem.href;
-    preview.dataset.pdfTitle = label;
+    // Αν το έντυπο έχει συμπληρωμένο υπόδειγμα, η προβολή δείχνει εκείνο και η
+    // λήψη μένει στο κενό έντυπο.
+    preview.dataset.pdfUrl = documentItem.previewHref || documentItem.href;
+    preview.dataset.pdfDownloadUrl = documentItem.href;
+    preview.dataset.pdfTitle = documentItem.previewHref ? `${label} — συμπληρωμένο υπόδειγμα` : label;
     preview.dataset.track = 'pdf_preview';
     preview.dataset.label = fileName;
     preview.dataset.offer = getCardOfferName(offer);

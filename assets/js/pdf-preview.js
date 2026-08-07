@@ -260,11 +260,18 @@
     if (zoomOutButton) zoomOutButton.disabled = !hasPdf || state.zoom <= MIN_ZOOM;
     if (zoomInButton) zoomInButton.disabled = !hasPdf || state.zoom >= MAX_ZOOM;
 
+    /*
+     * Η προεπισκόπηση μπορεί να δείχνει συμπληρωμένο παράδειγμα ενώ το κουμπί
+     * λήψης πρέπει να δίνει το κενό έντυπο — αλλιώς ο χρήστης θα κατέβαζε και
+     * θα υπέγραφε τα στοιχεία του παραδείγματος. Όταν δεν δηλωθεί ξεχωριστό
+     * downloadUrl, ισχύει ό,τι και πριν: κατεβαίνει αυτό που βλέπει.
+     */
+    const downloadUrl = state.downloadUrl || state.url;
     if (downloadLink) {
-      downloadLink.href = state.url;
-      downloadLink.dataset.label = getFileName(state.url);
+      downloadLink.href = downloadUrl;
+      downloadLink.dataset.label = getFileName(downloadUrl);
       downloadLink.dataset.offer = state.title;
-      downloadLink.setAttribute('aria-disabled', state.url ? 'false' : 'true');
+      downloadLink.setAttribute('aria-disabled', downloadUrl ? 'false' : 'true');
     }
   }
 
@@ -343,6 +350,7 @@
 
     state.previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     state.url = getPdfUrl(options.url);
+    state.downloadUrl = getPdfUrl(options.downloadUrl) || state.url;
     state.title = options.title || getFileName(state.url);
     state.pageNumber = 1;
     state.totalPages = 0;
@@ -420,6 +428,7 @@
       event.stopImmediatePropagation();
       openPdfPreview({
         url: trigger.dataset.pdfUrl,
+        downloadUrl: trigger.dataset.pdfDownloadUrl,
         title: getDocumentTitle(trigger),
       });
       return;

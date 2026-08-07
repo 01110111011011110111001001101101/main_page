@@ -65,7 +65,8 @@
             {
               "title": "Υπεύθυνη Δήλωση",
               "detail": "Συμπλήρωση και επικύρωση υπογραφής μέσω gov.gr ή ΚΕΠ.",
-              "href": "assets/docs/ypefthini_dilosi_Vodafone.pdf"
+              "href": "assets/docs/ypefthini_dilosi_Vodafone.pdf",
+              "previewHref": "assets/docs/ypefthini_dilosi_Vodafone_paradeigma.pdf"
             },
             {
               "title": "Χρήση προσωπικών δεδομένων",
@@ -110,6 +111,7 @@
         {
           "title": "Υπεύθυνη Δήλωση",
           "href": "assets/docs/ypefthini_dilosi_Vodafone.pdf",
+          "previewHref": "assets/docs/ypefthini_dilosi_Vodafone_paradeigma.pdf",
           "appliesTo": "common"
         },
         {
