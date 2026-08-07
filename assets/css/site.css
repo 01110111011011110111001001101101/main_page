@@ -10492,130 +10492,170 @@ body.hero-intro-ready .police-hero .police-hero__logo {
    ίνα) να δείχνει τα δικά της αρχεία.
    ========================================================= */
 .modal-offer-docs {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr));
+  gap: 0.85rem;
+  align-items: stretch;
 }
 
 .modal-offer-docs[hidden] {
   display: none;
 }
 
-/* Πλακάκι εντύπου = «Προβολή», με ξεχωριστό σύνδεσμο «Λήψη» από κάτω. */
+/* Κάρτα εντύπου: όλη η κάρτα ανοίγει την προβολή, με διακριτό
+   κουμπί «Λήψη» στο κάτω μέρος. */
 .modal-offer-doc-group {
+  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.35rem;
-  width: 8rem;
+  gap: 0.6rem;
+  padding: 0.9rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.modal-offer-doc-group:hover {
+  transform: translateY(-3px);
+  border-color: #bae6fd;
+  box-shadow: 0 12px 24px -12px rgba(14, 116, 144, 0.35);
 }
 
 .modal-offer-doc {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.7rem;
   width: 100%;
   padding: 0;
   border: 0;
   background: transparent;
-  text-align: center;
+  text-align: left;
   text-decoration: none;
   cursor: pointer;
-  transition: transform 0.14s ease;
+}
+
+/* Το κλικ σε όλη την κάρτα ανοίγει την προβολή. */
+.modal-offer-doc::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
 }
 
 .modal-offer-doc:focus-visible,
 .modal-offer-doc__download:focus-visible {
   outline: 3px solid #0e7490;
   outline-offset: 3px;
-  border-radius: 12px;
+  border-radius: 14px;
 }
 
+.modal-offer-doc__icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid #fecaca;
+  border-radius: 14px;
+  color: #dc2626;
+  background: #fef2f2;
+  transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease, transform 0.18s ease;
+}
+
+.modal-offer-doc-group:hover .modal-offer-doc__icon {
+  transform: scale(1.04);
+  border-color: #fca5a5;
+  background: #fee2e2;
+}
+
+.modal-offer-doc__icon .icon {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+.modal-offer-doc__label {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: #0f172a;
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+/* Το «Προβολή» γίνεται διακριτική ένδειξη πάνω δεξιά στην κάρτα. */
 .modal-offer-doc__hint {
+  flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-  padding: 0.15rem 0.5rem;
+  padding: 0.2rem 0.6rem;
   border-radius: 999px;
   background: #e8f7fa;
   color: #0b6178;
   font-size: 0.66rem;
   font-weight: 800;
   letter-spacing: 0.02em;
+  white-space: nowrap;
+  transition: background-color 0.18s ease, color 0.18s ease;
 }
 
-.modal-offer-doc:hover .modal-offer-doc__hint {
+.modal-offer-doc-group:hover .modal-offer-doc__hint {
   background: #0e7490;
   color: #ffffff;
 }
 
 .modal-offer-doc__download {
-  min-height: 32px;
-  padding: 0.2rem 0.5rem;
-  color: #64748b;
-  font-size: 0.68rem;
-  font-weight: 800;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-.modal-offer-doc__download:hover {
-  color: #0e7490;
-}
-
-.modal-offer-doc:hover {
-  transform: translateY(-2px);
-}
-
-.modal-offer-doc__icon {
+  position: relative;
+  z-index: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 3.5rem;
-  height: 3.5rem;
-  border: 2px solid #cbd5e1;
-  border-radius: 50%;
-  color: #94a3b8;
+  gap: 0.3rem;
+  min-height: 36px;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
   background: #ffffff;
-  transition: border-color 0.14s ease, color 0.14s ease, background-color 0.14s ease;
-}
-
-.modal-offer-doc:hover .modal-offer-doc__icon {
-  border-color: #0057ff;
-  background: #eff6ff;
-  color: #dc2626;
-}
-
-.modal-offer-doc__icon .icon {
-  width: 1.4rem;
-  height: 1.4rem;
-}
-
-.modal-offer-doc__label {
-  color: #475569;
+  color: #334155;
   font-size: 0.72rem;
   font-weight: 800;
-  line-height: 1.25;
+  text-decoration: none;
+  transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease;
 }
 
-.modal-offer-doc:hover .modal-offer-doc__label {
-  color: #1d4ed8;
+.modal-offer-doc__download:hover {
+  border-color: #0e7490;
+  background: #ecfeff;
+  color: #0e7490;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal-offer-doc-group,
+  .modal-offer-doc__icon {
+    transition: none;
+  }
+
+  .modal-offer-doc-group:hover {
+    transform: none;
+  }
+
+  .modal-offer-doc-group:hover .modal-offer-doc__icon {
+    transform: none;
+  }
 }
 
 @media (max-width: 767px) {
   .modal-offer-docs {
-    gap: 1rem;
-  }
-
-  .modal-offer-doc-group {
-    width: 6.5rem;
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
   }
 
   .modal-offer-doc__icon {
-    width: 3rem;
-    height: 3rem;
+    width: 2.5rem;
+    height: 2.5rem;
   }
 }
 
