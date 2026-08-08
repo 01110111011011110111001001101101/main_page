@@ -24,7 +24,10 @@ const inputFiles = [
 const input = (await Promise.all(inputFiles.map((file) => fs.readFile(file, 'utf8')))).join('\n');
 const iconNames = new Set([
   ...[...input.matchAll(/data-icon=["']([a-z0-9-]+)["']/g)].map((match) => match[1]),
-  ...[...input.matchAll(/createIcon\(["']([a-z0-9-]+)["']/g)].map((match) => match[1]),
+  /* Το «?.» είναι μέρος της κλήσης: window.createIcon?.('file-pdf'). Χωρίς
+     αυτό στο pattern, τα εικονίδια που καλούνται με optional chaining έμεναν
+     έξω από το sprite και το πλακάκι εντύπου έβγαινε άδειο κουτί. */
+  ...[...input.matchAll(/createIcon\??\.?\(["']([a-z0-9-]+)["']/g)].map((match) => match[1]),
   ...[...input.matchAll(/icon:\s*["']([a-z0-9-]+)["']/g)].map((match) => match[1]),
 ]);
 const icons = new Map();
