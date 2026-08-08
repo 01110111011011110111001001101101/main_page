@@ -208,7 +208,14 @@ async function ensureModalLoaded(modalId) {
         root.appendChild(template.content);
 
         if (modalId === 'activationGuideModal') window.initializeActivationGuide?.();
-        return document.getElementById(modalId);
+
+        // Το fragment έρχεται άδειο από έντυπα και τιμή. Γεμίζει αμέσως με την
+        // προεπιλεγμένη προσφορά του modal, ώστε να στέκει και όταν ο χρήστης
+        // φτάνει εδώ από #hash, back/forward ή μοιρασμένο σύνδεσμο — χωρίς να
+        // περάσει από κουμπί κάρτας με data-modal-offer.
+        const inserted = document.getElementById(modalId);
+        window.App?.offerRenderer?.fillModalDefaults?.(inserted);
+        return inserted;
     }).catch((error) => {
         lazyModalPromises.delete(modalId);
         unlockPageScrollIfIdle();

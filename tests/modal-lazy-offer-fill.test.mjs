@@ -36,8 +36,8 @@ const MODAL_FRAGMENTS = {
   novaLinePhone: 'assets/modals/nova-line-phone.html',
 };
 
-function bootPage(t) {
-  const page = createPage({ html, files: SCRIPTS });
+function bootPage(t, { url } = {}) {
+  const page = createPage({ html, files: SCRIPTS, url });
   t.after(() => page.window.close());
 
   // fetch: JSON για το offers.json, κείμενο για τα fragments των modals.
@@ -89,6 +89,24 @@ for (const [modalId, fragment] of Object.entries(MODAL_FRAGMENTS)) {
       assert.ok(download.getAttribute('href'), 'ο σύνδεσμος λήψης πρέπει να δείχνει σε αρχείο');
       assert.ok(download.hasAttribute('download'), 'ο σύνδεσμος λήψης πρέπει να κατεβάζει');
     }
+
+    window.close();
+  });
+
+  /*
+   * Η openModal γράφει το modal στο URL, οπότε ανανέωση σελίδας, back/forward ή
+   * μοιρασμένος σύνδεσμος φτάνουν εδώ ΧΩΡΙΣ να περάσουν από κουμπί κάρτας με
+   * data-modal-offer. Τα έντυπα πρέπει να υπάρχουν και έτσι.
+   */
+  test(`${modalId}: τα έντυπα υπάρχουν και όταν το modal ανοίγει από #hash`, async (t) => {
+    const { window, document } = bootPage(t, { url: `https://example.test/#${modalId}` });
+    await settle(250);
+
+    const modal = document.getElementById(modalId);
+    assert.ok(modal, 'το modal πρέπει να έχει φορτωθεί από το hash');
+
+    const previews = modal.querySelectorAll('[data-modal-offer-docs] [data-pdf-url]');
+    assert.ok(previews.length, 'η ενότητα «Έντυπα αίτησης» έμεινε άδεια σε άνοιγμα από hash');
 
     window.close();
   });

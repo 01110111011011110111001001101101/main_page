@@ -27,9 +27,9 @@ const DEFAULT_FILES = [
   'offer-renderer.js',
 ];
 
-export function createPage({ html, files = DEFAULT_FILES, offers, matchMedia } = {}) {
+export function createPage({ html, files = DEFAULT_FILES, offers, matchMedia, url } = {}) {
   const dom = new JSDOM(html, {
-    url: 'https://example.test/',
+    url: url ?? 'https://example.test/',
     runScripts: 'outside-only',
     pretendToBeVisual: true,
   });

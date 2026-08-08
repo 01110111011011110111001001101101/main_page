@@ -439,6 +439,44 @@
     return true;
   }
 
+  /*
+   * ΠΡΟΕΠΙΛΟΓΗ ΓΙΑ MODAL ΠΟΥ ΑΝΟΙΓΕΙ ΧΩΡΙΣ ΠΡΟΣΦΟΡΑ
+   *
+   * Το openModal γράφει το modal στο URL (#novaEonModal). Άρα ο χρήστης μπορεί
+   * να φτάσει στο modal με ανανέωση σελίδας, με back/forward ή με σύνδεσμο που
+   * μοιράστηκε — δηλαδή χωρίς να περάσει από το κουμπί της κάρτας που κουβαλά
+   * το data-modal-offer. Σε αυτές τις διαδρομές η ενότητα «Έντυπα αίτησης»
+   * έμενε άδεια, γιατί κανείς δεν καλούσε το fillModalForOffer.
+   *
+   * Εδώ το modal γεμίζει μόνο του από τα δεδομένα: βρίσκει τις προσφορές που
+   * το δηλώνουν ως modalId και παίρνει την πρώτη κατά sortOrder. Όταν αργότερα
+   * ο χρήστης μπει από συγκεκριμένη κάρτα, το ρητό fillModalForOffer γράφει από
+   * πάνω τα σωστά στοιχεία.
+   */
+  function getDefaultOfferForModal(modalId) {
+    if (!modalId) return null;
+
+    return Array.from(offersById.values())
+      .filter((offer) => offer.modalId === modalId && offer.active !== false)
+      .sort((first, second) => (first.sortOrder ?? 0) - (second.sortOrder ?? 0))[0] || null;
+  }
+
+  function fillModalDefaults(modal) {
+    if (!modal) return Promise.resolve(false);
+
+    const apply = () => {
+      const offer = getDefaultOfferForModal(modal.id);
+      return offer ? fillModalForOffer(modal, offer.id) : false;
+    };
+
+    // Τα modals φορτώνονται lazy και μπορεί να προλάβουν τη λίστα προσφορών.
+    if (!offersById.size && rendererPromise) {
+      return rendererPromise.then(apply).catch(() => false);
+    }
+
+    return Promise.resolve(apply());
+  }
+
   function renderFallback(container) {
     container.textContent = '';
     container.classList.add('offer-grid');
@@ -675,44 +713,39 @@
     parent.appendChild(section);
   }
 
+  /*
+   * «Τι χρειάζεσαι»: απλή λίστα, χωρίς κουμπιά προβολής και λήψης.
+   *
+   * Οι λεπτομέρειες απαντούν στο «τι θα μου ζητήσουν;» — είναι στάδιο
+   * ανάγνωσης, όχι δράσης. Τα κουμπιά εδώ έβγαζαν τον χρήστη σε PDF πριν καν
+   * αποφασίσει για την προσφορά, και διπλασίαζαν όσα δίνει ήδη ο οδηγός
+   * ενεργοποίησης, όπου το κατέβασμα έχει και τη σειρά των βημάτων γύρω του.
+   */
   function appendDocumentsSection(parent, offer) {
-    const documents = Array.isArray(offer.documents) ? offer.documents.filter((item) => item?.href) : [];
+    const documents = Array.isArray(offer.documents)
+      ? offer.documents.filter((item) => item?.title || item?.href)
+      : [];
     if (!documents.length) return;
 
     const section = createElement('section', 'offer-details-block');
     appendTextElement(section, 'h3', '', 'Τι χρειάζεσαι');
-    const list = createElement('div', 'offer-details-documents');
+
+    const list = createElement('ul', 'offer-details-documents');
     documents.forEach((documentItem) => {
-      const fileName = getDocumentFileName(documentItem);
-      const label = documentItem.title || fileName;
+      const label = documentItem.title || getDocumentFileName(documentItem);
+      const row = createElement('li', 'offer-details-document');
 
-      const row = createElement('div', 'offer-details-document');
+      appendTextElement(row, 'span', 'offer-details-document__label', label);
 
-      const preview = createElement('button', 'offer-details-document__open');
-      preview.type = 'button';
-      preview.dataset.pdfUrl = documentItem.href;
-      preview.dataset.pdfTitle = label;
-      preview.dataset.track = 'pdf_preview';
-      preview.dataset.label = fileName;
-      preview.dataset.offer = getCardOfferName(offer);
-
-      const icon = window.createIcon?.('file-pdf');
-      if (icon) preview.appendChild(icon);
-      appendTextElement(preview, 'span', 'offer-details-document__label', label);
-      appendTextElement(preview, 'span', 'offer-details-document__hint', 'Προβολή');
-      row.appendChild(preview);
-
-      const download = createElement('a', 'offer-details-document__download', 'Λήψη');
-      download.href = documentItem.href;
-      download.download = '';
-      download.dataset.track = 'pdf_download';
-      download.dataset.label = fileName;
-      download.dataset.offer = getCardOfferName(offer);
-      download.setAttribute('aria-label', `Λήψη: ${label}`);
-      row.appendChild(download);
+      // Έντυπο μόνο για φορητότητα: χωρίς σήμανση, όποιος παίρνει νέο αριθμό
+      // νομίζει ότι χρειάζεται κι αυτό.
+      if (documentItem.appliesTo === 'portability') {
+        appendTextElement(row, 'span', 'offer-details-document__only', 'μόνο για φορητότητα');
+      }
 
       list.appendChild(row);
     });
+
     section.appendChild(list);
     parent.appendChild(section);
   }
@@ -945,6 +978,7 @@
     getOffers: () => Array.from(offersById.values()),
     getOffer: (offerId) => offersById.get(offerId) || null,
     fillModalForOffer,
+    fillModalDefaults,
   };
 
   window.addEventListener('hashchange', () => {
