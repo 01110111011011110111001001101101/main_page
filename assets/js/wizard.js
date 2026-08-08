@@ -64,6 +64,7 @@
             title: 'Υπεύθυνη Δήλωση',
             detail: 'Συμπλήρωση και επικύρωση υπογραφής μέσω gov.gr ή ΚΕΠ.',
             href: 'assets/docs/ypefthini_dilosi_Q.pdf',
+            previewHref: 'assets/docs/ypefthini_dilosi_Q_paradeigma.pdf',
           }),
           Object.freeze({
             title: 'Φωτοτυπία ταυτότητας μπρος-πίσω',

@@ -670,7 +670,20 @@ if (modalCloseTarget) {
             offer_name: modalCloseTarget.dataset.offer || getOfferName(modalToOpen),
             category: modalCloseTarget.dataset.category,
         });
-        openModal(modalToOpen, !replaceModalHistory);
+        const chained = openModal(modalToOpen, !replaceModalHistory);
+
+        // Ίδια ιστορία με το data-modal-target παρακάτω: αλυσιδωτό άνοιγμα
+        // (π.χ. «Επιλογή internet» → modal παρόχου) πρέπει επίσης να γεμίσει
+        // έντυπα και τιμή, αφού φορτωθεί το lazy fragment.
+        const chainedOfferId = modalCloseTarget.dataset.modalOffer;
+        if (chainedOfferId) {
+            Promise.resolve(chained).then(() => {
+                window.App?.offerRenderer?.fillModalForOffer?.(
+                    document.getElementById(modalToOpen),
+                    chainedOfferId,
+                );
+            });
+        }
 
         if (replaceModalHistory) {
             history.replaceState({ screen: 'offer', modalId: modalToOpen }, '', `#${modalToOpen}`);
@@ -690,14 +703,26 @@ if (modalCloseTarget) {
             offer_name: modalTarget.dataset.offer || getOfferName(targetModalId),
             category: modalTarget.dataset.category,
         });
-        openModal(targetModalId);
+        const opened = openModal(targetModalId);
 
-        // Κοινό modal για πολλές προσφορές: γεμίζει με τα δικά της στοιχεία.
-        if (modalTarget.dataset.modalOffer) {
-            window.App?.offerRenderer?.fillModalForOffer?.(
-                document.getElementById(targetModalId),
-                modalTarget.dataset.modalOffer,
-            );
+        /*
+         * Κοινό modal για πολλές προσφορές: γεμίζει με τα δικά της στοιχεία.
+         *
+         * Τα modals προσφορών φορτώνονται lazy (assets/modals/*.html), οπότε στο
+         * ΠΡΩΤΟ άνοιγμα η openModal επιστρέφει Promise και το fragment δεν έχει
+         * μπει ακόμη στο DOM. Το προηγούμενο συγχρονο getElementById έβγαζε null
+         * και το γέμισμα χανόταν σιωπηλά: η ενότητα «Έντυπα αίτησης» έμενε άδεια
+         * — χωρίς κουμπιά προβολής και λήψης — μέχρι ο χρήστης να κλείσει και να
+         * ξανανοίξει το modal. Εδώ περιμένουμε να φορτωθεί πρώτα.
+         */
+        const offerIdForModal = modalTarget.dataset.modalOffer;
+        if (offerIdForModal) {
+            Promise.resolve(opened).then(() => {
+                window.App?.offerRenderer?.fillModalForOffer?.(
+                    document.getElementById(targetModalId),
+                    offerIdForModal,
+                );
+            });
         }
         return;
     }
