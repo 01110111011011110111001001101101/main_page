@@ -7,6 +7,14 @@ import { createPage, root, settle } from './helpers/load-scripts.mjs';
 const html = readFileSync(path.join(root, 'index.html'), 'utf8');
 
 /*
+ * Το measurement ID διαβάζεται από το tracking.js και δεν γράφεται δεύτερη φορά
+ * εδώ: όταν άλλαξε ο λογαριασμός Analytics, τα tests κρατούσαν το παλιό G-… και
+ * θα περνούσαν πράσινα ελέγχοντας ένα flag που δεν υπάρχει πια.
+ */
+const GA_ID = readFileSync(path.join(root, 'assets/js/tracking.js'), 'utf8')
+  .match(/GA_MEASUREMENT_ID = '([^']+)'/)[1];
+
+/*
  * Ίδια σειρά με το production bundle (scripts/build-js-bundle.mjs), συν το
  * image-preview.js που το initializeUi καλεί κατευθείαν.
  *
@@ -48,7 +56,7 @@ test('η αποδοχή φορτώνει το GA και το αποθηκεύε�
 
   assert.equal(window.localStorage.getItem('cookieConsent'), 'accepted');
   assert.equal(window.trackingLoaded, true);
-  assert.equal(window['ga-disable-G-LHQ9SHKY6J'], false);
+  assert.equal(window[`ga-disable-${GA_ID}`], false);
   assert.ok(document.querySelector('script[data-analytics-script]'));
 });
 
@@ -62,14 +70,14 @@ test('η απόρριψη μετά από αποδοχή σταματάει όν
 
   assert.equal(window.localStorage.getItem('cookieConsent'), 'rejected');
   assert.equal(window.trackingLoaded, false, 'το GA πρέπει να θεωρείται ξεφορτωμένο');
-  assert.equal(window['ga-disable-G-LHQ9SHKY6J'], true, 'το ga-disable πρέπει να είναι ενεργό');
+  assert.equal(window[`ga-disable-${GA_ID}`], true, 'το ga-disable πρέπει να είναι ενεργό');
 });
 
 test('η απόρριψη διαγράφει τα cookies του GA', (t) => {
   const { window, document } = bootPage(t);
 
   window.document.cookie = '_ga=GA1.1.123.456; path=/';
-  window.document.cookie = '_ga_G-LHQ9SHKY6J=GS1.1.999; path=/';
+  window.document.cookie = `_ga_${GA_ID}=GS1.1.999; path=/`;
 
   document.querySelector('#cookiesModal [data-cookie-consent="reject"]').click();
 
@@ -128,7 +136,7 @@ test('το modal δείχνει την τρέχουσα επιλογή', (t) => 
 test('αποθηκευμένη απόρριψη επιβεβαιώνει το ga-disable σε νέα φόρτωση', (t) => {
   const { window } = bootPage(t, 'rejected');
 
-  assert.equal(window['ga-disable-G-LHQ9SHKY6J'], true);
+  assert.equal(window[`ga-disable-${GA_ID}`], true);
   assert.equal(window.trackingLoaded, false);
 });
 

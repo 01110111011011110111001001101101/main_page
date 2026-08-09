@@ -6,7 +6,7 @@
 /* =========================================
    1. CORE SETTINGS & TRACKING
    ========================================= */
-const GA_MEASUREMENT_ID = 'G-LHQ9SHKY6J';
+const GA_MEASUREMENT_ID = 'G-02LLK21JDM';
 const TRACKED_OFFERS = Object.freeze({
     novaLinePhone: 'Σταθερό και Internet',
     internetChoiceModal: 'Επιλογή Σταθερής & Internet',
