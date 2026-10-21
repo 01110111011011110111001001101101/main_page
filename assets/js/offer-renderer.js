@@ -181,7 +181,10 @@
       icon.setAttribute('aria-hidden', 'true');
       item.appendChild(icon);
     }
-    appendTextElement(item, 'span', '', text);
+    // Αλλαγή: Χρήση innerHTML για να περνάνε τα HTML tags από το JSON
+      const textSpan = createElement('span', '');
+      textSpan.innerHTML = text;
+      item.appendChild(textSpan);
     return item;
   }
 

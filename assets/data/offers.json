@@ -144,7 +144,7 @@
       "title": "NOVA Q",
       "cardOfferName": "NOVA Q",
       "category": "mobile",
-      "badge": "Προσοχή: δεν διατίθεται eSIM.",
+      "badge": "Aπεριόριστη χρήση",
       "recommendationBadge": "Προτεινόμενη για απεριόριστη χρήση",
       "price": "100€",
       "period": "12 μήνες",
@@ -153,7 +153,7 @@
       "benefits": [
         "Απεριόριστα GB",
         "Απεριόριστη ομιλία προς όλους σταθερά και κινητά",
-        "300 sms"
+        "300 sms<br><span class=\"text-red-600 text-sm\" style=\"color: #dc2626;\">Προσοχή: δεν διατίθεται eSIM.</span>"
       ],
       "ctaPrimaryText": "Οδηγός ενεργοποίησης",
       "ctaSecondaryText": "Περισσότερα",
